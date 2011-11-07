@@ -105,15 +105,6 @@ void Terminal::scroll_up() {
 	}
 }
 
-void Terminal::render( WINDOW * win ) {
-	for ( int iy = 0; iy < this->height; ++iy ) {
-		for ( int ix = 0; ix  < this->width; ++ix ) {
-			int offset = GET_OFFSET(ix, iy);
-			mvwaddch(win, iy, ix, this->chars[offset].ch);
-		}
-	}
-}
-
 pid_t Terminal::fork( const char * command ) {
 
 	struct winsize ws;

@@ -20,30 +20,10 @@
  * THE SOFTWARE.
  */
 
-#include "RenderableTerminal.hh"
 #include "Terminal.hh"
 
 #include <iostream>
 #include "Shibuya.hh"
 
 int main ( int argc, char ** argv ) {
-	init_screen();
-
-	Terminal * t            = new Terminal(80, 25);
-	RenderableTerminal * rt = new RenderableTerminal( t );
-	t->fork("bash");
-
-	update_screen();
-
-	while ( true ) {
-		t->poke();
-		rt->render();
-		update_screen();
-		timeout(0);
-		char ch = getch();
-		if ( ch != ERR )
-			t->type(ch);
-		usleep(2000);
-	}
-	uninit_screen();
 }

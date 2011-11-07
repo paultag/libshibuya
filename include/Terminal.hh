@@ -23,7 +23,6 @@
 #ifndef _TERMINAL_HH_
 #define _TERMINAL_HH_ foo
 
-#include <ncurses.h>
 #include <pty.h>
 
 typedef struct _TerminalCell {
@@ -56,11 +55,13 @@ class Terminal {
 		Terminal(int width, int height);
 		Terminal();
 		~Terminal();
+
 		virtual void insert( unsigned char c );
 		void type( char c );
+
 		void scroll_up();
-		void render( WINDOW * win );
 		void poke();
+
 		pid_t fork( const char * command ); /* XXX: Protect this? */
 
 		int get_width();
