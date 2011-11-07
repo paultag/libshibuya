@@ -5,10 +5,10 @@
 #define _LICENSE  "MIT"
 #define _DATE     "2007 - 2011"
 #define _ORG      ""
-#define _APPNAME  "Boothby"
+#define _APPNAME  "Shibuya"
 #define _URL      "http://pault.ag/"
 
-#define _PROGRAM  "boothby"
-#define _VERSION  "0.5~pre1"
+#define _PROGRAM  "shibuya"
+#define _VERSION  "0.5~rewrite1"
 
 #endif

@@ -22,7 +22,7 @@
 
 #include "RenderableTerminal.hh"
 #include <iostream>
-#include "boothby.hh"
+#include "Shibuya.hh"
 
 int main ( int argc, char ** argv ) {
 }

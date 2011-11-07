@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "boothby.hh"
+#include "Shibuya.hh"
 #include "Terminal.hh"
 
 #include "conf/term.hh"
@@ -181,7 +181,7 @@ void Terminal::insert( unsigned char c ) {
 	 * for some reason we have to bring it into the local
 	 * scope...
 	 */
-	int offset = GET_OFFSET(ix, iy)
+	int offset = GET_OFFSET(ix, iy);
 
 	this->chars[offset].ch   = c;
 	this->chars[offset].attr = this->cMode;

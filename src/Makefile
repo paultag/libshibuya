@@ -15,7 +15,7 @@ clean:
 	@rm -f *.o
 
 link:
-	$(CXX) $(TARGETS) $(LDFLAGS) -o $(BIN)boothby
+	$(CXX) $(TARGETS) $(LDFLAGS) -o $(BIN)shibuya
 
 .cc.o:
 	$(CXX) $(CFLAGS) -I$(INC) -c -o $@ $<

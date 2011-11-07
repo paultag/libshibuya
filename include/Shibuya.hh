@@ -20,23 +20,13 @@
  * THE SOFTWARE.
  */
 
-#include <panel.h>
-#include <ncurses.h>
+#ifndef _SHIBUYA_HH_
+#define _SHIBUYA_HH_ FOO
 
-#include "boothby.hh"
+#define String std::string
 
-void init_screen() {
-	initscr();
-	cbreak();
-	noecho();
-}
+void init_screen();
+void uninit_screen();
+void update_screen();
 
-void uninit_screen() {
-	endwin();
-}
-
-void update_screen() {
-	refresh();
-	update_panels();
-	doupdate();
-}
+#endif

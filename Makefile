@@ -4,4 +4,4 @@ clean:
 	cd src/ && make clean
 	rm -rf bin/*
 test: all
-	./bin/boothby 2>log
+	./bin/shibuya 2>log
