@@ -138,14 +138,18 @@ pid_t Terminal::fork( const char * command ) {
 }
 
 void Terminal::poke() {
-	fd_set ifs;
+	/* This is ripped off from librote */
+
+	fd_set         ifs;
 	struct timeval tvzero;
-	char buf[512];
-	int bytesread;
-	int n = 5; // XXX: Fix?
+
+	char  buf[512];
+	int   bytesread;
+	int   n = 5; // XXX: Fix?
 
 	if (this->pty < 0)
 		return;
+
 	while (n--) {
 		FD_ZERO(&ifs);
 		FD_SET(this->pty, &ifs);
