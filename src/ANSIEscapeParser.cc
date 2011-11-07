@@ -15,9 +15,10 @@ ANSIEscapeParser::~ANSIEscapeParser() {
 }
 
 PARSE_RESULT_T ANSIEscapeParser::process( char c ) {
+
 	return 1;
 }
 
 void ANSIEscapeParser::clear() {
-
+	this->parsed_queue[0] = '\0';
 }
