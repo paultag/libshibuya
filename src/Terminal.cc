@@ -32,6 +32,9 @@
 #include "conf/term.hh"
 
 #define GET_OFFSET(x, y) ( ( y * this->width ) + x )
+/* This is in here because it's:
+   a) only used in here
+   b) very dependent on this exact impl */
 
 void Terminal::_init_Terminal(int width, int height) {
 	this->graph  = false;
@@ -39,7 +42,9 @@ void Terminal::_init_Terminal(int width, int height) {
 	this->height = height;
 	this->cX     = 0;
 	this->cY     = 0;
-	this->cMode  = 0x70; // 112
+	this->cMode  = 0x70;
+	/* 11100000 = 0x70 (112)
+	   FFF BBB */
 
 	this->scrollframe_floor = this->height;
 	this->scrollframe_top   = 0;
@@ -48,7 +53,7 @@ void Terminal::_init_Terminal(int width, int height) {
 
 	this->special   = false;
 	this->maxesc    = 128; /* Hopefully more then we ever need. */
-	this->escape    = (char *)malloc(sizeof(char) * this->maxesc);
+	this->escape    = (char *) malloc(sizeof(char) * this->maxesc);
 	this->escape[0] = '\0';
 	
 	this->chars = (TerminalCell*)
@@ -77,8 +82,8 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 	iY--;
 	tY--;
 
-	int from = (( this->width * iY ) + iX );
-	int to   = (( this->width * tY ) + tX );
+	int from = GET_OFFSET(iX, iY);
+	int to   = GET_OFFSET(tX, tY);
 
 	for ( int i = from - 1; i < to; ++i ) {
 		this->chars[i].ch   = ' ';
@@ -93,14 +98,14 @@ void Terminal::scroll_up() {
 		iy++
 	) {
 		for ( int ix = 0; ix < this->width; ++ix ) {
-			int thisChar = (( this->width *   iy      ) + ix );
-			int lastChar = (( this->width * ( iy - 1 )) + ix );
-			this->chars[lastChar].ch = this->chars[thisChar].ch;
+			int thisChar = GET_OFFSET(ix, iy);
+			int lastChar = GET_OFFSET(ix, (iy - 1));
+			this->chars[lastChar].ch   = this->chars[thisChar].ch;
 			this->chars[lastChar].attr = this->chars[thisChar].attr;
 		}
 	}
 	for ( int ix = 0; ix < this->width; ++ix ) {
-		int offset = ((this->width * (this->scrollframe_floor - 1)) + ix);
+		int offset = GET_OFFSET( ix, (this->scrollframe_floor - 1) );
 		this->chars[offset].ch = ' ';
 		this->chars[offset].attr = 0x70;
 	}
@@ -109,7 +114,7 @@ void Terminal::scroll_up() {
 void Terminal::render( WINDOW * win ) {
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix  < this->width; ++ix ) {
-			int offset = (( this->width * iy ) + ix );
+			int offset = GET_OFFSET(ix, iy);
 			mvwaddch(win, iy, ix, this->chars[offset].ch);
 		}
 	}
@@ -176,7 +181,7 @@ void Terminal::insert( unsigned char c ) {
 	 * for some reason we have to bring it into the local
 	 * scope...
 	 */
-	int offset = (( this->width * iy ) + ix );
+	int offset = GET_OFFSET(ix, iy)
 
 	this->chars[offset].ch   = c;
 	this->chars[offset].attr = this->cMode;
