@@ -37,7 +37,6 @@
    b) very dependent on this exact impl */
 
 void Terminal::_init_Terminal(int width, int height) {
-	this->graph  = false;
 	this->width  = width;
 	this->height = height;
 	this->cX     = 0;
@@ -46,16 +45,11 @@ void Terminal::_init_Terminal(int width, int height) {
 	/* 11100000 = 0x70 (112)
 	   FFF BBB */
 
-	this->scrollframe_floor = this->height;
-	this->scrollframe_top   = 0;
+	this->scroll_frame_bottom = this->height;
+	this->scroll_frame_top   = 0;
 
 	this->pty    = -1;
 
-	this->special   = false;
-	this->maxesc    = 128; /* Hopefully more then we ever need. */
-	this->escape    = (char *) malloc(sizeof(char) * this->maxesc);
-	this->escape[0] = '\0';
-	
 	this->chars = (TerminalCell*)
 		malloc(sizeof(TerminalCell) * (width * height));
  
@@ -93,8 +87,8 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 
 void Terminal::scroll_up() {
 	for (
-		int iy = this->scrollframe_top + 1;
-		iy < this->scrollframe_floor;
+		int iy = this->scroll_frame_top + 1;
+		iy < this->scroll_frame_bottom;
 		iy++
 	) {
 		for ( int ix = 0; ix < this->width; ++ix ) {
@@ -105,7 +99,7 @@ void Terminal::scroll_up() {
 		}
 	}
 	for ( int ix = 0; ix < this->width; ++ix ) {
-		int offset = GET_OFFSET( ix, (this->scrollframe_floor - 1) );
+		int offset = GET_OFFSET( ix, (this->scroll_frame_bottom - 1) );
 		this->chars[offset].ch = ' ';
 		this->chars[offset].attr = 0x70;
 	}
@@ -135,7 +129,7 @@ pid_t Terminal::fork( const char * command ) {
 	if (childpid == 0) {
 		setenv("TERM", TERMINAL_ENV_NAME, 1);
 		execl("/bin/sh", "/bin/sh", "-c", command, NULL); // XXX: Choose shell better
-		std::cerr << "Oh, crap. Failed to fork." << std::endl;
+		std::cerr << "Failed to fork." << std::endl;
 		exit(127);
 	}
 	/* if we got here we are the parent process */

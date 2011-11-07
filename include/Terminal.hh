@@ -33,17 +33,11 @@ typedef struct _TerminalCell {
 
 class Terminal {
 	protected:
-
-	/* iVars */
-
-		bool graph;
-		bool special;
-
 		int width;
 		int height;
 
-		int scrollframe_top;
-		int scrollframe_floor;
+		int scroll_frame_top;
+		int scroll_frame_bottom;
 
 		int cX;
 		int cY;
@@ -51,15 +45,10 @@ class Terminal {
 		unsigned char   cMode;
 		TerminalCell  * chars;
 
-		char  *  escape;
-		int      maxesc;
-
 		pid_t  pty;
 		pid_t  childpid;
 
-	/* Functions */
 		void erase_to_from( int iX, int iY, int tX, int tY );
-		
 		void advance_curs();
 		void _init_Terminal( int width, int height );
 
