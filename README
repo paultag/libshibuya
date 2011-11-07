@@ -1,0 +1,15 @@
+Boothby
+=======
+
+Howdy, there! Thanks for checking out this code.
+
+What is Boothby?
+----------------
+
+Boothby lets you create a whole boatload of terminal sessions
+within the current session. Kinda like screen, or tmux - but
+also totally different.
+
+Boothby is more like a tiling window manager then most other
+things. You can think of it like that, if you'd like. It's
+simple, easy to use, and reliable.
