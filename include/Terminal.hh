@@ -42,7 +42,6 @@ class Terminal {
 		int cY;
 		
 		unsigned char   cMode;
-		TerminalCell  * chars;
 
 		pid_t  pty;
 		pid_t  childpid;
@@ -52,6 +51,8 @@ class Terminal {
 		void _init_Terminal( int width, int height );
 
 	public:
+		TerminalCell * chars;
+
 		Terminal(int width, int height);
 		Terminal();
 		~Terminal();
