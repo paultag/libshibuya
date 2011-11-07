@@ -80,8 +80,6 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 	int from = (( this->width * iY ) + iX );
 	int to   = (( this->width * tY ) + tX );
 
-	DEBUG("Erasing from / to: " << from << ", " << to)
-
 	for ( int i = from - 1; i < to; ++i ) {
 		this->chars[i].ch   = ' ';
 		this->chars[i].attr = 0x70;
@@ -112,31 +110,6 @@ void Terminal::render( WINDOW * win ) {
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix  < this->width; ++ix ) {
 			int offset = (( this->width * iy ) + ix );
-
-			unsigned char attr = this->chars[offset].attr;
-			
-			int cp = ATTR_BG(attr) * 8 + 7 - ATTR_FG(attr);
-
-			wattrset(win, A_NORMAL);
-
-			if ( ! cp ) {
-				// ( if not false (0) ) -> if it's a 0
-				wattrset(win, A_NORMAL);
-			} else {
-				// if we have anything, set the color
-				wattrset(win, COLOR_PAIR(cp));
-			}
-			if (ATTR_BOLD(attr)) {
-				wattron(win, A_BOLD);
-			} else {
-				wattroff(win, A_BOLD);
-			}
-
-			if (ATTR_BLINK(attr)) {
-				wattron(win, A_BLINK);
-			} else {
-				wattroff(win, A_BLINK);
-			}
 			mvwaddch(win, iy, ix, this->chars[offset].ch);
 		}
 	}
