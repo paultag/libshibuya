@@ -17,7 +17,7 @@ void ANSITerminal::_init_ANSITerminal() {
 }
 
 void ANSITerminal::insert( unsigned char c ) {
-	int res = ansi_escape_parser_feed( c );
+	ANSI_ESCAPE_PARSE_T res = ansi_escape_parser_feed( c );
 	switch ( res ) {
 		case ANSI_ESCAPE_PARSE_OK:
 			ansi_sequence * last = ansi_escape_get_last_sequence();
