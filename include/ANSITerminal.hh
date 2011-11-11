@@ -26,6 +26,8 @@
 #include <pty.h>
 
 class ANSITerminal {
+	protected:
+		void _init_ANSITerminal();
 	public:
 		ANSITerminal(int width, int height);
 		ANSITerminal();
