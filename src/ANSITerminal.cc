@@ -23,6 +23,7 @@ void ANSITerminal::insert( unsigned char c ) {
 			ansi_sequence * last = ansi_escape_get_last_sequence();
 			break;
 		case ANSI_ESCAPE_PARSE_BAD:
+			Terminal::insert(c);
 			break;
 		case ANSI_ESCAPE_PARSE_INCOMPLETE:
 			break;
