@@ -23,11 +23,16 @@
 #ifndef _ANSITERMINAL_HH_
 #define _ANSITERMINAL_HH_ foo
 
+#include "Terminal.hh"
+
+#include <ansiescape.hh>
 #include <pty.h>
 
-class ANSITerminal {
+class ANSITerminal : public Terminal {
 	protected:
 		void _init_ANSITerminal();
+		void _handle_escape( ansi_sequence * last );
+		
 	public:
 		ANSITerminal(int width, int height);
 		ANSITerminal();

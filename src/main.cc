@@ -26,4 +26,9 @@
 #include "Shibuya.hh"
 
 int main ( int argc, char ** argv ) {
+	init_screen();
+	
+	
+	
+	uninit_screen();
 }
