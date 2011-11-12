@@ -21,14 +21,15 @@
  */
 
 #include "Terminal.hh"
+#include "Shibuya.hh"
+#include "NcursesTerminal.hh"
 
 #include <iostream>
-#include "Shibuya.hh"
 
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
-	
+	NcursesTerminal nct;
 	
 	uninit_screen();
 }
