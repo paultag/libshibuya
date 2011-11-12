@@ -24,17 +24,21 @@
 #define _NCURSESTERMINAL_HH_ CAN_HAS
 
 #include "ANSITerminal.hh"
+#include "Pane.hh"
 
 #include <ansiescape.hh>
 
 class NcursesTerminal : ANSITerminal {
 	protected:
+		Pane * pane;
+		void _init_NcursesTerminal( int width, int height, int x, int y );
+
 	public:
 		NcursesTerminal();
 		~NcursesTerminal();
 		NcursesTerminal( int width, int height );
 		NcursesTerminal( int width, int height, int x, int y );
 	
-}
+};
 
 #endif

@@ -23,20 +23,27 @@
 #include "NcursesTerminal.hh"
 
 NcursesTerminal::NcursesTerminal() {
+	this->_init_NcursesTerminal(80, 25, 0, 0);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( 80, 25 );
 }
 
-NcursesTerminal::~NcursesTerminal() {
-
-}
+NcursesTerminal::~NcursesTerminal() {}
 
 NcursesTerminal::NcursesTerminal( int width, int height ) {
+	this->_init_NcursesTerminal(width, height, 0, 0);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
 }
 
 NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
+	this->_init_NcursesTerminal(width, height, x, y);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
+}
+
+void NcursesTerminal::_init_NcursesTerminal(
+	int width, int height, int x, int y
+) {
+	this->pane = new Pane(width, height, x, y);
 }
