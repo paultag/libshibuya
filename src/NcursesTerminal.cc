@@ -51,6 +51,17 @@ void NcursesTerminal::_init_NcursesTerminal(
 	this->pane = new Pane(width, height, x, y);
 }
 
-void NcursesTerminal::render() {
+void NcursesTerminal::render( WINDOW * win ) {
+	for ( int iy = 0; iy < this->height; ++iy ) {
+		for ( int ix = 0; ix  < this->width; ++ix ) {
 
+			int offset = (( this->width * iy ) + ix );
+			mvwaddch(win, iy, ix, this->chars[offset].ch);
+
+		}
+	}
+}
+
+void NcursesTerminal::render() {
+	this->render(this->pane->getWindow());
 }

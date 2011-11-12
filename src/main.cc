@@ -34,5 +34,8 @@ int main ( int argc, char ** argv ) {
 	nct.render();
 	nct.poke();
 	
+	update_screen();
+	usleep(20000000);
+	
 	uninit_screen();
 }

@@ -27,6 +27,7 @@
 #include "Pane.hh"
 
 #include <ansiescape.hh>
+#include <ncurses.h>
 
 class NcursesTerminal : public ANSITerminal {
 	protected:
@@ -40,6 +41,7 @@ class NcursesTerminal : public ANSITerminal {
 		NcursesTerminal( int width, int height, int x, int y );
 		
 		void render();
+		void render(WINDOW * window);
 };
 
 #endif
