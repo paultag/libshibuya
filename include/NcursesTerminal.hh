@@ -28,7 +28,7 @@
 
 #include <ansiescape.hh>
 
-class NcursesTerminal : ANSITerminal {
+class NcursesTerminal : public ANSITerminal {
 	protected:
 		Pane * pane;
 		void _init_NcursesTerminal( int width, int height, int x, int y );
@@ -38,6 +38,8 @@ class NcursesTerminal : ANSITerminal {
 		~NcursesTerminal();
 		NcursesTerminal( int width, int height );
 		NcursesTerminal( int width, int height, int x, int y );
+		
+		void render();
 };
 
 #endif

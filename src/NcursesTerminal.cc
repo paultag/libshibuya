@@ -50,3 +50,7 @@ void NcursesTerminal::_init_NcursesTerminal(
 ) {
 	this->pane = new Pane(width, height, x, y);
 }
+
+void NcursesTerminal::render() {
+
+}

@@ -31,5 +31,8 @@ int main ( int argc, char ** argv ) {
 	
 	NcursesTerminal nct;
 	
+	nct.render();
+	nct.poke();
+	
 	uninit_screen();
 }
