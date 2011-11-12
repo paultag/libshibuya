@@ -1,4 +1,5 @@
 #include <ansiescape.hh>
+#include <ansiescape/StateMachine.hh> /* XXX: FIXME */
 
 #include "ANSITerminal.hh"
 #include "Terminal.hh"
@@ -14,12 +15,12 @@ ANSITerminal::ANSITerminal( int width, int height ) {
 ANSITerminal::~ANSITerminal() {}
 
 void ANSITerminal::_init_ANSITerminal() {
-	ansi_escape_parser_reset();
+	ansi_state_init();
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
-	char mode               = last->mode;
-	std::vector<int> * seqs = last->values;
+	/* char mode               = last->mode;
+	std::vector<int> * seqs = last->values; */
 }
 
 void ANSITerminal::insert( unsigned char c ) {

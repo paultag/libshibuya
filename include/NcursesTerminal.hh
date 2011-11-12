@@ -38,7 +38,6 @@ class NcursesTerminal : ANSITerminal {
 		~NcursesTerminal();
 		NcursesTerminal( int width, int height );
 		NcursesTerminal( int width, int height, int x, int y );
-	
 };
 
 #endif

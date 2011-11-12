@@ -43,7 +43,10 @@ NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
 }
 
 void NcursesTerminal::_init_NcursesTerminal(
-	int width, int height, int x, int y
+	int width,
+	int height,
+	int x,
+	int y
 ) {
 	this->pane = new Pane(width, height, x, y);
 }
