@@ -39,8 +39,10 @@
 void Terminal::_init_Terminal(int width, int height) {
 	this->width  = width;
 	this->height = height;
+
 	this->cX     = 0;
 	this->cY     = 0;
+
 	this->cMode  = 0x70;
 	/* 11100000 = 0x70 (112)
 	   FFF BBB */

@@ -21,6 +21,7 @@
  */
 
 #include <ansiescape.hh>
+#include <iostream>
 
 #include "ANSITerminal.hh"
 #include "Terminal.hh"
@@ -45,6 +46,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 }
 
 void ANSITerminal::insert( unsigned char c ) {
+	
 	ANSI_ESCAPE_PARSE_T res = ansi_escape_parser_feed( c );
 	ansi_sequence * last = NULL;
 	

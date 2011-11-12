@@ -25,17 +25,32 @@
 #include "NcursesTerminal.hh"
 
 #include <iostream>
+#include <string.h>
 
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
 	NcursesTerminal nct;
 	
-	nct.render();
+	const char * foo = "Hello, World!\n\0";
+	
+	for ( unsigned int i = 0; i < 5; ++i ) {
+		nct.insert( foo[i] );
+	}
+	
+	for ( int iy = 0; iy < nct.get_height(); ++iy ) {
+		for ( int ix = 0; ix  < nct.get_width(); ++ix ) {
+			int offset = (( nct.get_width() * iy ) + ix );
+			std::cerr << nct.chars[offset].ch;
+		}
+		std::cerr << std::endl;
+	}
+	
 	nct.poke();
+	nct.render();
 	
 	update_screen();
-	usleep(20000000);
 	
+	usleep(2000000);
 	uninit_screen();
 }
