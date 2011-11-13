@@ -31,8 +31,12 @@
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
-	std::vector<std::string> * bg = get_bg_vector( argv[1] );
-	write_out_bg( bg );
+	
+	if ( argc > 0 ) {
+		std::vector<std::string> * bg = get_bg_vector( argv[1] );
+		write_out_bg( bg );
+		move(0, 0);
+	}
 	
 	update_screen();
 	usleep(2000000);
