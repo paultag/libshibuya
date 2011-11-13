@@ -58,17 +58,11 @@ void write_out_bg( std::vector<std::string> * boo ) {
 	
 	int midX = ( maxCol / 2 );
 	int midY = ( maxRow / 2 );
-	
-	midX = midX - ( fmax / 2 );
-	midY = midY - ( flen / 2 );
-	
-	std::cerr << boo->size() << std::endl;
+	midX     = midX - ( fmax / 2 );
+	midY     = midY - ( flen / 2 );
 	
 	for ( unsigned int i = 0; i < boo->size(); ++i ) {
 		mvprintw( midY, midX, boo->at(i).c_str() );
-
-		std::cerr << midY << ", " << midX << std::endl;
-
 		midY++;
 	}
 }

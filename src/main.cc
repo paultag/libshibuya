@@ -20,9 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "Terminal.hh"
-#include "Shibuya.hh"
 #include "NcursesTerminal.hh"
+#include "Shibuya.hh"
 #include "BGFile.hh"
 
 #include <iostream>
@@ -31,11 +30,12 @@
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
+	NcursesTerminal nt;
+	nt.fork("bash");
 	
 	if ( argc > 0 ) {
-		start_color();
+		/* Turn this into sanity, please */
 		init_pair(1, COLOR_RED, COLOR_BLACK);
-		
 		attron(COLOR_PAIR(1));
 		attron(A_BOLD);
 		
@@ -46,9 +46,20 @@ int main ( int argc, char ** argv ) {
 		attroff(A_BOLD);
 	}
 	
-	move(0, 0);
+	while ( true ) {
+		
+		nt.poke();
+		nt.render();
+		
+		timeout(0);
+		char ch = getch();
+		if ( ch != ERR )
+			nt.type(ch);
+		
+		usleep(20000);
+		
+		update_screen();
+	}
 	
-	update_screen();
-	usleep(2000000);
 	uninit_screen();
 }

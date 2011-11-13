@@ -29,6 +29,7 @@ void init_screen() {
 	initscr();
 	cbreak();
 	noecho();
+	start_color();
 }
 
 void uninit_screen() {
