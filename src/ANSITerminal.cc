@@ -56,6 +56,7 @@ void ANSITerminal::insert( unsigned char c ) {
 			break;
 		case ANSI_ESCAPE_PARSE_BAD:
 			ansi_escape_parser_reset();
+			/* If we don't reset, the following bytes are "INCOMPLETE" */
 			Terminal::insert(c);
 			break;
 		case ANSI_ESCAPE_PARSE_INCOMPLETE:

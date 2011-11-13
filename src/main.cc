@@ -30,14 +30,6 @@
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
-	NcursesTerminal nct;
-	
-	for ( unsigned int i = 0; i < 10; ++i )
-		nct.insert('A');
-	
-	nct.poke();
-	nct.render();
-	
 	update_screen();
 	
 	usleep(2000000);
