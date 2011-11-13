@@ -33,10 +33,20 @@ int main ( int argc, char ** argv ) {
 	
 	
 	if ( argc > 0 ) {
+		start_color();
+		init_pair(1, COLOR_RED, COLOR_BLACK);
+		
+		attron(COLOR_PAIR(1));
+		attron(A_BOLD);
+		
 		std::vector<std::string> * bg = get_bg_vector( argv[1] );
 		write_out_bg( bg );
-		move(0, 0);
+		
+		attroff(COLOR_PAIR(1));
+		attroff(A_BOLD);
 	}
+	
+	move(0, 0);
 	
 	update_screen();
 	usleep(2000000);
