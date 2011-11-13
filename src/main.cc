@@ -23,6 +23,7 @@
 #include "Terminal.hh"
 #include "Shibuya.hh"
 #include "NcursesTerminal.hh"
+#include "BGFile.hh"
 
 #include <iostream>
 #include <string.h>
@@ -30,8 +31,10 @@
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
-	update_screen();
+	std::vector<std::string> * bg = get_bg_vector( argv[1] );
+	write_out_bg( bg );
 	
+	update_screen();
 	usleep(2000000);
 	uninit_screen();
 }
