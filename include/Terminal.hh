@@ -25,6 +25,8 @@
 
 #include <pty.h>
 
+#define GET_OFFSET(x, y) ( ( y * this->width ) + x )
+
 typedef struct _TerminalCell {
 	unsigned char attr;
 	unsigned char ch;

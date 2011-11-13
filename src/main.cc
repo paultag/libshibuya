@@ -32,19 +32,8 @@ int main ( int argc, char ** argv ) {
 	
 	NcursesTerminal nct;
 	
-	const char * foo = "Hello, World!\n\0";
-	
-	for ( unsigned int i = 0; i < 5; ++i ) {
-		nct.insert( foo[i] );
-	}
-	
-	for ( int iy = 0; iy < nct.get_height(); ++iy ) {
-		for ( int ix = 0; ix  < nct.get_width(); ++ix ) {
-			int offset = (( nct.get_width() * iy ) + ix );
-			std::cerr << nct.chars[offset].ch;
-		}
-		std::cerr << std::endl;
-	}
+	for ( unsigned int i = 0; i < 10; ++i )
+		nct.insert('A');
 	
 	nct.poke();
 	nct.render();

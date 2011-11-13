@@ -46,7 +46,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 }
 
 void ANSITerminal::insert( unsigned char c ) {
-	
 	ANSI_ESCAPE_PARSE_T res = ansi_escape_parser_feed( c );
 	ansi_sequence * last = NULL;
 	
@@ -56,6 +55,7 @@ void ANSITerminal::insert( unsigned char c ) {
 			this->_handle_escape( last );
 			break;
 		case ANSI_ESCAPE_PARSE_BAD:
+			ansi_escape_parser_reset();
 			Terminal::insert(c);
 			break;
 		case ANSI_ESCAPE_PARSE_INCOMPLETE:

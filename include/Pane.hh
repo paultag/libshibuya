@@ -36,7 +36,7 @@ class Pane {
 		int height;
 
 	public:
-		Pane(int x, int y, int width, int height);
+		Pane(int width, int height, int x, int y);
 		~Pane();
 		void focus();
 		void move_to( int x, int y );

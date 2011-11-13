@@ -25,7 +25,7 @@
 #include "Pane.hh"
 
 
-Pane::Pane(int x, int y, int width, int height) {
+Pane::Pane(int width, int height, int x, int y) {
 	this->x = x;
 	this->y = y;
 	this->height = height;

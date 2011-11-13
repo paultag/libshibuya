@@ -31,11 +31,6 @@
 
 #include "conf/term.hh"
 
-#define GET_OFFSET(x, y) ( ( y * this->width ) + x )
-/* This is in here because it's:
-   a) only used in here
-   b) very dependent on this exact impl */
-
 void Terminal::_init_Terminal(int width, int height) {
 	this->width  = width;
 	this->height = height;
