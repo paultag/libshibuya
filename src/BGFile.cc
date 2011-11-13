@@ -43,6 +43,10 @@ std::vector<std::string> * get_bg_vector( const char * fd ) {
 #include <iostream>
 
 void write_out_bg( std::vector<std::string> * boo ) {
+	
+	if ( boo == NULL )
+		return;
+	
 	int maxRow = 0;
 	int maxCol = 0;
 	
