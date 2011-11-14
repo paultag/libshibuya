@@ -21,6 +21,7 @@
  */
 
 #include <ansiescape.hh>
+#include <ansicsi.hh>
 #include <iostream>
 
 #include "ANSITerminal.hh"
@@ -41,8 +42,35 @@ void ANSITerminal::_init_ANSITerminal() {
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
-	/* char mode               = last->mode;
-	std::vector<int> * seqs = last->values; */
+	char mode               = last->mode;
+	std::vector<int> * seqs = last->values;
+	
+	switch ( mode ) {
+		case CSI_ED:
+			/* Clears part of the screen. If n is zero (or missing),
+			 * clear from cursor to end of screen. If n is one,
+			 * clear from cursor to beginning of the screen. If n is two, clear
+			 * entire screen (and moves cursor to upper left on MS-DOS
+			 * ANSI.SYS).*/
+			switch ( seqs->at(0) ) {
+				case -1: /* Missing */
+				case  0:
+					this->erase_to_from( this->cX, this->cY,
+						this->width, this->height );
+					break;
+				case 1:
+					this->erase_to_from( 0, 0, this->cX, this->cY );
+					break;
+				case 2:
+					this->erase_to_from( 0, 0, this->width, this->height );
+					break;
+			}
+			break;
+		default:
+			/* Unknown sequence */
+			break;
+	}
+	
 }
 
 void ANSITerminal::insert( unsigned char c ) {
