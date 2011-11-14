@@ -36,14 +36,11 @@ int main ( int argc, char ** argv ) {
 	std::vector<std::string> * bg = NULL;
 	
 	if ( argc > 0 ) {
-		/* Turn this into sanity, please */
-		init_pair(1, COLOR_RED, COLOR_WHITE);
+		init_pair(1, COLOR_GREEN, COLOR_BLACK);
 		attron(COLOR_PAIR(1));
 		attron(A_BOLD);
-		/* Snag the background */
 		bg = get_bg_vector( argv[1] );
 		write_out_bg( bg );
-		/* reset the color for the next VTs */
 		attroff(COLOR_PAIR(1));
 		attroff(A_BOLD);
 	}
