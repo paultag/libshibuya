@@ -89,7 +89,11 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		case CSI_CHA:
 			/* Moves the cursor to column n. */
-			this->cX = ( seqs->at(0) != -1 ) ? seqs->at(0) : 0;
+			this->cX = ( seqs->at(0) < 1 ) ? seqs->at(0) - 1 : 0;
+			break;
+		case 'd':
+			/* moves the cursor to row n. */
+			this->cY = ( seqs->at(0) < 1 ) ? seqs->at(0) - 1 : 0;
 			break;
 		case CSI_CUP:
 			/* Moves the cursor to row n, column m. The values are 1-based, and
