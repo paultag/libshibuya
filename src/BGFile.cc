@@ -52,6 +52,12 @@ void write_out_bg( std::vector<std::string> * boo ) {
 	
 	getmaxyx(stdscr, maxRow, maxCol);
 	
+	for ( int iy = 0; iy < maxRow; ++iy ) {
+		for ( int ix = 0; ix < maxCol; ++ix ) {
+			mvwaddch(stdscr, iy, ix, ' ');
+		}
+	}
+	
 	unsigned int flen = 0;
 	unsigned int fmax = 0;
 	

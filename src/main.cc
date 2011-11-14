@@ -37,7 +37,7 @@ int main ( int argc, char ** argv ) {
 	
 	if ( argc > 0 ) {
 		/* Turn this into sanity, please */
-		init_pair(1, COLOR_RED, COLOR_BLACK);
+		init_pair(1, COLOR_RED, COLOR_WHITE);
 		attron(COLOR_PAIR(1));
 		attron(A_BOLD);
 		/* Snag the background */
@@ -58,6 +58,8 @@ int main ( int argc, char ** argv ) {
 		usleep(200);
 		update_screen();
 	}
+	
+	getch();
 	
 	uninit_screen();
 }
