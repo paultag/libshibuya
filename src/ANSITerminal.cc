@@ -156,9 +156,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		default:
 			/* Unknown sequence */
-			std::cerr << "UK-SEQ: " << mode << std::endl;
-			for ( unsigned int i = 0; i < seqs->size(); ++i )
-				std::cerr << " -> " << seqs->at(i) << std::endl;
 			break;
 	}
 	
