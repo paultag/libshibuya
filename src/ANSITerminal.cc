@@ -46,7 +46,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	std::vector<int> * seqs = last->values;
 	
 	int move_steps =  1;
-	int nRow       = -1;
+	int nRow       = -1; /* Sorry about this hack, friend */
 	int nCol       = -1;
 	
 	switch ( mode ) {

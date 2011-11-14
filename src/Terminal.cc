@@ -156,17 +156,14 @@ void Terminal::poke() {
 
 
 void Terminal::insert( unsigned char c ) {
-	
 	if ( c == '\n' ) {
 		this->cX = 0;
 		this->cY++;
 		return;
 	}
 	
-	if ( c == 8 ) {
-		/* Backspace */
+	if ( c == 8 )
 		this->cX--;
-	}
 	
 	if ( c == 9 ) {
 		/* Tab */
@@ -176,7 +173,6 @@ void Terminal::insert( unsigned char c ) {
 		}
 		return;
 	}
-	
 	if ( c < 32 )
 		return;
 	
