@@ -69,10 +69,11 @@ Terminal::Terminal( int width, int height ) {
 }
 
 void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
-	iY--;
-	tY--;
+	//iY--;
+	//tY--;
 	int from = GET_OFFSET(iX, iY);
 	int to   = GET_OFFSET(tX, tY);
+	std::cerr << from << ", " << to << std::endl;
 	for ( int i = from - 1; i < to; ++i ) {
 		this->chars[i].ch   = ' ';
 		this->chars[i].attr = 0x70;
