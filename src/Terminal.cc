@@ -163,6 +163,24 @@ void Terminal::insert( unsigned char c ) {
 		return;
 	}
 	
+	if ( c == 8 ) {
+		/* Backspace */
+		this->cX--;
+	}
+	
+	if ( c == 9 ) {
+		/* Tab */
+		this->insert(' ');
+		
+		while ( ( this->cX % 8 ) != 0 ) {
+			this->insert(' ');
+		}
+		return;
+	}
+	
+	if ( c < 32 )
+		return;
+	
 	int ix = this->cX;
 	int iy = this->cY;
 	/*
