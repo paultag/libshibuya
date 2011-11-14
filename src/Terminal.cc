@@ -73,7 +73,6 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 	//tY--;
 	int from = GET_OFFSET(iX, iY);
 	int to   = GET_OFFSET(tX, tY);
-	std::cerr << from << ", " << to << std::endl;
 	for ( int i = from - 1; i < to; ++i ) {
 		this->chars[i].ch   = ' ';
 		this->chars[i].attr = 0x70;
@@ -158,8 +157,8 @@ void Terminal::poke() {
 
 void Terminal::insert( unsigned char c ) {
 	if ( c == '\n' ) {
-		this->cX = 0;
-		this->cY++;
+		this->cX = this->width;
+		this->advance_curs();
 		return;
 	}
 	

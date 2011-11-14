@@ -44,7 +44,7 @@ void ANSITerminal::_init_ANSITerminal() {
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
-	
+
 	int move_steps =  1;
 	int nRow       = -1; /* Sorry about this hack, friend */
 	int nCol       = -1;
@@ -119,14 +119,14 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				case -1:
 				case 0:
 					this->erase_to_from( this->cX, this->cY,
-						this->width, this->cY );
+						this->width - 1, this->cY );
 					break;
 				case 1:
 					this->erase_to_from( 0, this->cY, this->cX, this->cY );
 					break;
 				case 2:
 					this->erase_to_from( 0, this->cY,
-						this->width, this->cY );
+						this->width - 1, this->cY );
 					break;
 			}
 			break;
@@ -140,13 +140,13 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				case -1: /* Missing */
 				case  0:
 					this->erase_to_from( this->cX, this->cY,
-						this->width, this->height );
+						this->width - 1, this->height - 1 );
 					break;
 				case 1:
 					this->erase_to_from( 0, 0, this->cX, this->cY );
 					break;
 				case 2:
-					this->erase_to_from( 0, 0, this->width, this->height );
+					this->erase_to_from( 0, 0, this->width - 1, this->height - 1 );
 					break;
 			}
 			break;
