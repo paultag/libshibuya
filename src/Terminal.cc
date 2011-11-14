@@ -156,7 +156,13 @@ void Terminal::poke() {
 
 
 void Terminal::insert( unsigned char c ) {
-
+	
+	if ( c == '\n' ) {
+		this->cX = 0;
+		this->cY++;
+		return;
+	}
+	
 	int ix = this->cX;
 	int iy = this->cY;
 	/*
