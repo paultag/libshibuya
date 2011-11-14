@@ -46,6 +46,26 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	std::vector<int> * seqs = last->values;
 	
 	switch ( mode ) {
+		case CSI_EL:
+			/* Erases part of the line. If n is zero (or missing), clear from
+			 * cursor to the end of the line. If n is one, clear from cursor to
+			 * beginning of the line. If n is two, clear entire line. Cursor
+			 * position does not change. */
+			switch ( seqs->at(0) ) {
+				case -1:
+				case 0:
+					this->erase_to_from( this->cX, this->cY,
+						this->width, this->cY );
+					break;
+				case 1:
+					this->erase_to_from( 0, this->cY, this->cX, this->cY );
+					break;
+				case 2:
+					this->erase_to_from( 0, this->cY,
+						this->width, this->cY );
+					break;
+			}
+			break;
 		case CSI_ED:
 			/* Clears part of the screen. If n is zero (or missing),
 			 * clear from cursor to end of screen. If n is one,
