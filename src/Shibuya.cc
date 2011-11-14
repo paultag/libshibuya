@@ -38,6 +38,6 @@ void uninit_screen() {
 
 void update_screen() {
 	refresh();
-	//update_panels();
+	update_panels();
 	doupdate();
 }
