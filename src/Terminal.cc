@@ -171,7 +171,6 @@ void Terminal::insert( unsigned char c ) {
 	if ( c == 9 ) {
 		/* Tab */
 		this->insert(' ');
-		
 		while ( ( this->cX % 8 ) != 0 ) {
 			this->insert(' ');
 		}
