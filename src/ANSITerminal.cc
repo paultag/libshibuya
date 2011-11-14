@@ -45,10 +45,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
 	
-	int move_steps = 1;
+	int move_steps =  1;
+	int nRow       = -1;
+	int nCol       = -1;
 	
 	switch ( mode ) {
-		case CSI_CUP:
+		case CSI_CUU:
 		case CSI_CUD:
 		case CSI_CUF:
 		case CSI_CUB:
@@ -85,7 +87,29 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					break;
 			}
 			break;
+		case CSI_CHA:
+			/* Moves the cursor to column n. */
+			this->cX = ( seqs->at(0) != -1 ) ? seqs->at(0) : 0;
+			break;
+		case CSI_CUP:
+			/* Moves the cursor to row n, column m. The values are 1-based, and
+			 * default to 1 (top left corner) if omitted. A sequence such as CSI
+			 * ;5H is a synonym for CSI 1;5H as well as CSI 17;H is the same as
+			 * CSI 17H and CSI 17;1H */
+			nRow = seqs->at(0);
 			
+			if ( nRow < 0 )
+				nRow = 1;
+			
+			if ( seqs->size() >= 2 )
+				nCol = seqs->at(1);
+			else
+				nCol = 1;
+			
+			this->cX = (nCol - 1);
+			this->cY = (nRow - 1);
+			
+			break;
 		case CSI_EL:
 			/* Erases part of the line. If n is zero (or missing), clear from
 			 * cursor to the end of the line. If n is one, clear from cursor to
@@ -128,6 +152,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		default:
 			/* Unknown sequence */
+			// std::cerr << "UK-SEQ: " << mode << std::endl;
 			break;
 	}
 	
