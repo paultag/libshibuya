@@ -78,35 +78,27 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			/* Moves the cursor n (default 1) cells in the given direction. If
 			 * the cursor is already at the edge of the screen, this has no
 			 * effect. */
-			switch ( seqs->at(0) ) {
-				case -1:
-					move_steps = 1;
-				default:
-					move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 1;
-					for ( int i = 0; i < move_steps; ++i ) {
-						switch ( mode ) {
-							case CSI_CUU:
-								this->cY--;
-								break;
-							case CSI_CUD:
-								this->cY++;
-								break;
-							case CSI_CUF:
-								this->cX++;
-								break;
-							case CSI_CUB:
-								this->cX--;
-								break;
-						}
-					}
-					
-					this->cX = ( this->cX < this->width  )
-						? this->cX : this->width;
-					this->cY = ( this->cY < this->height )
-						? this->cY : this->height;
-					
-					break;
+			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 1;
+			for ( int i = 0; i < move_steps; ++i ) {
+				switch ( mode ) {
+					case CSI_CUU:
+						this->cY--;
+						break;
+					case CSI_CUD:
+						this->cY++;
+						break;
+					case CSI_CUF:
+						this->cX++;
+						break;
+					case CSI_CUB:
+						this->cX--;
+						break;
+				}
 			}
+			this->cX = ( this->cX < this->width  )
+				? this->cX : this->width;
+			this->cY = ( this->cY < this->height )
+				? this->cY : this->height;
 			break;
 		case CSI_CHA:
 			/* Moves the cursor to column n. 
