@@ -109,8 +109,11 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		case CSI_CHA:
-			/* Moves the cursor to column n. */
-			this->cX = ( seqs->at(0) < 1 ) ? seqs->at(0) - 1 : 0;
+			/* Moves the cursor to column n. 
+			std::cerr << "Iput: " << seqs->at(0) << std::endl;
+			std::cerr << this->cX << " < pre" << std::endl; */
+			this->cX = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
+			// std::cerr << this->cX << " < post" << std::endl;
 			break;
 		case 'd':
 			/* moves the cursor to row n. */
@@ -163,7 +166,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			 * entire screen (and moves cursor to upper left on MS-DOS
 			 * ANSI.SYS).*/
 			switch ( seqs->at(0) ) {
-				case -1: /* Missing */
+				case -1:
 				case  0:
 					this->erase_to_from( this->cX, this->cY,
 						this->width - 1, this->height - 1 );
