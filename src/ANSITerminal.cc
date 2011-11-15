@@ -50,6 +50,10 @@ void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
 	std::cerr << "  Mode: " << last->mode << std::endl;
 }
 
+void ANSITerminal::delete_line( int line ) {
+	
+}
+
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
@@ -107,9 +111,15 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			this->cX = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
 			// std::cerr << this->cX << " < post" << std::endl;
 			break;
-		case 'd':
+		case 'd': // XXX: Fixme
 			/* moves the cursor to row n. */
 			this->cY = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
+			break;
+		case 'M': // XXX: Fixme (CSI_DL)
+			/* DL | Delete the indicated # of lines. */
+			move_steps = seqs->size();
+			// for ( unsigned int i = 0; i < move_steps; ++i )
+			
 			break;
 		case CSI_CUP:
 			/* Moves the cursor to row n, column m. The values are 1-based, and

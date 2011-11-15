@@ -5,6 +5,22 @@ default() {
 	echo -n "[13;40H" # center
 }
 
+
+echo -n "[H"
+ps -ef
+
+echo -n "[13;40H"
+sleep 1
+echo -n "[3M"
+sleep 1
+echo -n "[1M"
+sleep 1
+echo -n "[1M"
+
+sleep 1
+clear
+exit 0
+
 default
 
 echo "[H"
