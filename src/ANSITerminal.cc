@@ -56,7 +56,10 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 
 	if ( last->priv )
 		std::cerr << last->priv << ", ";
-	std::cerr << last->mode << std::endl;
+	std::cerr << last->mode << ": ";
+	for ( unsigned int i = 0; i < seqs->size(); ++i )
+		std::cerr << seqs->at(i);
+	std::cerr << std::endl;
 
 	int move_steps =  1;
 	int nRow       = -1; /* Sorry about this hack, friend */
