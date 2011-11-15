@@ -30,7 +30,7 @@
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
-	NcursesTerminal nt( 80, 25, 3, 1 );
+	NcursesTerminal nt( 80, 25, 0, 0 );
 	nt.fork("bash");
 	
 	std::vector<std::string> * bg = NULL;

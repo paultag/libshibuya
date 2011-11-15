@@ -47,12 +47,16 @@ void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
 	std::cerr << "Rcvd a private mode CSI: " << last->priv << std::endl;
 	for ( unsigned int i = 0; i < last->values->size(); ++i )
 		std::cerr << "  " << last->values->at(i) << std::endl;
-	std::cerr << "Mode: " << last->mode << std::endl;
+	std::cerr << "  Mode: " << last->mode << std::endl;
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
+
+	if ( last->priv )
+		std::cerr << last->priv << ", ";
+	std::cerr << last->mode << std::endl;
 
 	int move_steps =  1;
 	int nRow       = -1; /* Sorry about this hack, friend */
@@ -179,7 +183,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 void ANSITerminal::insert( unsigned char c ) {
 	ANSI_ESCAPE_PARSE_T res = ansi_escape_parser_feed( c );
 	ansi_sequence * last = NULL;
-	
 	switch ( res ) {
 		case ANSI_ESCAPE_PARSE_OK:
 			last = ansi_escape_get_last_sequence();
