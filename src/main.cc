@@ -30,13 +30,13 @@
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
-	NcursesTerminal nt;
+	NcursesTerminal nt( 80, 25, 3, 1 );
 	nt.fork("bash");
 	
 	std::vector<std::string> * bg = NULL;
 	
 	if ( argc > 0 ) {
-		init_pair(1, COLOR_GREEN, COLOR_BLACK);
+		init_pair(1, COLOR_BLACK, COLOR_WHITE);
 		attron(COLOR_PAIR(1));
 		attron(A_BOLD);
 		bg = get_bg_vector( argv[1] );

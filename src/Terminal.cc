@@ -69,10 +69,11 @@ Terminal::Terminal( int width, int height ) {
 }
 
 void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
-	//iY--;
-	//tY--;
 	int from = GET_OFFSET(iX, iY);
 	int to   = GET_OFFSET(tX, tY);
+	
+	std::cerr << iX << ", " << iY << " / " << tX << ", " << tY << std::endl;
+	
 	for ( int i = from - 1; i < to; ++i ) {
 		this->chars[i].ch   = ' ';
 		this->chars[i].attr = 0x70;
@@ -106,7 +107,7 @@ pid_t Terminal::fork( const char * command ) {
 	ws.ws_row    = this->height;
 	ws.ws_col    = this->width;
 	ws.ws_xpixel = 0;
-	ws.ws_ypixel = 0;	
+	ws.ws_ypixel = 0;
 
 	pid_t childpid = forkpty(&this->pty, NULL, NULL, &ws);
 	if (childpid < 0) return -1;
@@ -162,8 +163,14 @@ void Terminal::insert( unsigned char c ) {
 		return;
 	}
 	
-	if ( c == 8 )
-		this->cX--;
+	if ( c == 7 ) {
+		/* Bell */
+	}
+	
+	if ( c == 8 ) {
+		--this->cX;
+		return;
+	}
 	
 	if ( c == 9 ) {
 		/* Tab */
@@ -173,8 +180,9 @@ void Terminal::insert( unsigned char c ) {
 		}
 		return;
 	}
-	if ( c < 32 )
+	if ( c < 32 ) {
 		return;
+	}
 	
 	int ix = this->cX;
 	int iy = this->cY;

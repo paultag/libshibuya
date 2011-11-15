@@ -122,7 +122,8 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			switch ( seqs->at(0) ) {
 				case -1:
 				case 0:
-					this->erase_to_from( this->cX, this->cY,
+					/*                           vvvv XXX: Verify. */
+					this->erase_to_from( this->cX + 1, this->cY,
 						this->width - 1, this->cY );
 					break;
 				case 1:
@@ -150,12 +151,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					this->erase_to_from( 0, 0, this->cX, this->cY );
 					break;
 				case 2:
-					this->erase_to_from( 0, 0, this->width - 1, this->height - 1 );
+					this->erase_to_from( 0, 0,
+						this->width - 1, this->height - 1 );
 					break;
 			}
 			break;
 		default:
-			/* Unknown sequence */
 			break;
 	}
 	
@@ -172,7 +173,6 @@ void ANSITerminal::insert( unsigned char c ) {
 			break;
 		case ANSI_ESCAPE_PARSE_BAD:
 			ansi_escape_parser_reset();
-			/* If we don't reset, the following bytes are "INCOMPLETE" */
 			Terminal::insert(c);
 			break;
 		case ANSI_ESCAPE_PARSE_INCOMPLETE:
