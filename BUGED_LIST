@@ -2,10 +2,10 @@ A      < OK
 H  * * < OK
 J  * * < OK
 K  * * < OK
-l    *
-M
-r    *
-d
+l    * << Reset DEC flag (UKIMP)
+M      << M	DL	Delete the indicated # of lines.
+r    * << Set scrolling region; parameters are top and bottom row.
+d      << Move cursor to the indicated row, current column.
 G  | | < OK
    \ \___ nano
     \____ irssi
