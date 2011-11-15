@@ -41,6 +41,10 @@ void ANSITerminal::_init_ANSITerminal() {
 	ansi_escape_parser_reset();
 }
 
+void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
+
+}
+
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
@@ -48,7 +52,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	int move_steps =  1;
 	int nRow       = -1; /* Sorry about this hack, friend */
 	int nCol       = -1;
-	
+
+	if ( last->priv ) {
+		/* We have a private-mode ANSI CSI Sequence. */
+		this->_handle_private_escape( last );
+	}
+
 	switch ( mode ) {
 		case CSI_CUU:
 		case CSI_CUD:

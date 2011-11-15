@@ -32,6 +32,7 @@ class ANSITerminal : public Terminal {
 	protected:
 		void _init_ANSITerminal();
 		void _handle_escape( ansi_sequence * last );
+		void _handle_private_escape( ansi_sequence * last );
 		
 	public:
 		ANSITerminal(int width, int height);
