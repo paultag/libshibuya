@@ -42,7 +42,10 @@ void ANSITerminal::_init_ANSITerminal() {
 }
 
 void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
-
+	std::cerr << "Rcvd a private mode CSI: " << last->priv << std::endl;
+	for ( unsigned int i = 0; i < last->values->size(); ++i )
+		std::cerr << "  " << last->values->at(i) << std::endl;
+	std::cerr << "Mode: " << last->mode << std::endl;
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
@@ -73,7 +76,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					move_steps = seqs->at(0);
 					for ( int i = 0; i < move_steps; ++i ) {
 						switch ( mode ) {
-							case CSI_CUP:
+							case CSI_CUU:
 								this->cY--;
 								break;
 							case CSI_CUD:
