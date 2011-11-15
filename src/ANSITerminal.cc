@@ -42,6 +42,8 @@ void ANSITerminal::_init_ANSITerminal() {
 }
 
 void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
+	return;
+
 	std::cerr << "Rcvd a private mode CSI: " << last->priv << std::endl;
 	for ( unsigned int i = 0; i < last->values->size(); ++i )
 		std::cerr << "  " << last->values->at(i) << std::endl;
