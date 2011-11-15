@@ -6,6 +6,16 @@ default() {
 }
 
 default
+
+echo "[H"
+
+echo -n "[10d10th Line"
+echo -n "[5d5th Line"
+echo -n "[1dFirst Line"
+
+sleep 5
+
+default
 sleep 1
 
 U="[A"
