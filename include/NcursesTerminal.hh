@@ -34,14 +34,18 @@ class NcursesTerminal : public ANSITerminal {
 		Pane * pane;
 		void _init_NcursesTerminal( int width, int height, int x, int y );
 
+		bool tainted;
+
 	public:
 		NcursesTerminal();
 		~NcursesTerminal();
 		NcursesTerminal( int width, int height );
 		NcursesTerminal( int width, int height, int x, int y );
 		
-		void render();
-		void render(WINDOW * window);
+		bool render();
+		bool render(WINDOW * window);
+		
+		void insert( unsigned char c );
 };
 
 #endif

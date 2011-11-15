@@ -122,7 +122,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			switch ( seqs->at(0) ) {
 				case -1:
 				case 0:
-					/*                           vvvv XXX: Verify. */
+					/*                           vvvv  XXX: Verify. */
 					this->erase_to_from( this->cX + 1, this->cY,
 						this->width - 1, this->cY );
 					break;

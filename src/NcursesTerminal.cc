@@ -51,15 +51,24 @@ void NcursesTerminal::_init_NcursesTerminal(
 	this->pane = new Pane(width, height, x, y);
 }
 
-void NcursesTerminal::render( WINDOW * win ) {
+bool NcursesTerminal::render( WINDOW * win ) {
+	if ( ! this->tainted )
+		return false;
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix  < this->width; ++ix ) {
 			int offset = GET_OFFSET(ix, iy);
 			mvwaddch(win, iy, ix, this->chars[offset].ch);
 		}
 	}
+	this->tainted = false;
+	return true;
 }
 
-void NcursesTerminal::render() {
-	this->render(this->pane->getWindow());
+bool NcursesTerminal::render() {
+	return this->render(this->pane->getWindow());
+}
+
+void NcursesTerminal::insert( unsigned char c ) {
+	this->tainted = true;
+	ANSITerminal::insert( c );
 }

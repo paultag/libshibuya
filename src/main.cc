@@ -47,13 +47,17 @@ int main ( int argc, char ** argv ) {
 	
 	while ( true ) {
 		nt.poke();
-		nt.render();
+		
+		if ( nt.render() )
+			update_screen();
+		
 		timeout(0);
 		char ch = getch();
+		
 		if ( ch != ERR )
 			nt.type(ch);
+		
 		usleep(200);
-		update_screen();
 	}
 	
 	getch();
