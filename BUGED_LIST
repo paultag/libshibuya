@@ -1,11 +1,11 @@
 A
-H  * *
-J  * *
-K  * *
+H  * * < OK
+J  * * < OK
+K  * * < OK
 l    *
 M
 r    *
 d
-G  | |
+G  | | < OK
    \ \___ nano
     \____ irssi
