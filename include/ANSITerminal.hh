@@ -34,8 +34,6 @@ class ANSITerminal : public Terminal {
 		void _handle_escape( ansi_sequence * last );
 		void _handle_private_escape( ansi_sequence * last );
 		
-		virtual void delete_line( int line );
-		
 	public:
 		ANSITerminal(int width, int height);
 		ANSITerminal();

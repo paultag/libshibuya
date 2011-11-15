@@ -41,15 +41,18 @@ void Terminal::_init_Terminal(int width, int height) {
 	this->cMode  = 0x70;
 	/* 11100000 = 0x70 (112)
 	   FFF BBB */
-
+	
 	this->scroll_frame_bottom = this->height;
 	this->scroll_frame_top   = 0;
-
+	
+	/* scroll_frame_top    =  2;
+	scroll_frame_bottom = 20; */
+	
 	this->pty    = -1;
-
+	
 	this->chars = (TerminalCell*)
 		malloc(sizeof(TerminalCell) * (width * height));
- 
+	
 	for ( int i = 0; i < ( height * width ); ++i ) {
 		this->chars[i].ch   = ' ';
 		this->chars[i].attr = this->cMode;
@@ -219,4 +222,13 @@ int Terminal::get_width() {
 
 int Terminal::get_height() {
 	return this->height;
+}
+
+void Terminal::delete_line( int idex ) {
+	int oldfloor = scroll_frame_top;
+	this->scroll_frame_top = idex;
+	
+	this->scroll_up();
+	
+	scroll_frame_top = oldfloor;
 }
