@@ -10,14 +10,14 @@ echo ""
 echo "Hit enter to run tests."
 echo ""
 
-read foo
+#read foo
 
 ./bin/run-test
 if [ $? -ne 0 ]; then
 	echo ""
 	echo "End tests."
-	echo ""
-	echo "Errors detected. Hit enter to review, ctrl+c to exit."
-	read foo
-	./bin/review-diffs
+	#echo ""
+	#echo "Errors detected. Hit enter to review, ctrl+c to exit."
+	#read foo
+	#./bin/review-diffs
 fi
