@@ -61,7 +61,7 @@ int main ( int argc, char ** argv ) {
 	std::vector<std::string> * bg = NULL;
 	
 	if ( argc > 0 ) {
-		init_pair(1, COLOR_BLACK, COLOR_WHITE);
+		init_pair(1, COLOR_RED, COLOR_BLACK);
 		attron(COLOR_PAIR(1));
 		attron(A_BOLD);
 		bg = get_bg_vector( argv[1] );
