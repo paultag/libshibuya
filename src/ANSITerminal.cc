@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include "ANSITerminal.hh"
+#include "Shibuya.hh"
 #include "Terminal.hh"
 
 ANSITerminal::ANSITerminal() {
@@ -54,12 +55,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
 
-	/* if ( last->priv )
-		std::cerr << last->priv << ", ";
-	std::cerr << last->mode << ": ";
+	if ( last->priv )
+		SDEBUG << last->priv << ", ";
+	SDEBUG << last->mode << ": ";
 	for ( unsigned int i = 0; i < seqs->size(); ++i )
-		std::cerr << seqs->at(i) << ", ";
-	std::cerr << std::endl; */
+		SDEBUG << seqs->at(i) << ", ";
+	SDEBUG << std::endl;
 
 	int move_steps =  1;
 	int nRow       = -1;
@@ -176,8 +177,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			switch ( seqs->at(0) ) {
 				case -1:
 				case 0:
-					/*                           vvvv  XXX: Verify. */
-					this->erase_to_from( this->cX + 1, this->cY,
+					this->erase_to_from( this->cX, this->cY,
 						this->width - 1, this->cY );
 					break;
 				case 1:
@@ -211,7 +211,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		default:
-			// std:: cerr << "(Unhandled)" << std::endl;
+			SDEBUG << "(Unhandled)" << std::endl;
 			break;
 	}
 	

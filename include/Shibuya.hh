@@ -24,6 +24,7 @@
 #define _SHIBUYA_HH_ FOO
 
 #define String std::string
+#define SDEBUG std::cerr 
 
 void init_screen();
 void uninit_screen();
