@@ -136,8 +136,8 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			else
 				nBottom = this->height;
 			
-			nBottom = ( nBottom < 1 )         ? 0                : nBottom - 1;
-			nTop    = ( nTop > this->height ) ? this->height - 1 : nTop - 1;
+			nBottom = ( nBottom < 1 )         ? 0            : nBottom;
+			nTop    = ( nTop > this->height ) ? this->height : nTop - 1;
 			
 			this->scroll_frame_bottom = nBottom;
 			this->scroll_frame_top    = nTop;
@@ -148,7 +148,8 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			this->cX = 0;
 			this->cY = nTop;
 			
-			SDEBUG << "rTop / rBottom: " << nTop << ", " << nBottom << std::endl;
+			SDEBUG << "rTop / rBottom: "
+				<< nTop << ", " << nBottom << std::endl;
 			
 			break;
 		case CSI_CUP:
@@ -167,7 +168,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				nCol = 1;
 			
 			this->cX = (nCol - 1);
-			this->cY = (nRow - 1); // XXX: Hummm.
+			this->cY = (nRow - 1);
 			
 			break;
 		case CSI_EL:

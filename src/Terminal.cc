@@ -243,8 +243,8 @@ void Terminal::advance_curs() {
 		this->cY++;
 	}
 
-	if ( this->height <= this->cY ) {
-		this->cY = (this->height - 1);
+	if ( this->scroll_frame_bottom <= this->cY ) {
+		this->cY = (this->scroll_frame_bottom - 1);
 		this->scroll_up();
 	}
 }
