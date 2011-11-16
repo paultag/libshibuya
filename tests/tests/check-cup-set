@@ -8,8 +8,9 @@ echo -n "[H" # OK, We're in the top-right of the default pool.
 #
 #
 #
-echo -n "[13;40H" # Center the cursor
-echo -n "MARK"
 
-./bin/cause-dump.sh
-./bin/cause-exit.sh
+clear
+
+for i in {1..25}; do
+	echo "[$i;10HLine: $i"
+done
