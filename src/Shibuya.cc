@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+// XXX: Clean this up too
+
 #include <panel.h>
 #include <ncurses.h>
 #include <string>

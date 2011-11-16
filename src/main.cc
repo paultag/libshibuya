@@ -51,7 +51,7 @@ void sigusr2 ( int signal ) {
 }
  
 int main ( int argc, char ** argv ) {
-	set_clog();
+	set_clog();   /// XXX: This is ugly
 	init_screen();
 	
 	NcursesTerminal nt( 80, 25, 0, 0 );
@@ -71,7 +71,7 @@ int main ( int argc, char ** argv ) {
 	}
 
 	signal( SIGUSR1, sighandle );
-	signal( SIGUSR2, sigusr2   );
+	signal( SIGUSR2, sigusr2   ); // XXX: Fix this
 	
 	while ( true ) {
 		nt.poke();
