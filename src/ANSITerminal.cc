@@ -134,7 +134,11 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				nBottom = ( seqs->at(1) > 0 ) ? seqs->at(1) : this->height;
 			else
 				nBottom = this->height;
-			
+
+			nBottom = ( nBottom < 1 ) ? 0 : nBottom - 1;
+			nTop    = ( nTop > this->height ) ? this->height - 1 :
+				nTop - 1;
+
 			this->scroll_frame_bottom = nBottom;
 			this->scroll_frame_top    = nTop;
 			

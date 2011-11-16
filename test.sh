@@ -7,18 +7,6 @@ default() {
 
 default
 
-ps -ef
-echo "[2;10r"
-sleep 1
-
-ps -ef
-echo "[r"
-sleep 1
-
-clear
-
-exit 0
-
 ls -lah /
 sleep 1
 echo -n "[13;40H"
