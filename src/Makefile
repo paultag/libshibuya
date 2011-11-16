@@ -1,6 +1,6 @@
 CXX=g++
 
-CFLAGS=-Wall
+CFLAGS=-Wall -DSHIBUYA_DEBUG=YES
 LDFLAGS=-lncurses -lpanel -lutil -lansiescape
 BIN=../bin/
 INC=../include/

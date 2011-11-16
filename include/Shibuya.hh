@@ -24,9 +24,10 @@
 #define _SHIBUYA_HH_ FOO
 
 #define String std::string
-#define SDEBUG std::cerr 
+#define SDEBUG std::clog
 
 void init_screen();
+void set_clog();
 void uninit_screen();
 void update_screen();
 

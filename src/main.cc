@@ -51,6 +51,7 @@ void sigusr2 ( int signal ) {
 }
  
 int main ( int argc, char ** argv ) {
+	set_clog();
 	init_screen();
 	
 	NcursesTerminal nt( 80, 25, 0, 0 );
