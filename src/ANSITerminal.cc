@@ -202,7 +202,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						this->width - 1, this->height - 1 );
 					break;
 				case 1:
-					this->erase_to_from( 0, 0, this->cX, this->cY );
+					this->erase_to_from( 0, 0, this->cX + 1, this->cY );
 					break;
 				case 2:
 					this->erase_to_from( 0, 0,
