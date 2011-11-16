@@ -62,8 +62,10 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	std::cerr << std::endl;
 
 	int move_steps =  1;
-	int nRow       = -1; /* Sorry about this hack, friend */
-	int nCol       = -1;
+	int nRow       = -1;
+	int nCol       = -1; /* Sorry about this hack, friend */
+	int nTop       = -1;
+	int nBottom    = -1;
 
 	if ( last->priv ) {
 		/* We have a private-mode ANSI CSI Sequence. */
@@ -100,12 +102,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			this->cY = ( this->cY < this->height )
 				? this->cY : this->height;
 			break;
-		case 'r':
-			
-			/* this->scroll_frame_bottom = ;
-			this->scroll_frame_top    = ; */
-			
-			break;
 		case CSI_CHA:
 			/* Moves the cursor to column n. 
 			std::cerr << "Iput: " << seqs->at(0) << std::endl;
@@ -127,6 +123,27 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
 			for ( int i = 0; i < move_steps; ++i )
 				this->insert_line( this->cY );
+			break;
+		case 'r':
+			nTop = seqs->at(0);
+			
+			if ( nTop < 0 )
+				nTop = 1;
+			
+			if ( seqs->size() >= 2 )
+				nBottom = ( seqs->at(1) > 0 ) ? seqs->at(1) : this->height;
+			else
+				nBottom = this->height;
+			
+			this->scroll_frame_bottom = nBottom;
+			this->scroll_frame_top    = nTop;
+			
+			/* std::cerr << "XY: " << this->scroll_frame_top << ", " <<
+				this->scroll_frame_bottom << std::endl; */
+			
+			this->cX = 0;
+			this->cY = nTop;
+			
 			break;
 		case CSI_CUP:
 			/* Moves the cursor to row n, column m. The values are 1-based, and

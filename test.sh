@@ -7,8 +7,19 @@ default() {
 
 default
 
-ls -lah /
+ps -ef
+echo "[2;10r"
+sleep 1
 
+ps -ef
+echo "[r"
+sleep 1
+
+clear
+
+exit 0
+
+ls -lah /
 sleep 1
 echo -n "[13;40H"
 echo -n "[1L"
@@ -16,8 +27,6 @@ sleep 1
 echo -n "[3L"
 
 sleep 1
-
-exit 0
 
 echo -n "[H"
 clear
