@@ -12,7 +12,7 @@ echo -n " Test: $x    "
 
 if [ "x$MD1" != "x$MD2" ]; then
 	echo "p-fail"
-	diff -Nuarp testlog ./results/$x > ./diffpool/$x.fail.diff
+	sdiff testlog ./results/$x > ./diffpool/$x.fail.diff
 else
 	echo "OK!"
 fi
