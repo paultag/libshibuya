@@ -21,6 +21,7 @@
  */
 
 #include "NcursesTerminal.hh"
+#include "Shibuya.hh"
 
 NcursesTerminal::NcursesTerminal() {
 	this->_init_NcursesTerminal(80, 25, 0, 0);
@@ -48,16 +49,28 @@ void NcursesTerminal::_init_NcursesTerminal(
 	int x,
 	int y
 ) {
-	this->pane = new Pane(width, height, x, y);
+	this->pane = new Pane(
+		(width + 2), (height + 2), x, y);
+	//              ^^ padding
 }
 
 bool NcursesTerminal::render( WINDOW * win ) {
 	if ( ! this->tainted )
 		return false;
+
+	init_pair(2, COLOR_BLACK, COLOR_WHITE);
+	wattron(win, COLOR_PAIR(2));
+	box(win, 0, 0);
+	wattroff( win, COLOR_PAIR(2));
+
+	String title = "[ Ello, World! ]";
+	mvwprintw( win, 0, (this->width / 2) - (title.length() / 2), title.c_str());
+
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix  < this->width; ++ix ) {
 			int offset = GET_OFFSET(ix, iy);
-			mvwaddch(win, iy, ix, this->chars[offset].ch);
+			mvwaddch(win, ( iy + 1 ), ( ix + 1 ),
+				this->chars[offset].ch);
 		}
 	}
 	this->tainted = false;
