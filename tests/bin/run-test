@@ -2,13 +2,14 @@
 
 for x in `ls tests/*`; do
 	x=`basename $x`
-	echo "./tests/$x" | ../bin/shibuya 2>testlog
+	echo "./tests/$x" | ../bin/shibuya 2>./diffpool/$x.raw.log
 	MD1=`md5sum testlog | awk '{print $1}'`
 	MD2=`md5sum ./results/$x | awk '{print $1}'`
 	echo -n " Test: $x    "
 	if [ "x$MD1" != "x$MD2" ]; then
 		echo "p-fail"
-		sdiff testlog ./results/$x > ./diffpool/$x.fail.diff
+		sdiff ./diffpool/$x.raw.log ./results/$x \
+			> ./diffpool/$x.fail.diff
 		PFAIL=1
 	else
 		echo "OK!"
