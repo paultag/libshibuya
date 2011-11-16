@@ -28,6 +28,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
 
 NcursesTerminal * toDump = NULL;
 
@@ -42,6 +43,11 @@ void sighandle ( int signo ) {
 		}
 		std::cerr << std::endl;
 	}
+}
+
+void sigusr2 ( int signal ) {
+	uninit_screen();
+	exit(0);
 }
  
 int main ( int argc, char ** argv ) {
@@ -64,6 +70,7 @@ int main ( int argc, char ** argv ) {
 	}
 
 	signal( SIGUSR1, sighandle );
+	signal( SIGUSR2, sigusr2   );
 	
 	while ( true ) {
 		nt.poke();

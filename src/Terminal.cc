@@ -216,7 +216,7 @@ void Terminal::insert( unsigned char c ) {
 	if ( c < 32 ) {
 		return;
 	}
-	
+
 	int ix = this->cX;
 	int iy = this->cY;
 	/*
@@ -238,7 +238,7 @@ void Terminal::type( char c ) {
 void Terminal::advance_curs() {
 	this->cX++;
 
-	if ( this->width <= this->cX ) {
+	if ( this->width < this->cX ) {
 		this->cX = 0;
 		this->cY++;
 	}
