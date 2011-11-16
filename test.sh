@@ -5,11 +5,24 @@ default() {
 	echo -n "[13;40H" # center
 }
 
+default
+
+ps -ef
+sleep 1
+echo -n "[13;40H"
+echo -n "[1L"
+sleep 1
+echo -n "[3L"
+
+sleep 1
+
+exit 0
+
 echo -n "[H"
 clear
 ls -lah /
 
-sleep 3
+sleep 1
 
 echo -n "[13;40H"
 sleep 1

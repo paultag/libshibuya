@@ -100,6 +100,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			this->cY = ( this->cY < this->height )
 				? this->cY : this->height;
 			break;
+		case 'r':
+			
+			/* this->scroll_frame_bottom = ;
+			this->scroll_frame_top    = ; */
+			
+			break;
 		case CSI_CHA:
 			/* Moves the cursor to column n. 
 			std::cerr << "Iput: " << seqs->at(0) << std::endl;
@@ -116,6 +122,11 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
 			for ( unsigned int i = 0; i < move_steps; ++i )
 				this->delete_line( this->cY );
+			break;
+		case 'L':
+			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
+			for ( unsigned int i = 0; i < move_steps; ++i )
+				this->insert_line( this->cY );
 			break;
 		case CSI_CUP:
 			/* Moves the cursor to row n, column m. The values are 1-based, and

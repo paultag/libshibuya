@@ -84,7 +84,7 @@ void Terminal::scroll_up() {
 	for (
 		int iy = this->scroll_frame_top + 1;
 		iy < this->scroll_frame_bottom;
-		iy++
+		++iy
 	) {
 		for ( int ix = 0; ix < this->width; ++ix ) {
 			int thisChar = GET_OFFSET(ix, iy);
@@ -98,6 +98,39 @@ void Terminal::scroll_up() {
 		this->chars[offset].ch = ' ';
 		this->chars[offset].attr = 0x70;
 	}
+}
+
+void Terminal::scroll_down() {
+	
+	/*
+	 * ----------------------+--------------------+--------+
+	 * A A A A A A A A A A A | Blank A line       | Step 5 | < idex 0
+	 * B B B B B B B B B B B | Copy  A line over  | Step 4 | < idex 1
+	 * C C C C C C C C C C C | Copy  B line over  | Step 3 | < idex 2
+	 * D D D D D D D D D D D | Copy  C line over  | Step 2 | < idex 3
+	 * E E E E E E E E E E E | Copy  D line over  | Step 1 | < idex 4
+	 * ----------------------+--------------------+--------+
+	 */
+	
+	for (
+		int iy = this->scroll_frame_bottom - 1; // line "E"
+		iy > this->scroll_frame_top; // line "A"
+		--iy
+	) {
+		for ( int ix = 0; ix < this->width; ++ix ) {
+			int thisChar = GET_OFFSET(ix, (iy - 1));
+			int lastChar = GET_OFFSET(ix, iy);
+			this->chars[lastChar].ch   = this->chars[thisChar].ch;
+			this->chars[lastChar].attr = this->chars[thisChar].attr;
+		}
+	}
+	
+	for ( int ix = 0; ix < this->width; ++ix ) {
+		int thisChar = GET_OFFSET(ix, this->scroll_frame_bottom);
+		this->chars[thisChar].ch   = ' ';
+		this->chars[thisChar].attr = 0x70;
+	}
+	
 }
 
 pid_t Terminal::fork( const char * command ) {
@@ -229,6 +262,15 @@ void Terminal::delete_line( int idex ) {
 	this->scroll_frame_top = idex;
 	
 	this->scroll_up();
+	
+	scroll_frame_top = oldfloor;
+}
+
+void Terminal::insert_line( int idex ) {
+	int oldfloor = scroll_frame_top;
+	this->scroll_frame_top = idex;
+	
+	this->scroll_down();
 	
 	scroll_frame_top = oldfloor;
 }
