@@ -25,8 +25,8 @@
 #include <iostream>
 
 #include "ANSITerminal.hh"
-#include "Shibuya.hh"
 #include "Terminal.hh"
+#include "Shibuya.hh"
 
 ANSITerminal::ANSITerminal() {
 	this->_init_ANSITerminal();

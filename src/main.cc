@@ -26,9 +26,9 @@
 
 #include <iostream>
 #include <string.h>
-#include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 NcursesTerminal * toDump = NULL;
 
@@ -51,7 +51,7 @@ void sigusr2 ( int signal ) {
 }
  
 int main ( int argc, char ** argv ) {
-	set_clog();   /// XXX: This is ugly
+	set_clog();    // XXX: This is ugly
 	init_screen();
 	
 	NcursesTerminal nt( 80, 25, 0, 0 );
