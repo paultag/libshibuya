@@ -1,5 +1,8 @@
 #!/bin/bash
-x=test1
+
+for x in `ls tests/*`; do
+
+x=`basename $x`
 
 echo "./tests/$x" | ../bin/shibuya 2>testlog
 MD1=`md5sum testlog | awk '{print $1}'`
@@ -13,3 +16,5 @@ if [ "x$MD1" != "x$MD2" ]; then
 else
 	echo "OK!"
 fi
+
+done
