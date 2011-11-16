@@ -165,7 +165,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				nCol = 1;
 			
 			this->cX = (nCol - 1); /* XXX: This worries me... */
-			this->cY = (nRow);
+			this->cY = (nRow - 1);
 			
 			break;
 		case CSI_EL:
