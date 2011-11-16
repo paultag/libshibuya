@@ -7,7 +7,8 @@ default() {
 
 default
 
-ps -ef
+ls -lah /
+
 sleep 1
 echo -n "[13;40H"
 echo -n "[1L"

@@ -118,15 +118,15 @@ void Terminal::scroll_down() {
 		--iy
 	) {
 		for ( int ix = 0; ix < this->width; ++ix ) {
-			int thisChar = GET_OFFSET(ix, (iy - 1));
-			int lastChar = GET_OFFSET(ix, iy);
+			int thisChar = GET_OFFSET(ix, (iy - 1)); // for "E" this is "D"
+			int lastChar = GET_OFFSET(ix, iy);       // for "E" this is "E"
 			this->chars[lastChar].ch   = this->chars[thisChar].ch;
 			this->chars[lastChar].attr = this->chars[thisChar].attr;
 		}
 	}
 	
 	for ( int ix = 0; ix < this->width; ++ix ) {
-		int thisChar = GET_OFFSET(ix, this->scroll_frame_bottom);
+		int thisChar = GET_OFFSET(ix, this->scroll_frame_top);
 		this->chars[thisChar].ch   = ' ';
 		this->chars[thisChar].attr = 0x70;
 	}

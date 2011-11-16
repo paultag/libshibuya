@@ -120,12 +120,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 		case 'M': // XXX: Fixme (CSI_DL)
 			/* DL | Delete the indicated # of lines. */
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
-			for ( unsigned int i = 0; i < move_steps; ++i )
+			for ( int i = 0; i < move_steps; ++i )
 				this->delete_line( this->cY );
 			break;
 		case 'L':
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
-			for ( unsigned int i = 0; i < move_steps; ++i )
+			for ( int i = 0; i < move_steps; ++i )
 				this->insert_line( this->cY );
 			break;
 		case CSI_CUP:
