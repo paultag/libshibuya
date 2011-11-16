@@ -26,12 +26,30 @@
 
 #include <iostream>
 #include <string.h>
+#include <stdio.h>
+#include <signal.h>
 
+NcursesTerminal * toDump = NULL;
+
+void sighandle ( int signo ) {
+	if ( ! toDump )
+		return;
+
+	for ( int iy = 0; iy < toDump->get_height(); ++iy ) {
+		for ( int ix = 0; ix < toDump->get_width(); ++ix ) {
+			int offset = ( toDump->get_width() * iy ) + ix;
+			std::cerr << toDump->chars[offset].ch;
+		}
+		std::cerr << std::endl;
+	}
+}
+ 
 int main ( int argc, char ** argv ) {
 	init_screen();
 	
 	NcursesTerminal nt( 80, 25, 0, 0 );
 	nt.fork("bash");
+	toDump = &nt;
 	
 	std::vector<std::string> * bg = NULL;
 	
@@ -44,6 +62,8 @@ int main ( int argc, char ** argv ) {
 		attroff(COLOR_PAIR(1));
 		attroff(A_BOLD);
 	}
+
+	signal( SIGUSR1, sighandle );
 	
 	while ( true ) {
 		nt.poke();

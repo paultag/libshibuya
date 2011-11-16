@@ -44,22 +44,22 @@ void ANSITerminal::_init_ANSITerminal() {
 void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
 	return;
 
-	std::cerr << "Rcvd a private mode CSI: " << last->priv << std::endl;
+	// std::cerr << "Rcvd a private mode CSI: " << last->priv << std::endl;
 	for ( unsigned int i = 0; i < last->values->size(); ++i )
 		std::cerr << "  " << last->values->at(i) << std::endl;
-	std::cerr << "  Mode: " << last->mode << std::endl;
+	// std::cerr << "  Mode: " << last->mode << std::endl;
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
 
-	if ( last->priv )
+	/* if ( last->priv )
 		std::cerr << last->priv << ", ";
 	std::cerr << last->mode << ": ";
 	for ( unsigned int i = 0; i < seqs->size(); ++i )
 		std::cerr << seqs->at(i) << ", ";
-	std::cerr << std::endl;
+	std::cerr << std::endl; */
 
 	int move_steps =  1;
 	int nRow       = -1;
@@ -211,6 +211,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		default:
+			// std:: cerr << "(Unhandled)" << std::endl;
 			break;
 	}
 	
