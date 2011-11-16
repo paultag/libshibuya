@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+#
+# Every test must cause an *identical* result on an 80x25 vte
+clear
+cat resources/blank.tty
+echo -n "[H" # OK, We're in the top-right of the default pool.
+#
+#
+#
+
+echo -n "[2;10r"
+cat resources/blank.tty
+echo -n "[r"
+
+./bin/cause-dump.sh
+./bin/cause-exit.sh
