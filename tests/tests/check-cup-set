@@ -14,3 +14,6 @@ clear
 for i in {1..25}; do
 	echo "[$i;10HLine: $i"
 done
+
+./bin/cause-dump.sh
+./bin/cause-exit.sh
