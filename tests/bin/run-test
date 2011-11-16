@@ -13,6 +13,7 @@ for x in `ls tests/*`; do
 		PFAIL=1
 	else
 		echo "OK!"
+		rm ./diffpool/$x.raw.log
 	fi
 done
 
