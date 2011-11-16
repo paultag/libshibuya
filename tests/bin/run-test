@@ -1,20 +1,22 @@
 #!/bin/bash
 
 for x in `ls tests/*`; do
-
-x=`basename $x`
-
-echo "./tests/$x" | ../bin/shibuya 2>testlog
-MD1=`md5sum testlog | awk '{print $1}'`
-MD2=`md5sum ./results/$x | awk '{print $1}'`
-
-echo -n " Test: $x    "
-
-if [ "x$MD1" != "x$MD2" ]; then
-	echo "p-fail"
-	sdiff testlog ./results/$x > ./diffpool/$x.fail.diff
-else
-	echo "OK!"
-fi
-
+	x=`basename $x`
+	echo "./tests/$x" | ../bin/shibuya 2>testlog
+	MD1=`md5sum testlog | awk '{print $1}'`
+	MD2=`md5sum ./results/$x | awk '{print $1}'`
+	echo -n " Test: $x    "
+	if [ "x$MD1" != "x$MD2" ]; then
+		echo "p-fail"
+		sdiff testlog ./results/$x > ./diffpool/$x.fail.diff
+		PFAIL=1
+	else
+		echo "OK!"
+	fi
 done
+
+if [ "x$PFAIL" == "x" ]; then
+	exit 0
+else
+	exit 1
+fi
