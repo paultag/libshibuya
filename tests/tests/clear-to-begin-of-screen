@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+#
+# Every test must cause an *identical* result on an 80x25 vte
+clear
+cat resources/blank.tty
+echo -n "[H" # OK, We're in the top-right of the default pool.
+#
+#
+#
+echo -n "[13;40H" # Center the cursor
+echo -n "[1J"     # clear to beginning of screen
+
+./bin/cause-dump.sh
+./bin/cause-exit.sh
