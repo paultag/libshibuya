@@ -36,22 +36,12 @@
 void Terminal::_init_Terminal(int width, int height) {
 	this->width  = width;
 	this->height = height;
-
 	this->cX     = 0;
 	this->cY     = 0;
-
-	this->cMode  = 0x70;
-	/* 11100000 = 0x70 (112)
-	   FFF BBB */
-	
+	this->cMode  = 0x70; // XXX: Globalize
 	this->scroll_frame_bottom = this->height;
 	this->scroll_frame_top   = 0;
-	
-	/* scroll_frame_top    =  2;
-	scroll_frame_bottom = 20; */
-	
 	this->pty    = -1;
-	
 	this->chars = (TerminalCell*)
 		malloc(sizeof(TerminalCell) * (width * height));
 	
@@ -103,7 +93,6 @@ void Terminal::scroll_up() {
 }
 
 void Terminal::scroll_down() {
-	
 	/*
 	 * ----------------------+--------------------+--------+
 	 * A A A A A A A A A A A | Blank A line       | Step 5 | < idex 0
@@ -113,7 +102,6 @@ void Terminal::scroll_down() {
 	 * E E E E E E E E E E E | Copy  D line over  | Step 1 | < idex 4
 	 * ----------------------+--------------------+--------+
 	 */
-	
 	for (
 		int iy = this->scroll_frame_bottom - 1; // line "E"
 		iy > this->scroll_frame_top; // line "A"
@@ -163,14 +151,18 @@ pid_t Terminal::fork( const char * command ) {
 }
 
 void Terminal::poke() {
+	/*
+	 *  A good deal of this was inspired by `librote'. Mad gangster-props to
+	 * librote.
+	 */
 	fd_set         ifs;
 	struct timeval tvzero;
-
+	
 	char  buf[512];
 	int   bytesread;
 	int   n = 5; // XXX: Fix?
 	int   status;
-
+	
 	if (this->pty < 0)
 		return;
 
@@ -210,18 +202,21 @@ void Terminal::poke() {
 			}
 			break;
 		default:
+			/* Our child died :'( */
 			SDEBUG << "Child PID: " << this->childpid << " has died." << std::endl;
 			throw new DeadChildException();
+			// ^^ This will force whatever else to clean up the mess
+			//                       ( if you will pardon the term )
 			break;
 	}
 
+	/* This bit here taken from librote almost directly */
 	while (n--) {
 		FD_ZERO(&ifs);
 		FD_SET(this->pty, &ifs);
-
 		tvzero.tv_sec  = 0;
 		tvzero.tv_usec = 0;
-
+		
 		if (select(this->pty + 1, &ifs, NULL, NULL, &tvzero) <= 0)
 			return;
 		
@@ -236,29 +231,24 @@ void Terminal::poke() {
 
 
 void Terminal::insert( unsigned char c ) {
-	if ( c == '\n' ) {
-		this->cX = this->width;
-		this->advance_curs();
-		return;
-	}
 	
-	if ( c == 7 ) {
-		/* Bell */
-	}
-	
-	if ( c == 8 ) {
-		--this->cX;
-		return;
-	}
-	
-	if ( c == 9 ) {
-		/* Tab */
-		this->insert(' ');
-		while ( ( this->cX % 8 ) != 0 ) {
+	switch ( c ) {
+		case '\n':
+			this->cX = this->width;
+			this->advance_curs();
+			break;
+		case 8: /* Backspace */
+			--this->cX;
+			break;
+		case 9: /* Tab */
 			this->insert(' ');
-		}
-		return;
+			while ( ( this->cX % 8 ) != 0 )
+				this->insert(' ');
+			break;
 	}
+	
+	/* No need to return above, because of below :) */
+	
 	if ( c < 32 ) {
 		return;
 	}

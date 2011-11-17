@@ -73,6 +73,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	if ( last->priv ) {
 		/* We have a private-mode ANSI CSI Sequence. */
 		this->_handle_private_escape( last );
+		return; /* Don't drop to normal handlers */
 	}
 
 	switch ( mode ) {
@@ -86,18 +87,10 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 1;
 			for ( int i = 0; i < move_steps; ++i ) {
 				switch ( mode ) {
-					case CSI_CUU:
-						this->cY--;
-						break;
-					case CSI_CUD:
-						this->cY++;
-						break;
-					case CSI_CUF:
-						this->cX++;
-						break;
-					case CSI_CUB:
-						this->cX--;
-						break;
+					case CSI_CUU: this->cY--; break;
+					case CSI_CUD: this->cY++; break;
+					case CSI_CUF: this->cX++; break;
+					case CSI_CUB: this->cX--; break;
 				}
 			}
 			this->cX = ( this->cX < this->width  )
@@ -106,11 +99,8 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				? this->cY : this->height;
 			break;
 		case CSI_CHA:
-			/* Moves the cursor to column n. 
-			std::cerr << "Iput: " << seqs->at(0) << std::endl;
-			std::cerr << this->cX << " < pre" << std::endl; */
+			/* Moves the cursor to column n. */
 			this->cX = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
-			// std::cerr << this->cX << " < post" << std::endl;
 			break;
 		case 'd': // XXX: Fixme
 			/* moves the cursor to row n. */
@@ -122,12 +112,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			for ( int i = 0; i < move_steps; ++i )
 				this->delete_line( this->cY );
 			break;
-		case 'L':
+		case 'L': // XXX: FIXME
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
 			for ( int i = 0; i < move_steps; ++i )
 				this->insert_line( this->cY );
 			break;
-		case 'm':
+		case 'm': // XXX: FIXME
 			for ( unsigned int i = 0; i < seqs->size(); ++i ) {
 				switch ( seqs->at(i) ) {
 					case 1:
