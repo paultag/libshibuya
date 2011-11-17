@@ -34,24 +34,28 @@
        +---+---+-------------------- Background
  */
 
-#define SHIBUYA_ATTR_BOLD 128
+// Single bit defs
+#define SHIBUYA_ATTR_BOLD  128
+#define SHIBUYA_ATTR_BLINK 8
 
+// Bit mask defs
 #define SHIBUYA_ATTR_FG_MASK   0x70
 #define SHIBUYA_ATTR_FG_OFFSET 4
 
 #define SHIBUYA_ATTR_BG_MASK   0x07
 #define SHIBUYA_ATTR_BG_OFFSET 0
 
-#define SHIBUYA_ATTR_GET_FG(x)    ((x & SHIBUYA_ATTR_FG_MASK) >> \
-	SHIBUYA_ATTR_FG_OFFSET)
+// Access macro defs
+#define SHIBUYA_ATTR_GET_FG(x) \
+	((x & SHIBUYA_ATTR_FG_MASK) >> SHIBUYA_ATTR_FG_OFFSET)
 
-#define SHIBUYA_ATTR_GET_BG(x)    ((x & SHIBUYA_ATTR_BG_MASK) >> \
-	SHIBUYA_ATTR_BG_OFFSET)
+#define SHIBUYA_ATTR_GET_BG(x) \
+	((x & SHIBUYA_ATTR_BG_MASK) >> SHIBUYA_ATTR_BG_OFFSET)
 
 #define SHIBUYA_ATTR_HAS_BOLD(x)  (x & SHIBUYA_ATTR_BOLD)
-#define SHIBUYA_ATTR_HAS_BLINK(x) (x & 8)
+#define SHIBUYA_ATTR_HAS_BLINK(x) (x & SHIBUYA_ATTR_BLINK)
 
-/* OK. Done with the bitwise */
+/* OK. Done with the bitwise stuffs */
 
 #define String std::string
 #define SDEBUG std::clog
