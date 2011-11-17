@@ -34,7 +34,9 @@
        +---+---+-------------------- Background
  */
 
-#define SHIBUYA_ATTR_HAS_BOLD(x)  (x & 128)
+#define SHIBUYA_ATTR_BOLD 128
+
+#define SHIBUYA_ATTR_HAS_BOLD(x)  (x & SHIBUYA_ATTR_BOLD)
 #define SHIBUYA_ATTR_HAS_BLINK(x) (x & 8)
 
 /* OK. Done with the bitwise */

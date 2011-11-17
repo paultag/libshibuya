@@ -129,7 +129,22 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		case 'm':
 			for ( unsigned int i = 0; i < seqs->size(); ++i ) {
-				
+				switch ( seqs->at(i) ) {
+					case 1:
+						/* bold global attr */
+						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) == 0 ) {
+							this->cMode += SHIBUYA_ATTR_BOLD;
+							SDEBUG << "Set the bold bit" << std::endl;
+						}
+						break;
+					case 0:
+						/* Reset global attr */
+						this->cMode = 0x70; /* Hard reset XXX: Globalize this */
+						break;
+					default:
+						/* Unknown m sequence id */
+						break;
+				}
 			}
 			break;
 		case 'r':
