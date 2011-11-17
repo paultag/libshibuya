@@ -118,6 +118,25 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				this->insert_line( this->cY );
 			break;
 		case 'm': // XXX: FIXME
+/*
+0	Reset / Normal	all attributes off
+1	Bright (increased intensity) or Bold	
+2	Faint (decreased intensity)	not widely supported
+5	Blink: Slow	less than 150 per minute
+6	Blink: Rapid	MS-DOS ANSI.SYS; 150 per minute or more; not widely supported
+7	Image: Negative	inverse or reverse; swap foreground and background
+8	Conceal	not widely supported
+9	Crossed-out	Characters legible, but marked for deletion. Not widely supported.
+10	Primary(default) font	
+22	Normal color or intensity	neither bright, bold nor faint
+25	Blink: off	
+27	Image: Positive	
+28	Reveal	conceal off
+30–37	Set text colo
+39	Default text color	implementation defined (according to standard)
+40–47	Set background color	40 + x, where x is from the color table below
+49	Default background color	implementation defined (according to standard)
+*/
 			for ( unsigned int i = 0; i < seqs->size(); ++i ) {
 				switch ( seqs->at(i) ) {
 					case 1:
