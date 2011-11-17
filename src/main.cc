@@ -50,8 +50,9 @@ void sighandle ( int signo ) {
 			break;
 		case SIGWINCH:
 			SDEBUG << "Window Resize" << std::endl;
-			endwin();
-			refresh();
+			uninit_screen();
+			init_screen();
+			update_screen();
 			/* XXX: Handle background re-center */
 			break;
 		case SIGTERM:
