@@ -67,6 +67,7 @@ class Terminal {
 		void scroll_up();
 		void scroll_down();
 		void poke();
+		void sigint();
 
 		pid_t fork( const char * command ); /* XXX: Protect this? */
 

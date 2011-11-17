@@ -135,6 +135,10 @@ void Terminal::scroll_down() {
 	
 }
 
+void Terminal::sigint() {
+	this->type( 0x03 );
+}
+
 pid_t Terminal::fork( const char * command ) {
 
 	struct winsize ws;
@@ -149,7 +153,7 @@ pid_t Terminal::fork( const char * command ) {
 
 	if (childpid == 0) {
 		setenv("TERM", TERMINAL_ENV_NAME, 1);
-		execl("/bin/sh", "/bin/sh", "-c", command, NULL); // XXX: Choose shell better
+		execl(command, command, NULL);
 		std::cerr << "Failed to fork." << std::endl;
 		exit(127);
 	}

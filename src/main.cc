@@ -53,6 +53,10 @@ void sighandle ( int signo ) {
 			uninit_screen();
 			exit(0);
 			break;
+		case SIGINT:
+			SDEBUG << "Shibuya SIGINT handler called." << std::endl;
+			toDump->sigint(); /* Fixme */
+			break;
 		default:
 			SDEBUG << "Defaulted on a signal trap. Fixme! (SIG: " << signo
 				<< " )" << std::endl;
@@ -64,7 +68,7 @@ int main ( int argc, char ** argv ) {
 	init_screen();
 	
 	NcursesTerminal nt( 80, 25, 3, 2 );
-	nt.fork("bash");
+	nt.fork("/bin/bash");
 	toDump = &nt;
 	
 	std::vector<std::string> * bg = NULL;
@@ -81,6 +85,7 @@ int main ( int argc, char ** argv ) {
 	
 	signal( SIGUSR1, sighandle );
 	signal( SIGTERM, sighandle );
+	signal( SIGINT,  sighandle );
 
 	try {
 		while ( true ) {
