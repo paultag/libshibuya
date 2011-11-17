@@ -48,6 +48,12 @@ void sighandle ( int signo ) {
 				std::cerr << std::endl;
 			}
 			break;
+		case SIGWINCH:
+			SDEBUG << "Window Resize" << std::endl;
+			endwin();
+			refresh();
+			/* XXX: Handle background re-center */
+			break;
 		case SIGTERM:
 			SDEBUG << "Trapped SIGTERM." << std::endl;
 			uninit_screen();
@@ -86,6 +92,7 @@ int main ( int argc, char ** argv ) {
 	signal( SIGUSR1, sighandle );
 	signal( SIGTERM, sighandle );
 	signal( SIGINT,  sighandle );
+	signal( SIGWINCH, sighandle );
 
 	try {
 		while ( true ) {
@@ -93,9 +100,14 @@ int main ( int argc, char ** argv ) {
 			if ( nt.render() )
 				update_screen();
 			timeout(0);
-			char ch = getch();
-			if ( ch != ERR )
-				nt.type(ch);
+			int ch = getch();
+
+			if ( ch != ERR ) {
+				if ( ch < 128 ) {
+					nt.type(ch);
+				}
+			}
+
 			usleep(20);
 		}
 	} catch ( DeadChildException * e ) {
