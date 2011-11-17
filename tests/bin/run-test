@@ -17,6 +17,7 @@ for x in `ls tests/*`; do
 	else
 		echo "OK!"
 		rm ./diffpool/$x.raw.log
+		rm ./diffpool/$x.debug.log
 	fi
 done
 
