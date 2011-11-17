@@ -81,6 +81,9 @@ bool NcursesTerminal::render( WINDOW * win ) {
 				this->chars[offset].ch);
 		}
 	}
+	
+	wmove( win, this->cY + 1, this->cX + 1 );
+	
 	this->tainted = false;
 	return true;
 }
