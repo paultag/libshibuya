@@ -20,13 +20,11 @@
  * THE SOFTWARE.
  */
 
-// XXX: Clean this up too
-
-#include <panel.h>
 #include <ncurses.h>
-#include <string>
 #include <iostream>
 #include <fstream>
+#include <panel.h>
+#include <string>
 
 #include "Shibuya.hh"
 
@@ -49,7 +47,6 @@ void update_screen() {
 
 void set_clog() {
 	String debug_log;
-
 #ifdef SHIBUYA_DEBUG 
 	debug_log = "shibuya.debug.log";
 #else

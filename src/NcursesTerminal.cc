@@ -51,7 +51,6 @@ void NcursesTerminal::_init_NcursesTerminal(
 ) {
 	this->pane = new Pane(
 		(width + 2), (height + 2), x, y);
-	//              ^^ padding
 }
 
 bool NcursesTerminal::render( WINDOW * win ) {

@@ -20,16 +20,15 @@
  * THE SOFTWARE.
  */
 
-#include <malloc.h>
 #include <iostream>
-#include <pty.h>
+#include <malloc.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "Shibuya.hh"
-#include "Terminal.hh"
+#include <pty.h>
 
 #include "conf/term.hh"
+#include "Terminal.hh"
+#include "Shibuya.hh"
 
 void Terminal::_init_Terminal(int width, int height) {
 	this->width  = width;

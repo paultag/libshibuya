@@ -33,21 +33,25 @@
 NcursesTerminal * toDump = NULL;
 
 void sighandle ( int signo ) {
-	if ( ! toDump )
-		return;
-
-	for ( int iy = 0; iy < toDump->get_height(); ++iy ) {
-		for ( int ix = 0; ix < toDump->get_width(); ++ix ) {
-			int offset = ( toDump->get_width() * iy ) + ix;
-			std::cerr << toDump->chars[offset].ch;
-		}
-		std::cerr << std::endl;
+	switch ( signo ) {
+		case SIGUSR1:
+			if ( ! toDump )
+				return;
+			
+			for ( int iy = 0; iy < toDump->get_height(); ++iy ) {
+				for ( int ix = 0; ix < toDump->get_width(); ++ix ) {
+					int offset = ( toDump->get_width() * iy ) + ix;
+					std::cerr << toDump->chars[offset].ch;
+				}
+				std::cerr << std::endl;
+			}
+			break;
+			
+		case SIGTERM:
+			uninit_screen();
+			exit(0);
+			break;
 	}
-}
-
-void sigusr2 ( int signal ) {
-	uninit_screen();
-	exit(0);
 }
  
 int main ( int argc, char ** argv ) {
@@ -71,7 +75,7 @@ int main ( int argc, char ** argv ) {
 	}
 
 	signal( SIGUSR1, sighandle );
-	signal( SIGUSR2, sigusr2   ); // XXX: Fix this
+	signal( SIGTERM, sighandle ); // XXX: Fix this
 	
 	while ( true ) {
 		nt.poke();
