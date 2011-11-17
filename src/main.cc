@@ -35,6 +35,7 @@ NcursesTerminal * toDump = NULL;
 void sighandle ( int signo ) {
 	switch ( signo ) {
 		case SIGUSR1:
+			SDEBUG << "SIGUSR1, dumping char array to stderr." << std::endl;
 			if ( ! toDump )
 				return;
 			
@@ -46,11 +47,14 @@ void sighandle ( int signo ) {
 				std::cerr << std::endl;
 			}
 			break;
-			
 		case SIGTERM:
+			SDEBUG << "Trapped SIGTERM." << std::endl;
 			uninit_screen();
 			exit(0);
 			break;
+		default:
+			SDEBUG << "Defaulted on a signal trap. Fixme! (SIG: " << signo
+				<< " )" << std::endl;
 	}
 }
  
@@ -73,26 +77,20 @@ int main ( int argc, char ** argv ) {
 		attroff(COLOR_PAIR(1));
 		attroff(A_BOLD);
 	}
-
+	
 	signal( SIGUSR1, sighandle );
-	signal( SIGTERM, sighandle ); // XXX: Fix this
+	signal( SIGTERM, sighandle );
 	
 	while ( true ) {
 		nt.poke();
-		
 		if ( nt.render() )
 			update_screen();
-		
 		timeout(0);
 		char ch = getch();
-		
 		if ( ch != ERR )
 			nt.type(ch);
-		
-		usleep(200);
+		usleep(20);
 	}
-	
-	getch();
 	
 	uninit_screen();
 }

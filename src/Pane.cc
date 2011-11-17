@@ -20,50 +20,46 @@
  * THE SOFTWARE.
  */
 
-#include <panel.h>
-
+#include "Shibuya.hh"
 #include "Pane.hh"
 
+#include <iostream>
+#include <panel.h>
 
 Pane::Pane(int width, int height, int x, int y) {
+	SDEBUG << "Pane constructor" << std::endl;
+	
 	this->x = x;
 	this->y = y;
 	this->height = height;
 	this->width  = width;
-
 	this->win = newwin(height, width, y, x);
 	this->pan = new_panel(this->win);
-	this->draw_outline();
 }
 
 Pane::~Pane() {
-
-}
-
-void Pane::draw_outline() {
-	//box(this->win, 0, 0);
-	// XXX: Fix this
+	SDEBUG << "Pane Destructor" << std::endl;
 }
 
 void Pane::focus() {
+	SDEBUG << "Changing focus." << std::endl;
 	top_panel(this->pan);
 }
 
 void Pane::move_to(int x, int y) {
+	SDEBUG << "Moving pane to x/y: " << x << ", " << y << std::endl;
 	move_panel(this->pan, x, y);
 }
 
 void Pane::resize( int width, int height ) {
+	SDEBUG << "Resizing pane w/h: " << width << ", " << height << std::endl;
 	WINDOW * old_win  = this->win;
 	WINDOW * temp_win = newwin(height, width, this->y, this->x);
-
 	replace_panel(this->pan, temp_win);
 	this->win = temp_win;
 	delwin(old_win);
-
 	this->x = width;
 	this->y = height;
-	this->draw_outline();
 }
 
 WINDOW * Pane::getWindow() {

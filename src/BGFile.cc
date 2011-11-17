@@ -20,13 +20,17 @@
  * THE SOFTWARE.
  */
 
+#include "Shibuya.hh"
 #include "BGFile.hh"
 
+#include <iostream>
 #include <fstream>
 
 std::vector<std::string> * get_bg_vector( const char * fd ) {
 	std::string line;
 	std::ifstream myfile(fd);
+	
+	SDEBUG << "BG fd: " << fd << std::endl;
 	
 	std::vector<std::string> * bg = new std::vector<std::string>();
 	
@@ -40,9 +44,9 @@ std::vector<std::string> * get_bg_vector( const char * fd ) {
 	return bg;
 }
 
-#include <iostream>
-
 void write_out_bg( std::vector<std::string> * boo ) {
+	
+	SDEBUG << "Writing out the BG" << std::endl;
 	
 	if ( boo == NULL )
 		return;

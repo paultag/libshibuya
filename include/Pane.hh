@@ -41,7 +41,6 @@ class Pane {
 		void focus();
 		void move_to( int x, int y );
 		void resize( int width, int height );
-		void draw_outline();
 
 		WINDOW * getWindow();
 };

@@ -29,26 +29,28 @@
 #include "Shibuya.hh"
 
 ANSITerminal::ANSITerminal() {
+	SDEBUG << "Default ANSI Constructor" << std::endl;
 	this->_init_ANSITerminal();
 	this->_init_Terminal( 80, 25 );
 }
 ANSITerminal::ANSITerminal( int width, int height ) {
+	SDEBUG << "Width / Height ANSI Constructor" << std::endl;
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
 }
-ANSITerminal::~ANSITerminal() {}
+ANSITerminal::~ANSITerminal() {
+	SDEBUG << "ANSI Destructor" << std::endl;
+}
 
 void ANSITerminal::_init_ANSITerminal() {
 	ansi_escape_parser_reset();
 }
 
 void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
-	return;
-
-	// std::cerr << "Rcvd a private mode CSI: " << last->priv << std::endl;
+	SDEBUG << "Rcvd a private mode CSI: " << last->priv << std::endl;
 	for ( unsigned int i = 0; i < last->values->size(); ++i )
-		std::cerr << "  " << last->values->at(i) << std::endl;
-	// std::cerr << "  Mode: " << last->mode << std::endl;
+		SDEBUG << "  " << last->values->at(i) << std::endl;
+	SDEBUG << "  Mode: " << last->mode << std::endl;
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {

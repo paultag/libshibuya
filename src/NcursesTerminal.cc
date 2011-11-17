@@ -23,21 +23,28 @@
 #include "NcursesTerminal.hh"
 #include "Shibuya.hh"
 
+#include <iostream>
+
 NcursesTerminal::NcursesTerminal() {
+	SDEBUG << "Default ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(80, 25, 0, 0);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( 80, 25 );
 }
 
-NcursesTerminal::~NcursesTerminal() {}
+NcursesTerminal::~NcursesTerminal() {
+	SDEBUG << "Default ncurses destructor" << std::endl;
+}
 
 NcursesTerminal::NcursesTerminal( int width, int height ) {
+	SDEBUG << "Width / Height ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(width, height, 0, 0);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
 }
 
 NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
+	SDEBUG << "Width / Height / x / y ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(width, height, x, y);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
@@ -56,7 +63,9 @@ void NcursesTerminal::_init_NcursesTerminal(
 bool NcursesTerminal::render( WINDOW * win ) {
 	if ( ! this->tainted )
 		return false;
-
+	
+	SDEBUG << "Tainted display. Rendering window" << std::endl;
+	
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	wattron(win, COLOR_PAIR(2));
 	box(win, 0, 0);
