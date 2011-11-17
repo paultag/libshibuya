@@ -62,7 +62,7 @@ int main ( int argc, char ** argv ) {
 	set_clog();    // XXX: This is ugly
 	init_screen();
 	
-	NcursesTerminal nt( 80, 25, 0, 0 );
+	NcursesTerminal nt( 80, 25, 3, 2 );
 	nt.fork("bash");
 	toDump = &nt;
 	

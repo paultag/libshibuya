@@ -72,10 +72,11 @@ bool NcursesTerminal::render( WINDOW * win ) {
 	String title = "[ Terminal ID: (1) ]";
 	mvwprintw( win, 0,
 		((this->width / 2) - (title.length() / 2)),title.c_str());
+	
 	wattroff( win, COLOR_PAIR(2));
-
+	
 	for ( int iy = 0; iy < this->height; ++iy ) {
-		for ( int ix = 0; ix  < this->width; ++ix ) {
+		for ( int ix = 0; ix < this->width; ++ix ) {
 			int offset = GET_OFFSET(ix, iy);
 			mvwaddch(win, ( iy + 1 ), ( ix + 1 ),
 				this->chars[offset].ch);
