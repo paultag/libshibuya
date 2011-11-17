@@ -23,6 +23,22 @@
 #ifndef _SHIBUYA_HH_
 #define _SHIBUYA_HH_ FOO
 
+/* Attr hooks
+
+  1   2   3   8   16  32  64  128
+  BKG BKG BKG BNK FGD FGD FGD BLD
+   \   \   \   \   \   \   \   \
+    \   \   \   \   \   \   \   +--- Bold
+     \   \   \   \   +---+---+------ Foreground
+      \   \   \   +----------------- Blink
+       +---+---+-------------------- Background
+ */
+
+#define SHIBUYA_ATTR_HAS_BOLD(x)  (x & 128)
+#define SHIBUYA_ATTR_HAS_BLINK(x) (x & 8)
+
+/* OK. Done with the bitwise */
+
 #define String std::string
 #define SDEBUG std::clog
 

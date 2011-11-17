@@ -127,6 +127,11 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			for ( int i = 0; i < move_steps; ++i )
 				this->insert_line( this->cY );
 			break;
+		case 'm':
+			for ( unsigned int i = 0; i < seqs->size(); ++i ) {
+				
+			}
+			break;
 		case 'r':
 			nTop = seqs->at(0);
 			

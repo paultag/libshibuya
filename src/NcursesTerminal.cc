@@ -72,12 +72,20 @@ bool NcursesTerminal::render( WINDOW * win ) {
 	String title = "[ Terminal ID: (1) ]";
 	mvwprintw( win, 0,
 		((this->width / 2) - (title.length() / 2)),title.c_str());
-	
 	wattroff( win, COLOR_PAIR(2));
 	
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix < this->width; ++ix ) {
 			int offset = GET_OFFSET(ix, iy);
+
+			/* By default, we'll disable everything. */
+			wattroff( win, A_BOLD );
+
+			char attrs = this->chars[offset].attr;
+			if ( SHIBUYA_ATTR_HAS_BOLD(attrs) ) {
+				wattron(win, A_BOLD);
+			}
+
 			mvwaddch(win, ( iy + 1 ), ( ix + 1 ),
 				this->chars[offset].ch);
 		}
