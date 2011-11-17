@@ -10,7 +10,9 @@ echo -n "[H" # OK, We're in the top-right of the default pool.
 #
 
 echo -n "[2;10r"
+sleep 1
 cat resources/blank.tty
+sleep 1
 echo -n "[r"
 
 ./bin/cause-dump.sh

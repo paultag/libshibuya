@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf ./diffpool/*
+
 for x in `ls tests/*`; do
 	x=`basename $x`
 	echo "./tests/$x" | ../bin/shibuya 2>./diffpool/$x.raw.log
@@ -19,7 +21,6 @@ for x in `ls tests/*`; do
 		rm ./diffpool/$x.raw.log
 		rm ./diffpool/$x.debug.log
 	fi
-	sleep 0.2
 done
 
 if [ "x$PFAIL" == "x" ]; then
