@@ -33,6 +33,17 @@
 
 NcursesTerminal * toDump = NULL;
 
+std::vector<std::string> * bg = NULL;
+
+void draw_background() {
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	attron(COLOR_PAIR(1));
+	attron(A_BOLD);
+	write_out_bg( bg );
+	attroff(COLOR_PAIR(1));
+	attroff(A_BOLD);
+}
+
 void sighandle ( int signo ) {
 	switch ( signo ) {
 		case SIGUSR1:
@@ -52,6 +63,7 @@ void sighandle ( int signo ) {
 			SDEBUG << "Window Resize" << std::endl;
 			uninit_screen();
 			init_screen();
+			draw_background();
 			update_screen();
 			/* XXX: Handle background re-center */
 			break;
@@ -77,18 +89,9 @@ int main ( int argc, char ** argv ) {
 	NcursesTerminal nt( 80, 25, 3, 2 );
 	nt.fork("/bin/bash");
 	toDump = &nt;
-	
-	std::vector<std::string> * bg = NULL;
-	
-	if ( argc > 0 ) {
-		init_pair(1, COLOR_RED, COLOR_BLACK);
-		attron(COLOR_PAIR(1));
-		attron(A_BOLD);
-		bg = get_bg_vector( argv[1] );
-		write_out_bg( bg );
-		attroff(COLOR_PAIR(1));
-		attroff(A_BOLD);
-	}
+
+	bg = get_bg_vector( argv[1] );
+	draw_background();
 	
 	signal( SIGUSR1, sighandle );
 	signal( SIGTERM, sighandle );
