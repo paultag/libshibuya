@@ -13,7 +13,7 @@ for x in `ls tests/*`; do
 	echo -n " Test: $x    "
 	if [ "x$MD1" != "x$MD2" ]; then
 		echo "p-fail"
-		sdiff ./diffpool/$x.raw.log ./results/$x \
+		sdiff -a -w 170 --left-column ./diffpool/$x.raw.log ./results/$x \
 			> ./diffpool/$x.fail.diff
 		PFAIL=1
 	else
