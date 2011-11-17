@@ -24,9 +24,12 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <wait.h>
 #include <pty.h>
 
 #include "conf/term.hh"
+#include "Exceptions.hh"
 #include "Terminal.hh"
 #include "Shibuya.hh"
 
@@ -156,17 +159,57 @@ pid_t Terminal::fork( const char * command ) {
 }
 
 void Terminal::poke() {
-	/* This is ripped off from librote */
-
 	fd_set         ifs;
 	struct timeval tvzero;
 
 	char  buf[512];
 	int   bytesread;
 	int   n = 5; // XXX: Fix?
+	int   status;
 
 	if (this->pty < 0)
 		return;
+
+	pid_t result = waitpid(this->childpid, &status, WNOHANG);
+
+	switch ( result ) {
+		case 0:
+			/* If waitpid() was invoked with WNOHANG set in options, and there are children
+			 * specified by pid for which status is not available, waitpid() returns 0 */
+			break;
+		case -1:
+			/* Otherwise, it returns -1 and sets errno to one of the following values */
+			SDEBUG << "Error in PID wait." << std::endl;
+			switch ( errno ) {
+				case ECHILD:
+				/* The process or process group specified by pid does not exist or is not
+				 * a child of the calling process. */
+					SDEBUG << " => pid (" << this->childpid << ") does not exist." << std::endl;
+					break;
+				case EFAULT:
+				/* stat_loc is not a writable address. */
+					SDEBUG << " => pid is out of our segment" << std::endl;
+					break;
+				case EINTR:
+				/* The function was interrupted by a signal. The value of the location
+				 * pointed to by stat_loc is undefined. */
+					SDEBUG << " => wait() hit with a signal" << std::endl;
+					break;
+				case EINVAL:
+				/* The options argument is not valid. */
+					SDEBUG << " => wait() arguments not valid" << std::endl;
+					break;
+				case ENOSYS:
+				/* pid specifies a process group (0 or less than -1), which is not currently supported. */
+					SDEBUG << " => pid is less then 1" << std::endl;
+					break;
+			}
+			break;
+		default:
+			SDEBUG << "Child PID: " << this->childpid << " has died." << std::endl;
+			throw new DeadChildException();
+			break;
+	}
 
 	while (n--) {
 		FD_ZERO(&ifs);

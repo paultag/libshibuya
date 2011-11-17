@@ -22,6 +22,7 @@
 
 #include "NcursesTerminal.hh"
 #include "Shibuya.hh"
+#include "Exceptions.hh"
 #include "BGFile.hh"
 
 #include <iostream>
@@ -80,17 +81,20 @@ int main ( int argc, char ** argv ) {
 	
 	signal( SIGUSR1, sighandle );
 	signal( SIGTERM, sighandle );
-	
-	while ( true ) {
-		nt.poke();
-		if ( nt.render() )
-			update_screen();
-		timeout(0);
-		char ch = getch();
-		if ( ch != ERR )
-			nt.type(ch);
-		usleep(20);
+
+	try {
+		while ( true ) {
+			nt.poke();
+			if ( nt.render() )
+				update_screen();
+			timeout(0);
+			char ch = getch();
+			if ( ch != ERR )
+				nt.type(ch);
+			usleep(20);
+		}
+	} catch ( DeadChildException * e ) {
+		SDEBUG << "Dead child. Exiting." << std::endl;
 	}
-	
 	uninit_screen();
 }
