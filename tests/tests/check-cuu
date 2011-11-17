@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+#
+# Every test must cause an *identical* result on an 80x25 vte
+clear
+cat resources/blank.tty
+echo -n "[H" # OK, We're in the top-right of the default pool.
+#
+#
+#
+
+clear
+echo -n "[13;30H"
+
+for i in {1..5}; do
+	echo -n "[A[D+"
+done
+
+./bin/cause-dump.sh
+./bin/cause-exit.sh
