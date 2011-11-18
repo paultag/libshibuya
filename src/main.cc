@@ -60,6 +60,7 @@ void sighandle ( int signo ) {
 			}
 			break;
 		case SIGWINCH:
+			/* Something's wrong with this... */
 			SDEBUG << "Window Resize" << std::endl;
 			uninit_screen();
 			init_screen();

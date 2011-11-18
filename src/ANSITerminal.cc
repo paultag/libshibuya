@@ -155,6 +155,15 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						/* Reset global attr */
 						this->cMode = 0x70; /* Hard reset XXX: Globalize this */
 						break;
+					case 30: case 31: case 32:
+					case 33: case 34: case 35:
+					case 36: case 37:
+						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
+						/* Now that the flags are unset, let's set them again */
+						this->cMode += ((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
+						/* Great. All set. */
+						SDEBUG << "FG: " << SHIBUYA_ATTR_GET_FG(this->cMode) << std::endl;
+					break;
 					default:
 						/* Unknown m sequence id */
 						break;
@@ -177,9 +186,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			
 			this->scroll_frame_bottom = nBottom;
 			this->scroll_frame_top    = nTop;
-			
-			/* std::cerr << "XY: " << this->scroll_frame_top << ", " <<
-				this->scroll_frame_bottom << std::endl; */
 			
 			this->cX = 0;
 			this->cY = nTop;
