@@ -236,11 +236,9 @@ void Terminal::poke() {
 
 
 void Terminal::insert( unsigned char c ) {
-	
 	switch ( c ) {
 		case '\n':
-			this->cX = this->width;
-			this->advance_curs();
+			this->newline();
 			break;
 		case 8: /* Backspace */
 			--this->cX;
@@ -277,17 +275,20 @@ void Terminal::type( char c ) {
 	write(this->pty, &c, 1);
 }
 
-void Terminal::advance_curs() {
-	this->cX++;
-
-	if ( this->width < this->cX ) {
-		this->cX = 0;
-		this->cY++;
-	}
+void Terminal::newline() {
+	this->cX = 0;
+	this->cY++;
 
 	if ( this->scroll_frame_bottom <= this->cY ) {
 		this->cY = (this->scroll_frame_bottom - 1);
 		this->scroll_up();
+	}
+}
+
+void Terminal::advance_curs() {
+	this->cX++;
+	if ( this->width < this->cX ) {
+		this->newline();
 	}
 }
 

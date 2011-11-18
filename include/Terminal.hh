@@ -50,6 +50,7 @@ class Terminal {
 
 		void erase_to_from( int iX, int iY, int tX, int tY );
 		void advance_curs();
+		void newline();
 		void delete_line( int idex );
 		void insert_line( int idex );
 		void _init_Terminal( int width, int height );
