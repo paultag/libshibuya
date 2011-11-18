@@ -66,7 +66,12 @@ Terminal::Terminal( int width, int height ) {
 void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 	int from = GET_OFFSET(iX, iY);
 	int to   = GET_OFFSET(tX, tY);
-	for ( int i = from; i < to; ++i ) {
+
+	SDEBUG << "Erasing from/to: " << iX << ", " << iY << "(" << from
+		<< ") -> " << tX << ", " << tY
+		<< "(" << to << ")" << std::endl;
+
+	for ( int i = from; i <= to; ++i ) {
 		this->chars[i].ch   = ' ';
 		this->chars[i].attr = 0x70;
 	}
@@ -241,10 +246,13 @@ void Terminal::insert( unsigned char c ) {
 			this->newline();
 			break;
 		case 8: /* Backspace */
-			--this->cX;
+			SDEBUG << "Backspace" << this->cX << " -> ";
+			if ( this->cX > 0 )
+				--this->cX;
+			SDEBUG << this->cX << std::endl;
 			break;
 		case 9: /* Tab */
-			this->insert(' ');
+			SDEBUG << "TAB!" << std::endl;
 			while ( ( this->cX % 8 ) != 0 )
 				this->insert(' ');
 			break;
@@ -268,7 +276,10 @@ void Terminal::insert( unsigned char c ) {
 
 	this->chars[offset].ch   = c;
 	this->chars[offset].attr = this->cMode;
-	this->advance_curs();
+
+	this->cX++;
+	this->bounds_check();
+
 }
 
 void Terminal::type( char c ) {
@@ -285,10 +296,13 @@ void Terminal::newline() {
 	}
 }
 
-void Terminal::advance_curs() {
-	this->cX++;
+void Terminal::bounds_check() {
 	if ( this->width < this->cX ) {
 		this->newline();
+	}
+	if ( this->cX < 0 ) {
+		this->cX = this->width;
+		this->cY = ( this->cY < 0 ) ? 0 : --this->cY;
 	}
 }
 
@@ -303,17 +317,13 @@ int Terminal::get_height() {
 void Terminal::delete_line( int idex ) {
 	int oldfloor = scroll_frame_top;
 	this->scroll_frame_top = idex;
-	
 	this->scroll_up();
-	
 	scroll_frame_top = oldfloor;
 }
 
 void Terminal::insert_line( int idex ) {
 	int oldfloor = scroll_frame_top;
 	this->scroll_frame_top = idex;
-	
 	this->scroll_down();
-	
 	scroll_frame_top = oldfloor;
 }

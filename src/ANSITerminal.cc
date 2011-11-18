@@ -206,9 +206,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			
 			if ( seqs->size() >= 2 )
 				nCol = seqs->at(1);
-			else
-				nCol = 1;
-			
+
+			nRow = ( nRow < 1 ) ? 1 : nRow;
+			nCol = ( nCol < 1 ) ? 1 : nCol;
+			nRow = ( nRow > this->height ) ? this->height : nRow;
+			nCol = ( nCol > this->width  ) ? this->width  : nCol;
+
 			this->cX = (nCol - 1);
 			this->cY = (nRow - 1);
 			
@@ -225,7 +228,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						this->width, this->cY );
 					break;
 				case 1:
-					this->erase_to_from( 0, this->cY, this->cX + 1, this->cY );
+					this->erase_to_from( 0, this->cY, this->cX, this->cY );
 					break;
 				case 2:
 					this->erase_to_from( 0, this->cY,

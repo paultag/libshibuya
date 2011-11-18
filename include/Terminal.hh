@@ -49,8 +49,8 @@ class Terminal {
 		pid_t  childpid;
 
 		void erase_to_from( int iX, int iY, int tX, int tY );
-		void advance_curs();
 		void newline();
+		void bounds_check();
 		void delete_line( int idex );
 		void insert_line( int idex );
 		void _init_Terminal( int width, int height );
