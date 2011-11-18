@@ -170,40 +170,45 @@ void Terminal::poke() {
 
 	switch ( result ) {
 		case 0:
-			/* If waitpid() was invoked with WNOHANG set in options, and there are children
-			 * specified by pid for which status is not available, waitpid() returns 0 */
+			/* If waitpid() was invoked with WNOHANG set in options, and there
+			 * are children specified by pid for which status is not available,
+			 * waitpid() returns 0 */
 			break;
 		case -1:
-			/* Otherwise, it returns -1 and sets errno to one of the following values */
+			/* Otherwise, it returns -1 and sets errno to one of the following
+			 * values */
 			SDEBUG << "Error in PID wait." << std::endl;
 			switch ( errno ) {
 				case ECHILD:
-				/* The process or process group specified by pid does not exist or is not
-				 * a child of the calling process. */
-					SDEBUG << " => pid (" << this->childpid << ") does not exist." << std::endl;
+					/* The process or process group specified by pid does not
+					 * exist or is not a child of the calling process. */
+					SDEBUG << " => pid (" << this->childpid <<
+						") does not exist." << std::endl;
 					break;
 				case EFAULT:
-				/* stat_loc is not a writable address. */
+					/* stat_loc is not a writable address. */
 					SDEBUG << " => pid is out of our segment" << std::endl;
 					break;
 				case EINTR:
-				/* The function was interrupted by a signal. The value of the location
-				 * pointed to by stat_loc is undefined. */
+					/* The function was interrupted by a signal. The value of
+					 * the location pointed to by stat_loc is undefined. */
 					SDEBUG << " => wait() hit with a signal" << std::endl;
 					break;
 				case EINVAL:
-				/* The options argument is not valid. */
+					/* The options argument is not valid. */
 					SDEBUG << " => wait() arguments not valid" << std::endl;
 					break;
 				case ENOSYS:
-				/* pid specifies a process group (0 or less than -1), which is not currently supported. */
+					/* pid specifies a process group (0 or less than -1), which
+					 * is not currently supported. */
 					SDEBUG << " => pid is less then 1" << std::endl;
 					break;
 			}
 			break;
 		default:
 			/* Our child died :'( */
-			SDEBUG << "Child PID: " << this->childpid << " has died." << std::endl;
+			SDEBUG << "Child PID: " << this->childpid << " has died."
+				<< std::endl;
 			throw new DeadChildException();
 			// ^^ This will force whatever else to clean up the mess
 			//                       ( if you will pardon the term )
@@ -249,9 +254,10 @@ void Terminal::insert( unsigned char c ) {
 	
 	/* No need to return above, because of below :) */
 	
-	if ( c < 32 ) {
+	if ( c < 32 )
 		return;
-	}
+
+	/* Alright. We've got something printable. Let's deal with it. */
 
 	int ix = this->cX;
 	int iy = this->cY;
