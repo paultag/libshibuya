@@ -300,10 +300,10 @@ void Terminal::bounds_check() {
 	if ( this->width < this->cX ) {
 		this->newline();
 	}
-	if ( this->cX < 0 ) {
+	/* if ( this->cX < 0 ) {
 		this->cX = this->width;
 		this->cY = ( this->cY < 0 ) ? 0 : this->cY;
-	}
+	} */
 }
 
 int Terminal::get_width() {
