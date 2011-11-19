@@ -242,11 +242,14 @@ void Terminal::poke() {
 
 void Terminal::insert( unsigned char c ) {
 	switch ( c ) {
+		case '\r':
+			this->cX = 0;
+			break;
 		case '\n':
 			this->newline();
 			break;
 		case 8: /* Backspace */
-			SDEBUG << "Backspace" << this->cX << " -> ";
+			SDEBUG << "Backspace " << this->cX << " -> ";
 			if ( this->cX > 0 )
 				--this->cX;
 			SDEBUG << this->cX << std::endl;
@@ -300,10 +303,9 @@ void Terminal::bounds_check() {
 	if ( this->width < this->cX ) {
 		this->newline();
 	}
-	/* if ( this->cX < 0 ) {
-		this->cX = this->width;
-		this->cY = ( this->cY < 0 ) ? 0 : this->cY;
-	} */
+	if ( this->cX < 0 ) {
+		this->cX = 0; // this->width;
+	}
 }
 
 int Terminal::get_width() {

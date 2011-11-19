@@ -102,6 +102,9 @@ bool NcursesTerminal::render() {
 }
 
 void NcursesTerminal::insert( unsigned char c ) {
+	
+	SDEBUG << "Inserting: " << (int)c << std::endl;
+	
 	this->tainted = true;
 	ANSITerminal::insert( c );
 }
