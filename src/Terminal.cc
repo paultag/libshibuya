@@ -302,7 +302,7 @@ void Terminal::bounds_check() {
 	}
 	if ( this->cX < 0 ) {
 		this->cX = this->width;
-		this->cY = ( this->cY < 0 ) ? 0 : --this->cY;
+		this->cY = ( this->cY < 0 ) ? 0 : this->cY;
 	}
 }
 
