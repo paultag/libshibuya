@@ -116,7 +116,7 @@ void NcursesTerminal::resize( int x, int y ) {
 	
 	for ( int i = 0; i < ( x * y ); ++i ) {
 		tcTmp[i].ch   = ' ';
-		tcTmp[i].attr = 0x70;
+		tcTmp[i].attr = SHIBUYA_DEFAULT_CMODE;
 	}
 	
 	/* And, now, let's copy over stuff in-range. */

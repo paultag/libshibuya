@@ -60,6 +60,8 @@
 #define String std::string
 #define SDEBUG std::clog
 
+#define SHIBUYA_DEFAULT_CMODE 0x70
+
 void init_screen();
 void set_clog();
 void uninit_screen();

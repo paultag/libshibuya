@@ -38,7 +38,7 @@ void Terminal::_init_Terminal(int width, int height) {
 	this->height = height;
 	this->cX     = 0;
 	this->cY     = 0;
-	this->cMode  = 0x70; // XXX: Globalize
+	this->cMode  = SHIBUYA_DEFAULT_CMODE;
 	this->scroll_frame_bottom = this->height;
 	this->scroll_frame_top   = 0;
 	this->pty    = -1;
@@ -73,7 +73,7 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 
 	for ( int i = from; i <= to; ++i ) {
 		this->chars[i].ch   = ' ';
-		this->chars[i].attr = 0x70;
+		this->chars[i].attr = SHIBUYA_DEFAULT_CMODE;
 	}
 }
 
@@ -93,7 +93,7 @@ void Terminal::scroll_up() {
 	for ( int ix = 0; ix < this->width; ++ix ) {
 		int offset = GET_OFFSET( ix, (this->scroll_frame_bottom - 1) );
 		this->chars[offset].ch = ' ';
-		this->chars[offset].attr = 0x70;
+		this->chars[offset].attr = SHIBUYA_DEFAULT_CMODE;
 	}
 }
 
@@ -123,7 +123,7 @@ void Terminal::scroll_down() {
 	for ( int ix = 0; ix < this->width; ++ix ) {
 		int thisChar = GET_OFFSET(ix, this->scroll_frame_top);
 		this->chars[thisChar].ch   = ' ';
-		this->chars[thisChar].attr = 0x70;
+		this->chars[thisChar].attr = SHIBUYA_DEFAULT_CMODE;
 	}
 	
 }

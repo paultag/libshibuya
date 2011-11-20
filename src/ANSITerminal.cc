@@ -153,7 +153,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						break;
 					case 0:
 						/* Reset global attr */
-						this->cMode = 0x70; /* Hard reset XXX: Globalize this */
+						this->cMode = SHIBUYA_DEFAULT_CMODE;
 						break;
 					case 30: case 31: case 32:
 					case 33: case 34: case 35:
