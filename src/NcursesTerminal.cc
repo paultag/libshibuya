@@ -69,7 +69,7 @@ bool NcursesTerminal::render( WINDOW * win ) {
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	wattron(win, COLOR_PAIR(2));
 	box(win, 0, 0);
-	String title = "[ Terminal ID: (1) ]";
+	String title = " [ Terminal ID: (1) ] ";
 	mvwprintw( win, 0,
 		((this->width / 2) - (title.length() / 2)),title.c_str());
 	wattroff( win, COLOR_PAIR(2));
