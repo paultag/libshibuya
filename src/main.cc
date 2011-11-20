@@ -89,11 +89,25 @@ void interface_console() {
 	
 	getmaxyx(stdscr, maxRow, maxCol);
 	
-	Pane p( (maxCol - 2), (maxRow - 2), 1, 1);
-	p.focus();
-	update_screen();
+	Pane * p = new Pane( (maxCol - 2), (maxRow - 2), 1, 1);
+	p->focus();
+	p->setTitle("Menu");
 	
-	char c = wgetch(p.getWindow());
+	mvwaddch( p->getWindow(), 2, 4, 'A' );
+	
+	while ( true ) {
+		p->render_frame();
+		update_screen();
+		
+		char c = wgetch(p->getWindow());
+		switch ( c ) {
+			case 'q':
+				delete p;
+				update_screen();
+				return;
+				break;
+		}
+	}
 }
 
 int main ( int argc, char ** argv ) {
@@ -134,6 +148,7 @@ int main ( int argc, char ** argv ) {
 			}
 		}
 	} catch ( DeadChildException * e ) {
+		delete e;
 		SDEBUG << "Dead child. Exiting." << std::endl;
 	}
 	uninit_screen();

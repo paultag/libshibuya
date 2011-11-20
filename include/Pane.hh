@@ -23,12 +23,15 @@
 #ifndef _PANE_HH_
 #define _PANE_HH_ FOO
 
+#include "Shibuya.hh"
 #include <panel.h>
+#include <string>
 
 class Pane {
 	private:
 		WINDOW * win;
 		PANEL  * pan;
+		String   title;
 
 		int x;
 		int y;
@@ -41,7 +44,9 @@ class Pane {
 		void focus();
 		void move_to( int x, int y );
 		void resize( int width, int height );
-
+		void render_frame();
+		
+		void setTitle( String s );
 		WINDOW * getWindow();
 };
 

@@ -125,7 +125,6 @@ void Terminal::scroll_down() {
 		this->chars[thisChar].ch   = ' ';
 		this->chars[thisChar].attr = SHIBUYA_DEFAULT_CMODE;
 	}
-	
 }
 
 void Terminal::sigint() {
@@ -160,6 +159,9 @@ void Terminal::poke() {
 	 *  A good deal of this was inspired by `librote'. Mad gangster-props to
 	 * librote.
 	 */
+	if (this->pty < 0)
+		return;
+	
 	fd_set         ifs;
 	struct timeval tvzero;
 	
@@ -168,11 +170,8 @@ void Terminal::poke() {
 	int   n = 5; // XXX: Fix?
 	int   status;
 	
-	if (this->pty < 0)
-		return;
-
 	pid_t result = waitpid(this->childpid, &status, WNOHANG);
-
+	
 	switch ( result ) {
 		case 0:
 			/* If waitpid() was invoked with WNOHANG set in options, and there
@@ -219,7 +218,7 @@ void Terminal::poke() {
 			//                       ( if you will pardon the term )
 			break;
 	}
-
+	
 	/* This bit here taken from librote almost directly */
 	while (n--) {
 		FD_ZERO(&ifs);
@@ -265,9 +264,8 @@ void Terminal::insert( unsigned char c ) {
 	
 	if ( c < 32 )
 		return;
-
+	
 	/* Alright. We've got something printable. Let's deal with it. */
-
 	int ix = this->cX;
 	int iy = this->cY;
 	/*
@@ -305,7 +303,7 @@ void Terminal::bounds_check() {
 		this->newline();
 	}
 	if ( this->cX < 0 ) {
-		this->cX = 0; // this->width;
+		this->cX = 0;
 	}
 }
 

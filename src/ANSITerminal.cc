@@ -206,12 +206,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			
 			if ( seqs->size() >= 2 )
 				nCol = seqs->at(1);
-
+			
 			nRow = ( nRow < 1 ) ? 1 : nRow;
 			nCol = ( nCol < 1 ) ? 1 : nCol;
 			nRow = ( nRow > this->height ) ? this->height : nRow;
 			nCol = ( nCol > this->width  ) ? this->width  : nCol;
-
+			
 			this->cX = (nCol - 1);
 			this->cY = (nRow - 1);
 			

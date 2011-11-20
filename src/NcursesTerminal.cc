@@ -34,10 +34,6 @@ NcursesTerminal::NcursesTerminal() {
 	this->_init_Terminal( 80, 25 );
 }
 
-NcursesTerminal::~NcursesTerminal() {
-	SDEBUG << "Default ncurses destructor" << std::endl;
-}
-
 NcursesTerminal::NcursesTerminal( int width, int height ) {
 	SDEBUG << "Width / Height ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(width, height, 0, 0);
@@ -53,26 +49,23 @@ NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
 }
 
 void NcursesTerminal::_init_NcursesTerminal(
-	int width,
-	int height,
-	int x,
-	int y
+	int width, int height, int x, int y
 ) {
 	this->pane = new Pane((width + 2), (height + 2), x, y);
+	this->pane->setTitle( "Terminal ID: (1)" );
+}
+
+NcursesTerminal::~NcursesTerminal() {
+	SDEBUG << "ncurses terminal destructor" << std::endl;
+	delete this->pane;
 }
 
 bool NcursesTerminal::render( WINDOW * win ) {
 	if ( ! this->tainted )
 		return false;
-	
 	SDEBUG << "Tainted display. Rendering window" << std::endl;
-	init_pair(2, COLOR_BLACK, COLOR_WHITE);
-	wattron(win, COLOR_PAIR(2));
-	box(win, 0, 0);
-	String title = " [ Terminal ID: (1) ] ";
-	mvwprintw( win, 0,
-		((this->width / 2) - (title.length() / 2)),title.c_str());
-	wattroff( win, COLOR_PAIR(2));
+	
+	this->pane->render_frame();
 	
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix < this->width; ++ix ) {

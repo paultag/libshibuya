@@ -35,19 +35,33 @@ Pane::Pane(int width, int height, int x, int y) {
 	this->width  = width;
 	this->win = newwin(height, width, y, x);
 	this->pan = new_panel(this->win);
+	this->title = "Default Title";
 	/* XXX: flagize this */
 	// keypad(this->win, true);
 }
 
 Pane::~Pane() {
-	SDEBUG << "Pane Destructor" << std::endl;
-	delwin(this->getWindow());
+	SDEBUG << "Pane Destructor: " << this->title << std::endl;
 	del_panel(this->pan);
+	this->win = NULL;
+	SDEBUG << "Deleted the window and panel that we've linked to us."
+		<< std::endl;
 }
 
 void Pane::focus() {
 	SDEBUG << "Changing focus." << std::endl;
 	top_panel(this->pan);
+}
+
+void Pane::render_frame() {
+	init_pair(2, COLOR_BLACK, COLOR_WHITE);
+	wattron(win, COLOR_PAIR(2));
+	box(win, 0, 0);
+	String t = " [ " + this->title + " ] ";
+	mvwprintw( win, 0,
+		((this->width / 2) - (t.length() / 2)), t.c_str());
+	wattroff( win, COLOR_PAIR(2));
+
 }
 
 void Pane::move_to(int x, int y) {
@@ -64,6 +78,10 @@ void Pane::resize( int width, int height ) {
 	delwin(old_win);
 	this->width  = width;
 	this->height = height;
+}
+
+void Pane::setTitle( String s ) {
+	this->title = s;
 }
 
 WINDOW * Pane::getWindow() {
