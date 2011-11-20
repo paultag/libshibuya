@@ -108,19 +108,15 @@ int main ( int argc, char ** argv ) {
 			int ch = getch();
 
 			if ( ch != ERR ) {
-				
-				if ( ch == 'G' ) {
-					nt.resize( 100, 25 );
-					nt.move_to( 4, 2 );
-				} else if ( ch == 'A' ) {
-					nt.resize( 75, 25 );
-					nt.move_to( 10, 2 );
-				} else if ( ch < 128 ) {
+				if ( ch == 0x05 ) {
+					/* 0x05 is ENQ - let's use it for our special sequence. */
+					SDEBUG << "Ctrl+e called. Let's interface." << std::endl;
+				} else {
 					nt.type(ch);
 				}
+			} else {
+				usleep( 2000 );
 			}
-
-			usleep(20);
 		}
 	} catch ( DeadChildException * e ) {
 		SDEBUG << "Dead child. Exiting." << std::endl;

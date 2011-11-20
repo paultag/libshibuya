@@ -286,6 +286,7 @@ void Terminal::insert( unsigned char c ) {
 }
 
 void Terminal::type( char c ) {
+	SDEBUG << "Writing: " << (int)c << std::endl;
 	write(this->pty, &c, 1);
 }
 

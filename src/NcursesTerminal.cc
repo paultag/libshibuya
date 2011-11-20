@@ -139,8 +139,8 @@ void NcursesTerminal::resize( int x, int y ) {
 	this->pane->resize( ( x + 2 ), (y + 2) );
 	this->tainted = true;
 	
-	/* Now, let's tell the app what's up */
-	kill( this->childpid, SIGWINCH );
+	/* Now, let's tell the process group what's up */
+	kill( -(this->childpid), SIGWINCH );
 }
 
 void NcursesTerminal::move_to( int x, int y ) {

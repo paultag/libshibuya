@@ -34,6 +34,10 @@ Pane::Pane(int width, int height, int x, int y) {
 	this->height = height;
 	this->width  = width;
 	this->win = newwin(height, width, y, x);
+	
+	/* XXX: flagize this */
+	keypad(this->win, true);
+	
 	this->pan = new_panel(this->win);
 }
 
