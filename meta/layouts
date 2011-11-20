@@ -1,0 +1,44 @@
+
+
+Fullscreen
+ +----------------+
+ |                |
+ |                |
+ |      App       |
+ |                |
+ |                |
+ +----------------+
+
+(Internal representation)
+
+       TerminalTree
+            |
+         Terminal
+
+Focused
+ +-----------+----+
+ |            |   |
+ |            | I |
+ |    App     | N |
+ |            | F |
+ |            |   |
+ +-----------+----+
+
+Tiled
+ +----------------+
+ |        |  App  |
+ |        |       |
+ |  App   |-------|
+ |        |  App  |
+ |        |       |
+ +----------------+
+
+(Internal representation)
+
+       TerminalTree
+            |
+       VerticalSplit
+        /        \
+    Terminal   HorzSplit
+               /       \
+           Terminal  Terminal
