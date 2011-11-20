@@ -101,6 +101,7 @@ void NcursesTerminal::insert( unsigned char c ) {
 }
 
 void NcursesTerminal::sigwinch() {
+	/* XXX: Globalize this */
 	SDEBUG << "Sending WINCH" << this->childpid << std::endl;
 	pid_t pg = tcgetpgrp( this->pty );
 	kill( pg, SIGWINCH );
