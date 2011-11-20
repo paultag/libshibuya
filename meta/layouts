@@ -1,5 +1,3 @@
-
-
 Fullscreen
  +----------------+
  |                |
@@ -15,14 +13,7 @@ Fullscreen
             |
          Terminal
 
-Focused
- +-----------+----+
- |            |   |
- |            | I |
- |    App     | N |
- |            | F |
- |            |   |
- +-----------+----+
+
 
 Tiled
  +----------------+
@@ -35,10 +26,10 @@ Tiled
 
 (Internal representation)
 
-       TerminalTree
-            |
-       VerticalSplit
-        /        \
-    Terminal   HorzSplit
-               /       \
-           Terminal  Terminal
+          TerminalTree
+               |
+       VerticalSplitTerminal
+        /           \
+    Terminal   HorzSplitTerminal
+                  /       \
+              Terminal  Terminal
