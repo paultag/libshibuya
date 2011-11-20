@@ -82,7 +82,20 @@ void sighandle ( int signo ) {
 				<< " )" << std::endl;
 	}
 }
- 
+
+void interface_console() {
+	int maxRow = 0;
+	int maxCol = 0;
+	
+	getmaxyx(stdscr, maxRow, maxCol);
+	
+	Pane p( (maxCol - 2), (maxRow - 2), 1, 1);
+	p.focus();
+	update_screen();
+	
+	char c = wgetch(p.getWindow());
+}
+
 int main ( int argc, char ** argv ) {
 	set_clog();    // XXX: This is ugly
 	init_screen();
@@ -111,6 +124,8 @@ int main ( int argc, char ** argv ) {
 				if ( ch == 0x05 ) {
 					/* 0x05 is ENQ - let's use it for our special sequence. */
 					SDEBUG << "Ctrl+e called. Let's interface." << std::endl;
+					interface_console();
+					update_screen();
 				} else {
 					nt.type(ch);
 				}

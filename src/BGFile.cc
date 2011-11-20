@@ -30,8 +30,6 @@ std::vector<std::string> * get_bg_vector( const char * fd ) {
 	std::string line;
 	std::ifstream myfile(fd);
 	
-	SDEBUG << "BG fd: " << fd << std::endl;
-	
 	std::vector<std::string> * bg = new std::vector<std::string>();
 	
 	if (myfile.is_open()) {

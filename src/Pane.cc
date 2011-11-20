@@ -34,15 +34,15 @@ Pane::Pane(int width, int height, int x, int y) {
 	this->height = height;
 	this->width  = width;
 	this->win = newwin(height, width, y, x);
-	
-	/* XXX: flagize this */
-	keypad(this->win, true);
-	
 	this->pan = new_panel(this->win);
+	/* XXX: flagize this */
+	// keypad(this->win, true);
 }
 
 Pane::~Pane() {
 	SDEBUG << "Pane Destructor" << std::endl;
+	delwin(this->getWindow());
+	del_panel(this->pan);
 }
 
 void Pane::focus() {
