@@ -45,8 +45,8 @@ class Terminal {
 		
 		unsigned char   cMode;
 
-		pid_t  pty;
-		pid_t  childpid;
+		pid_t pty;
+		pid_t childpid;
 
 		void erase_to_from( int iX, int iY, int tX, int tY );
 		void newline();

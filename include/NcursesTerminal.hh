@@ -48,6 +48,8 @@ class NcursesTerminal : public ANSITerminal {
 		void resize( int x, int y );
 		void move_to( int x, int y );
 		
+		void sigwinch();
+		
 		void insert( unsigned char c );
 };
 

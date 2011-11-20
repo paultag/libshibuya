@@ -128,6 +128,7 @@ void Terminal::scroll_down() {
 }
 
 void Terminal::sigint() {
+	SDEBUG << "Sending SIGINT" << std::endl;
 	this->type( 0x03 );
 }
 

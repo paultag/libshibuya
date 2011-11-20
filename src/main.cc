@@ -83,6 +83,8 @@ void sighandle ( int signo ) {
 	}
 }
 
+NcursesTerminal * focusedTerminal;
+
 void interface_console() {
 	int maxRow = 0;
 	int maxCol = 0;
@@ -93,14 +95,15 @@ void interface_console() {
 	p->focus();
 	p->setTitle("Menu");
 	
-	mvwaddch( p->getWindow(), 2, 4, 'A' );
-	
 	while ( true ) {
 		p->render_frame();
 		update_screen();
 		
 		char c = wgetch(p->getWindow());
 		switch ( c ) {
+			case 'a':
+				focusedTerminal->resize( 100, 30 );
+				/* No break, we want to quit after this */
 			case 'q':
 				delete p;
 				update_screen();
@@ -116,8 +119,9 @@ int main ( int argc, char ** argv ) {
 	
 	NcursesTerminal nt( 80, 25, 3, 2 );
 	nt.fork("/bin/bash");
-	toDump = &nt;
-
+	toDump          = &nt;
+	focusedTerminal = &nt;
+	
 	bg = get_bg_vector( argv[1] );
 	draw_background();
 	

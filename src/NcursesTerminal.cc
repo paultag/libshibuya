@@ -100,6 +100,12 @@ void NcursesTerminal::insert( unsigned char c ) {
 	ANSITerminal::insert( c );
 }
 
+void NcursesTerminal::sigwinch() {
+	SDEBUG << "Sending WINCH" << this->childpid << std::endl;
+	pid_t pg = tcgetpgrp( this->pty );
+	kill( pg, SIGWINCH );
+	SDEBUG << "Sent SIGWINCH to child" << std::endl;
+}
 
 void NcursesTerminal::resize( int x, int y ) {
 	TerminalCell * tcTmp =
@@ -133,7 +139,7 @@ void NcursesTerminal::resize( int x, int y ) {
 	this->tainted = true;
 	
 	/* Now, let's tell the process group what's up */
-	kill( -(this->childpid), SIGWINCH );
+	this->sigwinch();
 }
 
 void NcursesTerminal::move_to( int x, int y ) {
