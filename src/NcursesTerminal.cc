@@ -65,7 +65,6 @@ bool NcursesTerminal::render( WINDOW * win ) {
 		return false;
 	
 	SDEBUG << "Tainted display. Rendering window" << std::endl;
-	
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	wattron(win, COLOR_PAIR(2));
 	box(win, 0, 0);
@@ -134,11 +133,12 @@ void NcursesTerminal::resize( int x, int y ) {
 	
 	free( this->chars );
 	this->chars = tcTmp;
-	
 	this->width  = x;
 	this->height = y;
-	
 	this->pane->resize( ( x + 2 ), (y + 2) );
-	
 	this->tainted = true;
+}
+
+void NcursesTerminal::move_to( int x, int y ) {
+	this->pane->move_to( x, y );
 }

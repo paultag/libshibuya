@@ -111,8 +111,10 @@ int main ( int argc, char ** argv ) {
 				
 				if ( ch == 'G' ) {
 					nt.resize( 100, 25 );
+					nt.move_to( 4, 2 );
 				} else if ( ch == 'A' ) {
 					nt.resize( 75, 25 );
+					nt.move_to( 10, 2 );
 				} else if ( ch < 128 ) {
 					nt.type(ch);
 				}
