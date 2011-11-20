@@ -44,6 +44,7 @@ class NcursesTerminal : public ANSITerminal {
 		
 		bool render();
 		bool render(WINDOW * window);
+		void resize( int x, int y );
 		
 		void insert( unsigned char c );
 };

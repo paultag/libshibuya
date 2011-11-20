@@ -58,8 +58,8 @@ void Pane::resize( int width, int height ) {
 	replace_panel(this->pan, temp_win);
 	this->win = temp_win;
 	delwin(old_win);
-	this->x = width;
-	this->y = height;
+	this->width  = width;
+	this->height = height;
 }
 
 WINDOW * Pane::getWindow() {

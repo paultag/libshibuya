@@ -24,6 +24,7 @@
 #include "Shibuya.hh"
 
 #include <iostream>
+#include <malloc.h>
 
 NcursesTerminal::NcursesTerminal() {
 	SDEBUG << "Default ncurses Constructor" << std::endl;
@@ -56,8 +57,7 @@ void NcursesTerminal::_init_NcursesTerminal(
 	int x,
 	int y
 ) {
-	this->pane = new Pane(
-		(width + 2), (height + 2), x, y);
+	this->pane = new Pane((width + 2), (height + 2), x, y);
 }
 
 bool NcursesTerminal::render( WINDOW * win ) {
@@ -102,9 +102,43 @@ bool NcursesTerminal::render() {
 }
 
 void NcursesTerminal::insert( unsigned char c ) {
-	
-	SDEBUG << "Inserting: " << (int)c << std::endl;
-	
+	// SDEBUG << "Inserting: " << (int)c << std::endl;
 	this->tainted = true;
 	ANSITerminal::insert( c );
+}
+
+
+void NcursesTerminal::resize( int x, int y ) {
+	TerminalCell * tcTmp =
+		(TerminalCell*) malloc(sizeof(TerminalCell) * (x * y));
+	
+	/* Let's do some costly allocation */
+	
+	for ( int i = 0; i < ( x * y ); ++i ) {
+		tcTmp[i].ch   = ' ';
+		tcTmp[i].attr = 0x70;
+	}
+	
+	/* And, now, let's copy over stuff in-range. */
+	
+	int resizeXMin = ( x < this->width )  ? x : this->width;
+	int resizeYMin = ( y < this->height ) ? y : this->height;
+	
+	for ( int ix = 0; ix < resizeXMin; ++ix ) {
+		for ( int iy = 0; iy < resizeYMin; ++iy ) {
+			int hostOffset = GET_OFFSET( ix, iy );
+			int nextOffset = (( y * iy ) + ix );
+			tcTmp[nextOffset] = this->chars[hostOffset];
+		}
+	}
+	
+	free( this->chars );
+	this->chars = tcTmp;
+	
+	this->width  = x;
+	this->height = y;
+	
+	this->pane->resize( ( x + 2 ), (y + 2) );
+	
+	this->tainted = true;
 }

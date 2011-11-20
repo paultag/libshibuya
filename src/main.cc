@@ -108,7 +108,12 @@ int main ( int argc, char ** argv ) {
 			int ch = getch();
 
 			if ( ch != ERR ) {
-				if ( ch < 128 ) {
+				
+				if ( ch == 'G' ) {
+					nt.resize( 100, 25 );
+				} else if ( ch == 'A' ) {
+					nt.resize( 75, 25 );
+				} else if ( ch < 128 ) {
 					nt.type(ch);
 				}
 			}
