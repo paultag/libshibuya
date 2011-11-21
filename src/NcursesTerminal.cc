@@ -104,8 +104,13 @@ void NcursesTerminal::sigwinch() {
 	/* XXX: Globalize this */
 	SDEBUG << "Sending WINCH" << this->childpid << std::endl;
 	pid_t pg = tcgetpgrp( this->pty );
+	TerminalSize ts = { 0, 0, 0, 0 };
+	ts.ws_row = this->height;
+	ts.ws_col = this->width;
+	int r = ioctl(this->pty, TIOCSWINSZ, (char *)&ts);
+	/* This pseudo code taken from xterm. */
 	kill( pg, SIGWINCH );
-	SDEBUG << "Sent SIGWINCH to child" << std::endl;
+	SDEBUG << "Sent SIGWINCH to child. IO output is: " << r << std::endl;
 }
 
 void NcursesTerminal::resize( int x, int y ) {

@@ -36,8 +36,8 @@ Pane::Pane(int width, int height, int x, int y) {
 	this->win = newwin(height, width, y, x);
 	this->pan = new_panel(this->win);
 	this->title = "Default Title";
-	/* XXX: flagize this */
-	// keypad(this->win, true);
+	/* XXX: flagize this
+	keypad(this->win, true); */
 }
 
 Pane::~Pane() {

@@ -29,6 +29,13 @@
 #include <ansiescape.hh>
 #include <ncurses.h>
 
+typedef struct _TerminalSize {
+        unsigned short  ws_row;         /* rows, in characters */
+        unsigned short  ws_col;         /* columns, in characters */
+        unsigned short  ws_xpixel;      /* horizontal size, pixels */
+        unsigned short  ws_ypixel;      /* vertical size, pixels */
+} TerminalSize;
+
 class NcursesTerminal : public ANSITerminal {
 	protected:
 		Pane * pane;

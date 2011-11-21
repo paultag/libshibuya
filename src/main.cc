@@ -129,7 +129,7 @@ int main ( int argc, char ** argv ) {
 	signal( SIGTERM, sighandle );
 	signal( SIGINT,  sighandle );
 	signal( SIGWINCH, sighandle );
-
+	
 	try {
 		while ( true ) {
 			nt.poke();
@@ -137,7 +137,7 @@ int main ( int argc, char ** argv ) {
 				update_screen();
 			timeout(0);
 			int ch = getch();
-
+			
 			if ( ch != ERR ) {
 				if ( ch == 0x05 ) {
 					/* 0x05 is ENQ - let's use it for our special sequence. */
