@@ -23,6 +23,7 @@ for x in `ls tests/*`; do
 			rm ./diffpool/$x.debug.log
 		fi
 	fi
+	sleep 0.1
 done
 
 if [ "x$PFAIL" == "x" ]; then
