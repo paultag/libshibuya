@@ -102,12 +102,19 @@ void NcursesTerminal::insert( unsigned char c ) {
 
 void NcursesTerminal::sigwinch() {
 	/* XXX: Globalize this */
-	SDEBUG << "Sending WINCH" << this->childpid << std::endl;
+	SDEBUG << "Sending WINCH " << this->childpid << std::endl;
 	pid_t pg = tcgetpgrp( this->pty );
 	TerminalSize ts = { 0, 0, 0, 0 };
-	ts.ws_row = this->height;
-	ts.ws_col = this->width;
-	int r = ioctl(this->pty, TIOCSWINSZ, (char *)&ts);
+	
+	ts.ws_row    = this->height;
+	ts.ws_col    = this->width;
+	ts.ws_xpixel = this->height;
+	ts.ws_ypixel = this->width;
+	
+	this->scroll_frame_bottom = this->height;
+	this->scroll_frame_top    = 0;
+	
+	int r = ioctl(this->pty, TIOCSWINSZ, (char * )&ts);
 	/* This pseudo code taken from xterm. */
 	kill( pg, SIGWINCH );
 	SDEBUG << "Sent SIGWINCH to child. IO output is: " << r << std::endl;
@@ -129,10 +136,14 @@ void NcursesTerminal::resize( int x, int y ) {
 	int resizeXMin = ( x < this->width )  ? x : this->width;
 	int resizeYMin = ( y < this->height ) ? y : this->height;
 	
-	for ( int ix = 0; ix < resizeXMin; ++ix ) {
-		for ( int iy = 0; iy < resizeYMin; ++iy ) {
+	SDEBUG << "Limiting XY: " << resizeXMin << ", " << resizeYMin << std::endl;
+	
+	for ( int iy = 0; iy < this->height; ++iy ) {
+		for ( int ix = 0; ix < this->width; ++ix ) {
 			int hostOffset = GET_OFFSET( ix, iy );
-			int nextOffset = (( y * iy ) + ix );
+			int nextOffset = (( x * iy ) + ix );
+			SDEBUG << "XY: " << ix << "/" << iy << " -- " <<
+				hostOffset << ", " << nextOffset << std::endl;
 			tcTmp[nextOffset] = this->chars[hostOffset];
 		}
 	}
