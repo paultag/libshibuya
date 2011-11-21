@@ -29,13 +29,28 @@ unsigned int shibuya_object_sequence = 1;
 ShibuyaObject::ShibuyaObject() {
 	this->_shibuya_id = shibuya_object_sequence;
 	shibuya_object_sequence++;
-	SDEBUG << "[alloc] " << this->_shibuya_id << " C" << std::endl;
+	SDEBUG << "[alloc] " << this->_shibuya_id << " C OBJ" << std::endl;
+}
+
+ShibuyaExceptionObject::ShibuyaExceptionObject() {
+	this->_shibuya_id = shibuya_object_sequence;
+	shibuya_object_sequence++;
+	SDEBUG << "[alloc] " << this->_shibuya_id << " C EXO" << std::endl;
 }
 
 ShibuyaObject::~ShibuyaObject() {
-	SDEBUG << "[alloc] " << this->_shibuya_id << " D" << std::endl;
+	SDEBUG << "[alloc] " << this->_shibuya_id << " D OBJ" << std::endl;
+}
+
+ShibuyaExceptionObject::~ShibuyaExceptionObject() throw() {
+	SDEBUG << "[alloc] " << this->_shibuya_id << " D EXO" << std::endl;
 }
 
 void ShibuyaObject::log( String s ) {
 	SDEBUG << "[logms] " << this->_shibuya_id << " " << s << std::endl;
+}
+
+
+const char * ShibuyaExceptionObject::what() const throw() {
+	return "Default ShibuyaObject Superclass Exception";
 }

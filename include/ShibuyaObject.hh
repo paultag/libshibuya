@@ -26,6 +26,7 @@
 #include "Shibuya.hh"
 
 #include <string>
+#include <exception>
 
 class ShibuyaObject {
 	private:
@@ -34,6 +35,15 @@ class ShibuyaObject {
 		ShibuyaObject();
 		~ShibuyaObject();
 		virtual void log( String s );
+};
+
+class ShibuyaExceptionObject : public std::exception {
+	private:
+		unsigned int _shibuya_id;
+	public:
+		ShibuyaExceptionObject();
+		~ShibuyaExceptionObject() throw();
+		virtual const char * what() const throw();
 };
 
 #endif
