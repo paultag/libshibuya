@@ -34,7 +34,6 @@
 #include "Shibuya.hh"
 
 void Terminal::_init_Terminal(int width, int height) {
-	SDEBUG << "Terminal Init" << std::endl;
 	this->width  = width;
 	this->height = height;
 	this->cX     = 0;
@@ -49,7 +48,6 @@ void Terminal::_init_Terminal(int width, int height) {
 }
 
 Terminal::~Terminal() {
-	SDEBUG << "Terminal destructor" << std::endl;
 	free( this->chars );
 }
 
@@ -68,10 +66,6 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 	to = ( ( this->height * this->width ) < to ) ?
 		((this->height * this->width) - 1) : to ;
 	/* Very needed bounds checking. */
-
-	SDEBUG << "Erasing from/to: " << iX << ", " << iY << "(" << from
-		<< ") -> " << tX << ", " << tY
-		<< "(" << to << ")" << std::endl;
 
 	for ( int i = from; i <= to; ++i ) {
 		this->chars[i].ch   = ' ';
@@ -130,7 +124,6 @@ void Terminal::scroll_down() {
 }
 
 void Terminal::sigint() {
-	SDEBUG << "Sending SIGINT" << std::endl;
 	this->type( 0x03 );
 }
 
@@ -182,38 +175,36 @@ void Terminal::poke() {
 		case -1:
 			/* Otherwise, it returns -1 and sets errno to one of the following
 			 * values */
-			SDEBUG << "Error in PID wait." << std::endl;
+			this->log( "Error in PID wait." );
 			switch ( errno ) {
 				case ECHILD:
 					/* The process or process group specified by pid does not
 					 * exist or is not a child of the calling process. */
-					SDEBUG << " => pid (" << this->childpid <<
-						") does not exist." << std::endl;
+					this->log( "PID Does not exist" );
 					break;
 				case EFAULT:
 					/* stat_loc is not a writable address. */
-					SDEBUG << " => pid is out of our segment" << std::endl;
+					this->log( "stat_loc is out out our segment" );
 					break;
 				case EINTR:
 					/* The function was interrupted by a signal. The value of
 					 * the location pointed to by stat_loc is undefined. */
-					SDEBUG << " => wait() hit with a signal" << std::endl;
+					this->log( "We've hit some sort of signal." );
 					break;
 				case EINVAL:
 					/* The options argument is not valid. */
-					SDEBUG << " => wait() arguments not valid" << std::endl;
+					this->log( "EINVAL (arguments suck)" );
 					break;
 				case ENOSYS:
 					/* pid specifies a process group (0 or less than -1), which
 					 * is not currently supported. */
-					SDEBUG << " => pid is less then 1" << std::endl;
+					this->log( "PID is less then one (process group)" );
 					break;
 			}
 			break;
 		default:
 			/* Our child died :'( */
-			SDEBUG << "Child PID: " << this->childpid << " has died."
-				<< std::endl;
+			this->log( "Our child has died." );
 			throw new DeadChildException();
 			// ^^ This will force whatever else to clean up the mess
 			//                       ( if you will pardon the term )
@@ -249,13 +240,10 @@ void Terminal::insert( unsigned char c ) {
 			this->newline();
 			break;
 		case 8: /* Backspace */
-			SDEBUG << "Backspace " << this->cX << " -> ";
 			if ( this->cX > 0 )
 				--this->cX;
-			SDEBUG << this->cX << std::endl;
 			break;
 		case 9: /* Tab */
-			SDEBUG << "TAB!" << std::endl;
 			while ( ( this->cX % 8 ) != 0 )
 				this->insert(' ');
 			break;
@@ -285,7 +273,6 @@ void Terminal::insert( unsigned char c ) {
 }
 
 void Terminal::type( char c ) {
-	SDEBUG << "Writing: " << (int)c << std::endl;
 	write(this->pty, &c, 1);
 }
 

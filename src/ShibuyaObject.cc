@@ -37,5 +37,5 @@ ShibuyaObject::~ShibuyaObject() {
 }
 
 void ShibuyaObject::log( String s ) {
-	SDEBUG << "[logms] " << s << std::endl;
+	SDEBUG << "[logms] " << this->_shibuya_id << " " << s << std::endl;
 }

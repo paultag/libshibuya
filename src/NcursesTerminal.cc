@@ -28,21 +28,18 @@
 #include <signal.h>
 
 NcursesTerminal::NcursesTerminal() {
-	SDEBUG << "Default ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(80, 25, 0, 0);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( 80, 25 );
 }
 
 NcursesTerminal::NcursesTerminal( int width, int height ) {
-	SDEBUG << "Width / Height ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(width, height, 0, 0);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
 }
 
 NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
-	SDEBUG << "Width / Height / x / y ncurses Constructor" << std::endl;
 	this->_init_NcursesTerminal(width, height, x, y);
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
@@ -51,14 +48,12 @@ NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
 void NcursesTerminal::_init_NcursesTerminal(
 	int width, int height, int x, int y
 ) {
-	SDEBUG << "ncurses init" << std::endl;
 	this->pane = new Pane((width + 2), (height + 2), x, y);
 	this->pane->setTitle( "Terminal ID: (" + this->pane->getId() + ")" );
 	this->tainted = true;
 }
 
 NcursesTerminal::~NcursesTerminal() {
-	SDEBUG << "ncurses terminal destructor" << std::endl;
 	delete this->pane;
 }
 
@@ -66,7 +61,6 @@ bool NcursesTerminal::render( WINDOW * win ) {
 	if ( ! this->tainted )
 		return false;
 
-	SDEBUG << "Tainted display. Rendering window" << std::endl;
 	
 	this->pane->render_frame();
 	
@@ -98,14 +92,12 @@ bool NcursesTerminal::render() {
 }
 
 void NcursesTerminal::insert( unsigned char c ) {
-	// SDEBUG << "Inserting: " << (int)c << std::endl;
 	this->tainted = true;
 	ANSITerminal::insert( c );
 }
 
 void NcursesTerminal::sigwinch() {
 	/* XXX: Globalize this */
-	SDEBUG << "Sending WINCH " << this->childpid << std::endl;
 	pid_t pg = tcgetpgrp( this->pty );
 	TerminalSize ts = { 0, 0, 0, 0 };
 	
@@ -117,10 +109,9 @@ void NcursesTerminal::sigwinch() {
 	this->scroll_frame_bottom = this->height;
 	this->scroll_frame_top    = 0;
 	
-	int r = ioctl(this->pty, TIOCSWINSZ, (char * )&ts);
+	ioctl(this->pty, TIOCSWINSZ, (char * )&ts);
 	/* This pseudo code taken from xterm. */
 	kill( pg, SIGWINCH );
-	SDEBUG << "Sent SIGWINCH to child. IO output is: " << r << std::endl;
 }
 
 void NcursesTerminal::resize( int x, int y ) {
@@ -140,14 +131,10 @@ void NcursesTerminal::resize( int x, int y ) {
 	int resizeXMin = ( x < this->width )  ? x : this->width;
 	int resizeYMin = ( y < this->height ) ? y : this->height;
 	
-	SDEBUG << "Limiting XY: " << resizeXMin << ", " << resizeYMin << std::endl;
-	
 	for ( int iy = 0; iy < resizeYMin; ++iy ) {
 		for ( int ix = 0; ix < resizeXMin; ++ix ) {
 			int hostOffset = GET_OFFSET( ix, iy );
 			int nextOffset = (( x * iy ) + ix );
-			SDEBUG << "XY: " << ix << "/" << iy << " -- " <<
-				hostOffset << ", " << nextOffset << std::endl;
 			tcTmp[nextOffset] = this->chars[hostOffset];
 		}
 	} */

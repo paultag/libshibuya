@@ -43,9 +43,6 @@ std::vector<std::string> * get_bg_vector( const char * fd ) {
 }
 
 void write_out_bg( std::vector<std::string> * boo ) {
-	
-	SDEBUG << "Writing out the BG" << std::endl;
-	
 	if ( boo == NULL )
 		return;
 	

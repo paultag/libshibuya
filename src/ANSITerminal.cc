@@ -29,41 +29,27 @@
 #include "Shibuya.hh"
 
 ANSITerminal::ANSITerminal() {
-	SDEBUG << "Default ANSI Constructor" << std::endl;
 	this->_init_ANSITerminal();
 	this->_init_Terminal( 80, 25 );
 }
 ANSITerminal::ANSITerminal( int width, int height ) {
-	SDEBUG << "Width / Height ANSI Constructor" << std::endl;
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
 }
 ANSITerminal::~ANSITerminal() {
-	SDEBUG << "ANSI Destructor" << std::endl;
 }
 
 void ANSITerminal::_init_ANSITerminal() {
-	SDEBUG << "ANSI Init" << std::endl;
 	ansi_escape_parser_reset();
 }
 
 void ANSITerminal::_handle_private_escape( ansi_sequence * last ) {
-	SDEBUG << "Rcvd a private mode CSI: " << last->priv << std::endl;
-	for ( unsigned int i = 0; i < last->values->size(); ++i )
-		SDEBUG << "  " << last->values->at(i) << std::endl;
-	SDEBUG << "  Mode: " << last->mode << std::endl;
+	this->log( "Ignoring a private-mode ANSI sequence." );
 }
 
 void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 	char mode               = last->mode;
 	std::vector<int> * seqs = last->values;
-
-	if ( last->priv )
-		SDEBUG << last->priv << ", ";
-	SDEBUG << last->mode << ": ";
-	for ( unsigned int i = 0; i < seqs->size(); ++i )
-		SDEBUG << seqs->at(i) << ", ";
-	SDEBUG << std::endl;
 
 	int move_steps =  1;
 	int nRow       = -1;
@@ -149,7 +135,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						/* bold global attr */
 						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) == 0 ) {
 							this->cMode += SHIBUYA_ATTR_BOLD;
-							SDEBUG << "Set the bold bit" << std::endl;
 						}
 						break;
 					case 0:
@@ -163,7 +148,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						/* Now that the flags are unset, let's set them again */
 						this->cMode += ((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
 						/* Great. All set. */
-						SDEBUG << "FG: " << SHIBUYA_ATTR_GET_FG(this->cMode) << std::endl;
 					break;
 					default:
 						/* Unknown m sequence id */
@@ -190,9 +174,6 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			
 			this->cX = 0;
 			this->cY = nTop;
-			
-			SDEBUG << "rTop / rBottom: "
-				<< nTop << ", " << nBottom << std::endl;
 			
 			break;
 		case CSI_CUP:
@@ -259,7 +240,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		default:
-			SDEBUG << "(Unhandled)" << std::endl;
+			this->log( "Hit an unhandled bit" );
 			break;
 	}
 	
