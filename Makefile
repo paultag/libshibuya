@@ -5,10 +5,12 @@ clean:
 	cd src/ && make clean
 	rm -rf bin/*
 
-test: all
+all-dbg:
+	cd src/ && make DEBUG=YES
+
+test: all-dbg
 	cd tests && ./run.sh
 
-debug:
-	cd src/ && make DEBUG=YES
+debug: all-dbg
 	valgrind --tool=memcheck --leak-check=full ./bin/shibuya 2>valgrind.debug.log
 	./meta/alloc.py < ./shibuya.debug.log
