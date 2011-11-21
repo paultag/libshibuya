@@ -21,8 +21,8 @@
  */
 
 #include "NcursesTerminal.hh"
-#include "Shibuya.hh"
 #include "Exceptions.hh"
+#include "Shibuya.hh"
 #include "BGFile.hh"
 
 #include <iostream>
@@ -38,7 +38,6 @@ void sighandle ( int signo ) {
 		case SIGUSR1:
 			if ( ! toDump )
 				return;
-			
 			for ( int iy = 0; iy < toDump->get_height(); ++iy ) {
 				for ( int ix = 0; ix < toDump->get_width(); ++ix ) {
 					int offset = ( toDump->get_width() * iy ) + ix;
@@ -67,16 +66,16 @@ void sighandle ( int signo ) {
 }
 
 int main ( int argc, char ** argv ) {
-	set_clog();    // XXX: This is ugly
+	set_clog();
 	init_screen();
 	
 	NcursesTerminal nt( 80, 25, 3, 2 );
 	nt.fork("/bin/bash");
-	toDump          = &nt;
+	toDump = &nt;
 	
-	signal( SIGUSR1, sighandle );
-	signal( SIGTERM, sighandle );
-	signal( SIGINT,  sighandle );
+	signal( SIGUSR1,  sighandle );
+	signal( SIGTERM,  sighandle );
+	signal( SIGINT,   sighandle );
 	signal( SIGWINCH, sighandle );
 	
 	try {
@@ -95,7 +94,7 @@ int main ( int argc, char ** argv ) {
 					nt.type(ch);
 				}
 			} else {
-				usleep( 2000 );
+				usleep( 200 );
 			}
 		}
 	} catch ( DeadChildException * e ) {

@@ -23,6 +23,7 @@
 #include <ansiescape.hh>
 #include <ansicsi.hh>
 #include <iostream>
+#include <sstream>
 
 #include "ANSITerminal.hh"
 #include "Terminal.hh"
@@ -62,7 +63,13 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 		this->_handle_private_escape( last );
 		return; /* Don't drop to normal handlers */
 	}
-
+	
+	std::ostringstream oss;
+	oss << "Incoming mode: " << mode << " -- seqs follow: ";
+	for ( unsigned int i = 0; i < seqs->size(); ++i )
+		oss << seqs->at(i) << ", ";
+	this->log(oss.str());
+	
 	switch ( mode ) {
 		case CSI_CUU:
 		case CSI_CUD:
@@ -90,6 +97,20 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			this->log( "CHA Command issued" );
 			/* Moves the cursor to column n. */
 			this->cX = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
+			break;
+		case 'P': // XXX: Fixme
+			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 1;
+			for ( int j = 0; j < move_steps; ++j ) {
+				for ( unsigned int i = this->cX; i < this->width - 1; ++i ) {
+					int rootChar = GET_OFFSET( i, this->cY );
+					int remoChar = GET_OFFSET( i + 1, this->cY );
+					this->chars[rootChar].ch   = this->chars[remoChar].ch;
+					this->chars[rootChar].attr = this->chars[remoChar].attr;
+				}
+				this->chars[GET_OFFSET( this->width - 1, this->cY )].ch = ' ';
+				this->chars[GET_OFFSET( this->width - 1, this->cY )].attr =
+					SHIBUYA_DEFAULT_CMODE;
+			}
 			break;
 		case 'd': // XXX: Fixme
 			this->log( "'d' command issued" );

@@ -124,6 +124,7 @@ void Terminal::scroll_down() {
 }
 
 void Terminal::sigint() {
+	this->log( "SIGINT called" );
 	this->type( 0x03 );
 }
 
