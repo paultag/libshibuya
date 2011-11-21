@@ -32,7 +32,8 @@ class Pane {
 		WINDOW * win;
 		PANEL  * pan;
 		String   title;
-
+		String   sequenceID;
+		
 		int x;
 		int y;
 		int width;
@@ -41,10 +42,13 @@ class Pane {
 	public:
 		Pane(int width, int height, int x, int y);
 		~Pane();
+		
 		void focus();
 		void move_to( int x, int y );
 		void resize( int width, int height );
 		void render_frame();
+		
+		String getId();
 		
 		void setTitle( String s );
 		WINDOW * getWindow();

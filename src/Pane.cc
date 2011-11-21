@@ -24,7 +24,10 @@
 #include "Pane.hh"
 
 #include <iostream>
+#include <sstream>
 #include <panel.h>
+
+unsigned int sequence = 1;
 
 Pane::Pane(int width, int height, int x, int y) {
 	SDEBUG << "Pane constructor" << std::endl;
@@ -36,6 +39,9 @@ Pane::Pane(int width, int height, int x, int y) {
 	this->win = newwin(height, width, y, x);
 	this->pan = new_panel(this->win);
 	this->title = "Default Title";
+	std::stringstream newID;
+	newID << sequence;
+	this->sequenceID = newID.str();
 	/* XXX: flagize this
 	keypad(this->win, true); */
 }
@@ -62,6 +68,10 @@ void Pane::render_frame() {
 		((this->width / 2) - (t.length() / 2)), t.c_str());
 	wattroff( win, COLOR_PAIR(2));
 
+}
+
+String Pane::getId() {
+	return this->sequenceID;
 }
 
 void Pane::move_to(int x, int y) {

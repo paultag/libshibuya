@@ -52,7 +52,7 @@ void NcursesTerminal::_init_NcursesTerminal(
 	int width, int height, int x, int y
 ) {
 	this->pane = new Pane((width + 2), (height + 2), x, y);
-	this->pane->setTitle( "Terminal ID: (1)" );
+	this->pane->setTitle( "Terminal ID: (" + this->pane->getId() + ")" );
 }
 
 NcursesTerminal::~NcursesTerminal() {
@@ -133,7 +133,7 @@ void NcursesTerminal::resize( int x, int y ) {
 	
 	/* And, now, let's copy over stuff in-range. */
 	/* XXX: Fix this when the cX / cY stuff is fixed.
-
+	
 	int resizeXMin = ( x < this->width )  ? x : this->width;
 	int resizeYMin = ( y < this->height ) ? y : this->height;
 	
