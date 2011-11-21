@@ -90,7 +90,6 @@ int main ( int argc, char ** argv ) {
 			if ( ch != ERR ) {
 				if ( ch == 0x05 ) {
 					/* 0x05 is ENQ - let's use it for our special sequence. */
-					SDEBUG << "Ctrl+e called. Let's interface." << std::endl;
 					nt.resize( 100, 30 );
 				} else {
 					nt.type(ch);
@@ -101,7 +100,6 @@ int main ( int argc, char ** argv ) {
 		}
 	} catch ( DeadChildException * e ) {
 		delete e;
-		SDEBUG << "Dead child. Exiting." << std::endl;
 	}
 	uninit_screen();
 }
