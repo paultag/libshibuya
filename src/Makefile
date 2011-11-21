@@ -2,9 +2,12 @@ CXX=g++
 
 ifdef DEBUG
 DEBUG_PHRASE=-DSHIBUYA_DEBUG=YES
+OPT_FLAGS=-O0 -g
+else
+OPT_FLAGS=-O2
 endif
 
-CFLAGS=-Wall $(DEBUG_PHRASE)
+CFLAGS=-Wall $(OPT_FLAGS) $(DEBUG_PHRASE)
 LDFLAGS=-lncurses -lpanel -lutil -lansiescape
 BIN=../bin/
 INC=../include/

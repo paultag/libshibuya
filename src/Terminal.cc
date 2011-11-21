@@ -274,7 +274,9 @@ void Terminal::insert( unsigned char c ) {
 }
 
 void Terminal::type( char c ) {
-	write(this->pty, &c, 1);
+	ssize_t foo = write(this->pty, &c, 1);
+	/* well, shit. */
+	foo += 1;
 }
 
 void Terminal::newline() {
