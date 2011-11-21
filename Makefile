@@ -9,5 +9,5 @@ test: all
 	cd tests && ./run.sh
 
 debug: all
-	valgrind ./bin/shibuya 2>valgrind.debug.log
+	valgrind --leak-check=full ./bin/shibuya 2>valgrind.debug.log
 	./meta/alloc.py < ./shibuya.debug.log
