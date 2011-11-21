@@ -43,6 +43,7 @@ ANSITerminal::~ANSITerminal() {
 }
 
 void ANSITerminal::_init_ANSITerminal() {
+	SDEBUG << "ANSI Init" << std::endl;
 	ansi_escape_parser_reset();
 }
 

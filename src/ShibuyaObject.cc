@@ -20,40 +20,22 @@
  * THE SOFTWARE.
  */
 
-#ifndef _PANE_HH_
-#define _PANE_HH_ FOO
-
 #include "ShibuyaObject.hh"
-#include "Shibuya.hh"
 
-#include <panel.h>
-#include <string>
+#include <iostream>
 
-class Pane : public ShibuyaObject {
-	private:
-		WINDOW * win;
-		PANEL  * pan;
-		String   title;
-		String   sequenceID;
-		
-		int x;
-		int y;
-		int width;
-		int height;
+unsigned int shibuya_object_sequence = 1;
 
-	public:
-		Pane(int width, int height, int x, int y);
-		~Pane();
-		
-		void focus();
-		void move_to( int x, int y );
-		void resize( int width, int height );
-		void render_frame();
-		
-		String getId();
-		
-		void setTitle( String s );
-		WINDOW * getWindow();
-};
+ShibuyaObject::ShibuyaObject() {
+	this->_shibuya_id = shibuya_object_sequence;
+	shibuya_object_sequence++;
+	SDEBUG << "[alloc] " << this->_shibuya_id << " C" << std::endl;
+}
 
-#endif
+ShibuyaObject::~ShibuyaObject() {
+	SDEBUG << "[alloc] " << this->_shibuya_id << " D" << std::endl;
+}
+
+void ShibuyaObject::log( String s ) {
+	SDEBUG << "[logms] " << s << std::endl;
+}

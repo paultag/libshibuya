@@ -20,40 +20,20 @@
  * THE SOFTWARE.
  */
 
-#ifndef _PANE_HH_
-#define _PANE_HH_ FOO
+#ifndef _SHIBUYAOBJECT_HH_
+#define _SHIBUYAOBJECT_HH_ foo
 
-#include "ShibuyaObject.hh"
 #include "Shibuya.hh"
 
-#include <panel.h>
 #include <string>
 
-class Pane : public ShibuyaObject {
+class ShibuyaObject {
 	private:
-		WINDOW * win;
-		PANEL  * pan;
-		String   title;
-		String   sequenceID;
-		
-		int x;
-		int y;
-		int width;
-		int height;
-
+		unsigned int _shibuya_id;
 	public:
-		Pane(int width, int height, int x, int y);
-		~Pane();
-		
-		void focus();
-		void move_to( int x, int y );
-		void resize( int width, int height );
-		void render_frame();
-		
-		String getId();
-		
-		void setTitle( String s );
-		WINDOW * getWindow();
+		ShibuyaObject();
+		~ShibuyaObject();
+		virtual void log( String s );
 };
 
 #endif

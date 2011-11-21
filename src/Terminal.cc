@@ -34,6 +34,7 @@
 #include "Shibuya.hh"
 
 void Terminal::_init_Terminal(int width, int height) {
+	SDEBUG << "Terminal Init" << std::endl;
 	this->width  = width;
 	this->height = height;
 	this->cX     = 0;
@@ -48,8 +49,8 @@ void Terminal::_init_Terminal(int width, int height) {
 }
 
 Terminal::~Terminal() {
+	SDEBUG << "Terminal destructor" << std::endl;
 	free( this->chars );
-	/* This segfaults.... */
 }
 
 Terminal::Terminal() {
@@ -66,6 +67,7 @@ void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 
 	to = ( ( this->height * this->width ) < to ) ?
 		((this->height * this->width) - 1) : to ;
+	/* Very needed bounds checking. */
 
 	SDEBUG << "Erasing from/to: " << iX << ", " << iY << "(" << from
 		<< ") -> " << tX << ", " << tY
@@ -133,9 +135,7 @@ void Terminal::sigint() {
 }
 
 pid_t Terminal::fork( const char * command ) {
-
 	struct winsize ws;
-
 	ws.ws_row    = this->height;
 	ws.ws_col    = this->width;
 	ws.ws_xpixel = 0;

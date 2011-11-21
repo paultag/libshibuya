@@ -23,6 +23,8 @@
 #ifndef _TERMINAL_HH_
 #define _TERMINAL_HH_ foo
 
+#include "ShibuyaObject.hh"
+
 #include <pty.h>
 
 #define GET_OFFSET(x, y) ( ( y * this->width ) + x )
@@ -32,7 +34,7 @@ typedef struct _TerminalCell {
 	unsigned char ch;
 } TerminalCell;
 
-class Terminal {
+class Terminal : public ShibuyaObject {
 	protected:
 		int width;
 		int height;

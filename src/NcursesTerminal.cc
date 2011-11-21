@@ -51,6 +51,7 @@ NcursesTerminal::NcursesTerminal( int width, int height, int x, int y ) {
 void NcursesTerminal::_init_NcursesTerminal(
 	int width, int height, int x, int y
 ) {
+	SDEBUG << "ncurses init" << std::endl;
 	this->pane = new Pane((width + 2), (height + 2), x, y);
 	this->pane->setTitle( "Terminal ID: (" + this->pane->getId() + ")" );
 	this->tainted = true;
