@@ -91,7 +91,7 @@ int main ( int argc, char ** argv ) {
 				if ( ch == 0x05 ) {
 					/* 0x05 is ENQ - let's use it for our special sequence. */
 					nt.resize( 100, 30 );
-				} else {
+				} else if ( ch < 128 ) {
 					nt.type(ch);
 				}
 			} else {
