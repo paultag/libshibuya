@@ -102,7 +102,7 @@ void interface_console() {
 		char c = wgetch(p->getWindow());
 		switch ( c ) {
 			case 'a':
-				focusedTerminal->resize( 100, 30 );
+				focusedTerminal->resize( 80, 25 );
 				/* No break, we want to quit after this */
 			case 'q':
 				delete p;
@@ -117,7 +117,7 @@ int main ( int argc, char ** argv ) {
 	set_clog();    // XXX: This is ugly
 	init_screen();
 	
-	NcursesTerminal nt( 80, 25, 3, 2 );
+	NcursesTerminal nt( 100, 30, 3, 2 );
 	nt.fork("/bin/bash");
 	toDump          = &nt;
 	focusedTerminal = &nt;

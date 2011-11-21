@@ -52,7 +52,8 @@ void Terminal::_init_Terminal(int width, int height) {
 }
 
 Terminal::~Terminal() {
-	free( this->chars );
+	// free( this->chars );
+	/* This segfaults.... */
 }
 
 Terminal::Terminal() {

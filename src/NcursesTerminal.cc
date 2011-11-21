@@ -132,26 +132,31 @@ void NcursesTerminal::resize( int x, int y ) {
 	}
 	
 	/* And, now, let's copy over stuff in-range. */
-	
+	/* XXX: Fix this when the cX / cY stuff is fixed.
+
 	int resizeXMin = ( x < this->width )  ? x : this->width;
 	int resizeYMin = ( y < this->height ) ? y : this->height;
 	
 	SDEBUG << "Limiting XY: " << resizeXMin << ", " << resizeYMin << std::endl;
 	
-	for ( int iy = 0; iy < this->height; ++iy ) {
-		for ( int ix = 0; ix < this->width; ++ix ) {
+	for ( int iy = 0; iy < resizeYMin; ++iy ) {
+		for ( int ix = 0; ix < resizeXMin; ++ix ) {
 			int hostOffset = GET_OFFSET( ix, iy );
 			int nextOffset = (( x * iy ) + ix );
 			SDEBUG << "XY: " << ix << "/" << iy << " -- " <<
 				hostOffset << ", " << nextOffset << std::endl;
 			tcTmp[nextOffset] = this->chars[hostOffset];
 		}
-	}
+	} */
 	
 	free( this->chars );
 	this->chars = tcTmp;
 	this->width  = x;
 	this->height = y;
+	
+	this->cX = 0;
+	this->cY = 0;/* Handle this smarter? */
+	
 	this->pane->resize( ( x + 2 ), (y + 2) );
 	this->tainted = true;
 	
