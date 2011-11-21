@@ -70,6 +70,10 @@ int main ( int argc, char ** argv ) {
 	set_clog();    // XXX: This is ugly
 	init_screen();
 	
+
+	for ( int i = 0; i < 10; ++i )
+		new ANSITerminal();
+
 	NcursesTerminal nt( 80, 25, 3, 2 );
 	nt.fork("/bin/bash");
 	toDump          = &nt;
