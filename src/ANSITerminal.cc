@@ -33,10 +33,12 @@ ANSITerminal::ANSITerminal() {
 	this->_init_ANSITerminal();
 	this->_init_Terminal( 80, 25 );
 }
+
 ANSITerminal::ANSITerminal( int width, int height ) {
 	this->_init_ANSITerminal();
 	this->_init_Terminal( width, height );
 }
+
 ANSITerminal::~ANSITerminal() {
 }
 
@@ -101,7 +103,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 		case 'P': // XXX: Fixme
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 1;
 			for ( int j = 0; j < move_steps; ++j ) {
-				for ( unsigned int i = this->cX; i < this->width - 1; ++i ) {
+				for ( int i = this->cX; i < this->width - 1; ++i ) {
 					int rootChar = GET_OFFSET( i, this->cY );
 					int remoChar = GET_OFFSET( i + 1, this->cY );
 					this->chars[rootChar].ch   = this->chars[remoChar].ch;
@@ -172,9 +174,17 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					case 33: case 34: case 35:
 					case 36: case 37:
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
-						/* Now that the flags are unset, let's set them again */
-						this->cMode += ((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
-						/* Great. All set. */
+						this->cMode +=
+							((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
+						this->log("Set the foreground.");
+					break;
+					case 40: case 41: case 42:
+					case 43: case 44: case 45:
+					case 46: case 47:
+						this->cMode -= (this->cMode & SHIBUYA_ATTR_BG_MASK);
+						this->cMode +=
+							((seqs->at(i) - 40) << SHIBUYA_ATTR_BG_OFFSET);
+						this->log("Set the background.");
 					break;
 					default:
 						/* Unknown m sequence id */
