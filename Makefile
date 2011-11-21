@@ -8,6 +8,7 @@ clean:
 test: all
 	cd tests && ./run.sh
 
-debug: all
+debug:
+	cd src/ && make DEBUG=YES
 	valgrind --tool=memcheck --leak-check=full ./bin/shibuya 2>valgrind.debug.log
 	./meta/alloc.py < ./shibuya.debug.log

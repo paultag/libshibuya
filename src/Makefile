@@ -1,7 +1,10 @@
 CXX=g++
 
-CFLAGS=-Wall -DSHIBUYA_DEBUG=YES
-#            ^^^^^^^^^^^^^^^^^^^ Undefine for release
+ifdef DEBUG
+DEBUG_PHRASE=-DSHIBUYA_DEBUG=YES
+endif
+
+CFLAGS=-Wall $(DEBUG_PHRASE)
 LDFLAGS=-lncurses -lpanel -lutil -lansiescape
 BIN=../bin/
 INC=../include/
