@@ -33,17 +33,6 @@
 
 NcursesTerminal * toDump = NULL;
 
-std::vector<std::string> * bg = NULL;
-
-void draw_background() {
-	init_pair(1, COLOR_RED, COLOR_BLACK);
-	attron(COLOR_PAIR(1));
-	attron(A_BOLD);
-	write_out_bg( bg );
-	attroff(COLOR_PAIR(1));
-	attroff(A_BOLD);
-}
-
 void sighandle ( int signo ) {
 	switch ( signo ) {
 		case SIGUSR1:
@@ -64,7 +53,6 @@ void sighandle ( int signo ) {
 			SDEBUG << "Window Resize" << std::endl;
 			uninit_screen();
 			init_screen();
-			draw_background();
 			update_screen();
 			/* XXX: Handle background re-center */
 			break;
@@ -83,36 +71,6 @@ void sighandle ( int signo ) {
 	}
 }
 
-NcursesTerminal * focusedTerminal;
-
-void interface_console() {
-	int maxRow = 0;
-	int maxCol = 0;
-	
-	getmaxyx(stdscr, maxRow, maxCol);
-	
-	Pane * p = new Pane( (maxCol - 2), (maxRow - 2), 1, 1);
-	p->focus();
-	p->setTitle("Menu");
-	
-	while ( true ) {
-		p->render_frame();
-		update_screen();
-		
-		char c = wgetch(p->getWindow());
-		switch ( c ) {
-			case 'a':
-				focusedTerminal->resize( 80, 25 );
-				/* No break, we want to quit after this */
-			case 'q':
-				delete p;
-				update_screen();
-				return;
-				break;
-		}
-	}
-}
-
 int main ( int argc, char ** argv ) {
 	set_clog();    // XXX: This is ugly
 	init_screen();
@@ -120,10 +78,6 @@ int main ( int argc, char ** argv ) {
 	NcursesTerminal nt( 80, 25, 3, 2 );
 	nt.fork("/bin/bash");
 	toDump          = &nt;
-	focusedTerminal = &nt;
-	
-	bg = get_bg_vector( argv[1] );
-	draw_background();
 	
 	signal( SIGUSR1, sighandle );
 	signal( SIGTERM, sighandle );
@@ -142,8 +96,6 @@ int main ( int argc, char ** argv ) {
 				if ( ch == 0x05 ) {
 					/* 0x05 is ENQ - let's use it for our special sequence. */
 					SDEBUG << "Ctrl+e called. Let's interface." << std::endl;
-					interface_console();
-					update_screen();
 				} else {
 					nt.type(ch);
 				}

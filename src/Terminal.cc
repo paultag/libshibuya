@@ -44,11 +44,7 @@ void Terminal::_init_Terminal(int width, int height) {
 	this->pty    = -1;
 	this->chars = (TerminalCell*)
 		malloc(sizeof(TerminalCell) * (width * height));
-	
-	for ( int i = 0; i < ( height * width ); ++i ) {
-		this->chars[i].ch   = ' ';
-		this->chars[i].attr = this->cMode;
-	}
+	this->erase_to_from( 0, 0, width, height ); 
 }
 
 Terminal::~Terminal() {
@@ -67,6 +63,9 @@ Terminal::Terminal( int width, int height ) {
 void Terminal::erase_to_from( int iX, int iY, int tX, int tY ) {
 	int from = GET_OFFSET(iX, iY);
 	int to   = GET_OFFSET(tX, tY);
+
+	to = ( ( this->height * this->width ) < to ) ?
+		((this->height * this->width) - 1) : to ;
 
 	SDEBUG << "Erasing from/to: " << iX << ", " << iY << "(" << from
 		<< ") -> " << tX << ", " << tY

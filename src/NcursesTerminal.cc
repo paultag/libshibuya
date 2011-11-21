@@ -53,6 +53,7 @@ void NcursesTerminal::_init_NcursesTerminal(
 ) {
 	this->pane = new Pane((width + 2), (height + 2), x, y);
 	this->pane->setTitle( "Terminal ID: (" + this->pane->getId() + ")" );
+	this->tainted = true;
 }
 
 NcursesTerminal::~NcursesTerminal() {
@@ -63,6 +64,7 @@ NcursesTerminal::~NcursesTerminal() {
 bool NcursesTerminal::render( WINDOW * win ) {
 	if ( ! this->tainted )
 		return false;
+
 	SDEBUG << "Tainted display. Rendering window" << std::endl;
 	
 	this->pane->render_frame();
