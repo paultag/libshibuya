@@ -68,6 +68,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 		case CSI_CUD:
 		case CSI_CUF:
 		case CSI_CUB:
+			this->log( "CU[U|D|F|B Command issued." );
 			/* Moves the cursor n (default 1) cells in the given direction. If
 			 * the cursor is already at the edge of the screen, this has no
 			 * effect. */
@@ -86,25 +87,30 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 				? this->cY : this->height;
 			break;
 		case CSI_CHA:
+			this->log( "CHA Command issued" );
 			/* Moves the cursor to column n. */
 			this->cX = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
 			break;
 		case 'd': // XXX: Fixme
+			this->log( "'d' command issued" );
 			/* moves the cursor to row n. */
 			this->cY = ( seqs->at(0) < 1 ) ? 0 : seqs->at(0) - 1;
 			break;
 		case 'M': // XXX: Fixme (CSI_DL)
+			this->log( "'M' command issued" );
 			/* DL | Delete the indicated # of lines. */
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
 			for ( int i = 0; i < move_steps; ++i )
 				this->delete_line( this->cY );
 			break;
 		case 'L': // XXX: FIXME
+			this->log( "'L' command issued" );
 			move_steps = ( seqs->at(0) > 0 ) ? seqs->at(0) : 0;
 			for ( int i = 0; i < move_steps; ++i )
 				this->insert_line( this->cY );
 			break;
 		case 'm': // XXX: FIXME
+			this->log( "Color command issued" );
 			/* 0     Reset / Normal	all attributes off
 			 * 1     Bright (increased intensity) or Bold	
 			 * 2     Faint (decreased intensity) not widely supported
@@ -156,6 +162,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		case 'r':
+			this->log( "'r' command issued" );
 			nTop = seqs->at(0);
 			
 			if ( nTop < 0 )
@@ -177,6 +184,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			
 			break;
 		case CSI_CUP:
+			this->log( "CUP command issued" );
 			/* Moves the cursor to row n, column m. The values are 1-based, and
 			 * default to 1 (top left corner) if omitted. A sequence such as CSI
 			 * ;5H is a synonym for CSI 1;5H as well as CSI 17;H is the same as
@@ -199,6 +207,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			
 			break;
 		case CSI_EL:
+			this->log( "EL command issued" );
 			/* Erases part of the line. If n is zero (or missing), clear from
 			 * cursor to the end of the line. If n is one, clear from cursor to
 			 * beginning of the line. If n is two, clear entire line. Cursor
@@ -219,6 +228,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		case CSI_ED:
+			this->log( "ED command issued" );
 			/* Clears part of the screen. If n is zero (or missing),
 			 * clear from cursor to end of screen. If n is one,
 			 * clear from cursor to beginning of the screen. If n is two, clear
@@ -240,7 +250,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			}
 			break;
 		default:
-			this->log( "Hit an unhandled bit" );
+			this->log( "Hit an unhandled command bit" );
 			break;
 	}
 	
