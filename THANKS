@@ -1,6 +1,5 @@
-
 Thanks to timemage on irc.freenode for helping me work through some of the nasty
-SIGNAL stuff. Thanks!
+signal stuff and other conceptual jibber-jabber. Thanks!
 
 Thanks to ema29 on oftc for giving me the idea of piping 0x03 to the app
 directly, rather then deal with a SIGINT.
