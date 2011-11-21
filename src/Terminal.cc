@@ -143,6 +143,7 @@ pid_t Terminal::fork( const char * command ) {
 		std::cerr << "Failed to fork." << std::endl;
 		exit(127);
 	}
+
 	/* if we got here we are the parent process */
 	this->childpid = childpid;
 	return childpid;

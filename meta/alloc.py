@@ -3,6 +3,7 @@
 import sys
 
 objs = {}
+abnormal = []
 
 while True:
 	line = sys.stdin.readline().strip()
@@ -39,6 +40,7 @@ for obj in objs:
 		normalCount += 1
 	elif constr:
 		leakCount += 1
+		abnormal.append( obj )
 	else:
 		errorCount += 1
 
@@ -50,3 +52,5 @@ print "** %s ** had an abnormal cycle" % leakCount
 if leakCount > 0:
 	print ""
 	print " **** THERE ARE FIXABLE LEAKS. PLEASE TRACK THEM DOWN ***"
+	for x in abnormal:
+		print "Abnormal: %s" % str(x)
