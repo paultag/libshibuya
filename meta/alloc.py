@@ -46,3 +46,7 @@ print "Afer parsing the runlog, here are the leak stats:"
 print ""
 print "Exactly %s ShibuyaObjects were created." % totalCount
 print "** %s ** had an abnormal cycle" % leakCount
+
+if leakCount > 0:
+	print ""
+	print " **** THERE ARE FIXABLE LEAKS. PLEASE TRACK THEM DOWN ***"
