@@ -1,20 +1,21 @@
 BUILDCHAIN=../meta/buildchain/
 include $(BUILDCHAIN)/library-info.mk
+# OK. We're clean on the Library front.
 
 INC=../include/
 BIN=./bin/
 LIB=../lib/
 
-TARGETS=$(shell ls *.cc | sed s/.cc/.o/g)
 LIBS=-lncurses -lpanel -lutil -lansiescape -lshibuya
 CXXFLAGS=-Wall -I$(INC)
 LDFLAGS=-L$(LIB) $(LIBS)
-
 OUTPUT=$(BIN)shibuya
 
-all: $(TARGETS) link
+TARGETS=$(shell ls *.cc | sed s/.cc/.o/g)
 
+all: $(TARGETS) link
 clean:
 	rm *.o
 
+# Basic rules for building cc files & linking.
 include $(BUILDCHAIN)build.mk
