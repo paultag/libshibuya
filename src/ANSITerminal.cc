@@ -56,9 +56,11 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 
 	int move_steps =  1;
 	int nRow       = -1;
-	int nCol       = -1; /* Sorry about this hack, friend */
+	int nCol       = -1;
 	int nTop       = -1;
-	int nBottom    = -1;
+	int nBottom    = -1; /* Sorry about this hack, friend */
+	int cTemp1     = -1;
+	int cTemp2     = -1;
 
 	if ( last->priv ) {
 		/* We have a private-mode ANSI CSI Sequence. */
@@ -134,45 +136,59 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		case 'm': // XXX: FIXME
 			this->log( "Color command issued" );
-			/* 0     Reset / Normal	all attributes off
-			 * 1     Bright (increased intensity) or Bold	
-			 * 2     Faint (decreased intensity) not widely supported
-			 * 5     Blink: Slow less than 150 per minute
-			 * 6     Blink: Rapid MS-DOS ANSI.SYS; 150 per minute or more; not
-			 *       widely supported
-			 * 7     Image: Negative inverse or reverse; swap foreground and
+			/* 7     Image: Negative inverse or reverse; swap foreground and
 			 *       background
 			 * 8     Conceal not widely supported
 			 * 9     Crossed-out Characters legible, but marked for deletion.
 			 *       Not widely supported.
-			 * 10    Primary(default) font
 			 * 22    Normal color or intensity neither bright, bold nor faint
 			 * 25    Blink: off
 			 * 27    Image: Positive
-			 * 28    Reveal	conceal off
-			 * 30–37 Set text colo
+			 * 28    Reveal conceal off
 			 * 39    Default text color	implementation defined
 			 *       (according to standard)
-			 * 40–47 Set background color 40 + x, where x is from the color
-			 *       table below
 			 * 49    Default background color implementation defined
-			 *       (according to standard)
-			 */
+			 *       (according to standard) */
 			for ( unsigned int i = 0; i < seqs->size(); ++i ) {
 				switch ( seqs->at(i) ) {
-					case 1:
-						/* bold global attr */
-						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) == 0 ) {
-							this->cMode += SHIBUYA_ATTR_BOLD;
-						}
-						break;
 					case 0:
 						/* Reset global attr */
 						this->cMode = SHIBUYA_DEFAULT_CMODE;
 						break;
+					case 1:
+						/* bold global attr */
+						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) == 0 )
+							this->cMode += SHIBUYA_ATTR_BOLD;
+						break;
+					case 5:
+					case 6: /* Blink */
+						if ( SHIBUYA_ATTR_HAS_BLINK(this->cMode) == 0 )
+							this->cMode += SHIBUYA_ATTR_BLINK;
+						break;
+					case 7: /* Invert */
+						/* Foreground */
+						
+						SDEBUG << "cMode: " << (int) this->cMode << std::endl;
+						
+						cTemp1 = (this->cMode & SHIBUYA_ATTR_FG_MASK);
+						cTemp2 = (this->cMode & SHIBUYA_ATTR_BG_MASK);
+						/* old: cTemp1 = FG, cTemp2 = BG
+						   new: cTemp1 = BG, cTemp2 = FG */
+						
+						this->cMode -= ( cTemp1 + cTemp2 );
+						
+						cTemp1 = ( cTemp1 >> SHIBUYA_ATTR_FG_OFFSET ) << SHIBUYA_ATTR_BG_OFFSET;
+						cTemp2 = ( cTemp2 >> SHIBUYA_ATTR_BG_OFFSET ) << SHIBUYA_ATTR_FG_OFFSET;
+						
+						this->cMode += ( cTemp1 + cTemp2 );
+						
+						SDEBUG << "cMode: " << (int) this->cMode << std::endl;
+						
+						break;
 					case 30: case 31: case 32:
 					case 33: case 34: case 35:
 					case 36: case 37:
+						/* Foreground */
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
 						this->cMode +=
 							((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
@@ -181,6 +197,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					case 40: case 41: case 42:
 					case 43: case 44: case 45:
 					case 46: case 47:
+						/* Background */
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_BG_MASK);
 						this->cMode +=
 							((seqs->at(i) - 40) << SHIBUYA_ATTR_BG_OFFSET);
@@ -188,6 +205,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					break;
 					default:
 						/* Unknown m sequence id */
+						this->log("Unknown color things.");
 						break;
 				}
 			}
