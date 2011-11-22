@@ -164,12 +164,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) )
 							this->cMode -= SHIBUYA_ATTR_BOLD;
 						break;
-					case 25: /* 25    Blink: off */
+					case 25: /* Blink: off */
 						if ( SHIBUYA_ATTR_HAS_BLINK(this->cMode) )
 							this->cMode -= SHIBUYA_ATTR_BLINK;
 						break;
-					case 27: /* 27    Image: Positive */
-					case 28: /* 28    Reveal conceal off */
+					case 27: /* Image: Positive */
+					case 28: /* Reveal conceal off */
 						// XXX: FIXME
 						this->cMode = SHIBUYA_DEFAULT_CMODE; // XXX: FIXME
 						break;

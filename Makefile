@@ -1,23 +1,10 @@
-LIBNAME=libshibuya
-LIBMINOR=1.0
-LIBMAJOR=1
-LIB=./lib/
+BUILDCHAIN=./meta/buildchain/
+SUBDIRS=src
 
-all: build link
+build_sub: $(SUBDIRS)
+	make -C $<
 
-build:
-	cd src/ && make
+all: $(SUBDIRS)
+	@echo "Build complete."
 
-clean:
-	cd src/ && make clean
-	rm -rf bin/*
-
-install:
-	@cd src   && make install
-
-link:
-	ln -sf $(LIBNAME).so.$(LIBMINOR)  $(LIB)$(LIBNAME).so.$(LIBMAJOR)
-	ln -sf $(LIBNAME).so.$(LIBMINOR)  $(LIB)$(LIBNAME).so
-
-manual-test: all
-	cd tests && make
+include $(BUILDCHAIN)build.mk
