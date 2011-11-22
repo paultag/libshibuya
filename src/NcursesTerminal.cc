@@ -72,21 +72,19 @@ bool NcursesTerminal::render( WINDOW * win ) {
 			wattroff( win, A_BOLD  );
 			wattroff( win, A_BLINK );
 			
-			int colors = SHIBUYA_ATTR_GET_BG(attrs) * 8 + 7 - SHIBUYA_ATTR_GET_FG(attrs);
+			int colors = SHIBUYA_GET_COLOR_PAIR(
+				SHIBUYA_ATTR_GET_FG(attrs), SHIBUYA_ATTR_GET_BG(attrs));
 			
-			if ( ! colors ) {
+			if ( ! colors )
 				wattrset(win, A_NORMAL);
-			} else {
+			else
 				wattrset(win, COLOR_PAIR(colors));
-			}
 			
-			if ( SHIBUYA_ATTR_HAS_BOLD(attrs) ) {
+			if ( SHIBUYA_ATTR_HAS_BOLD(attrs) )
 				wattron(win, A_BOLD);
-			}
 			
-			if ( SHIBUYA_ATTR_HAS_BLINK(attrs) ) {
+			if ( SHIBUYA_ATTR_HAS_BLINK(attrs) )
 				wattron(win, A_BLINK);
-			}
 			
 			mvwaddch( win, (iy + 1), (ix + 1), this->chars[offset].ch );
 		}

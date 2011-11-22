@@ -32,13 +32,16 @@ void init_screen() {
 	initscr();
 	cbreak();
 	noecho();
-	
 	start_color();
 	
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			if (i != 7 || j != 0)
-				init_pair(j*8+7-i, i, j);
+	for ( int j = 0; j < 8; j++ ) { /* BG */
+		for ( int i = 0; i < 8; i++ ) { /* FG */
+			int offset = SHIBUYA_GET_COLOR_PAIR(i, j);
+			SDEBUG << "Offset: " << offset << " fg/bg -- " << i << ", " << j
+				<< std::endl;
+			init_pair(offset, i, j);
+		}
+	}
 }
 
 void uninit_screen() {
