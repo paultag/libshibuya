@@ -75,9 +75,7 @@ bool NcursesTerminal::render( WINDOW * win ) {
 			
 			int colors = SHIBUYA_GET_COLOR_PAIR(
 				SHIBUYA_ATTR_GET_FG(attrs), SHIBUYA_ATTR_GET_BG(attrs));
-			SDEBUG << "COLOR: f/b: " << SHIBUYA_ATTR_GET_FG(attrs) << ", " << SHIBUYA_ATTR_GET_BG(attrs)
-				<< std::endl;
-			
+
 			wattrset(win, COLOR_PAIR(colors));
 			
 			if ( SHIBUYA_ATTR_HAS_BOLD(attrs) )
