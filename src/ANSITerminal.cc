@@ -166,29 +166,18 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 							this->cMode += SHIBUYA_ATTR_BLINK;
 						break;
 					case 7: /* Invert */
-						/* Foreground */
-						
-						SDEBUG << "cMode: " << (int) this->cMode << std::endl;
-						
 						cTemp1 = (this->cMode & SHIBUYA_ATTR_FG_MASK);
 						cTemp2 = (this->cMode & SHIBUYA_ATTR_BG_MASK);
-						/* old: cTemp1 = FG, cTemp2 = BG
-						   new: cTemp1 = BG, cTemp2 = FG */
-						
 						this->cMode -= ( cTemp1 + cTemp2 );
-						
-						cTemp1 = ( cTemp1 >> SHIBUYA_ATTR_FG_OFFSET ) << SHIBUYA_ATTR_BG_OFFSET;
-						cTemp2 = ( cTemp2 >> SHIBUYA_ATTR_BG_OFFSET ) << SHIBUYA_ATTR_FG_OFFSET;
-						
+						cTemp1 = ( cTemp1 >> SHIBUYA_ATTR_FG_OFFSET )
+							<< SHIBUYA_ATTR_BG_OFFSET;
+						cTemp2 = ( cTemp2 >> SHIBUYA_ATTR_BG_OFFSET )
+							<< SHIBUYA_ATTR_FG_OFFSET;
 						this->cMode += ( cTemp1 + cTemp2 );
-						
-						SDEBUG << "cMode: " << (int) this->cMode << std::endl;
-						
 						break;
 					case 30: case 31: case 32:
 					case 33: case 34: case 35:
-					case 36: case 37:
-						/* Foreground */
+					case 36: case 37: /* Foreground */
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
 						this->cMode +=
 							((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
@@ -196,15 +185,13 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					break;
 					case 40: case 41: case 42:
 					case 43: case 44: case 45:
-					case 46: case 47:
-						/* Background */
+					case 46: case 47: /* Background */
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_BG_MASK);
 						this->cMode +=
 							((seqs->at(i) - 40) << SHIBUYA_ATTR_BG_OFFSET);
 						this->log("Set the background.");
 					break;
-					default:
-						/* Unknown m sequence id */
+					default: /* Unknown m sequence id */
 						this->log("Unknown color things.");
 						break;
 				}

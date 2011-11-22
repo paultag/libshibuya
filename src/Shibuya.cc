@@ -32,7 +32,13 @@ void init_screen() {
 	initscr();
 	cbreak();
 	noecho();
+	
 	start_color();
+	
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			if (i != 7 || j != 0)
+				init_pair(j*8+7-i, i, j);
 }
 
 void uninit_screen() {

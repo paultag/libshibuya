@@ -60,24 +60,35 @@ NcursesTerminal::~NcursesTerminal() {
 bool NcursesTerminal::render( WINDOW * win ) {
 	if ( ! this->tainted )
 		return false;
-
 	
 	this->pane->render_frame();
 	
 	for ( int iy = 0; iy < this->height; ++iy ) {
 		for ( int ix = 0; ix < this->width; ++ix ) {
 			int offset = GET_OFFSET(ix, iy);
-
-			/* By default, we'll disable everything. */
-			wattroff( win, A_BOLD );
-
 			char attrs = this->chars[offset].attr;
+			
+			/* By default, we'll disable everything. */
+			wattroff( win, A_BOLD  );
+			wattroff( win, A_BLINK );
+			
+			int colors = SHIBUYA_ATTR_GET_BG(attrs) * 8 + 7 - SHIBUYA_ATTR_GET_FG(attrs);
+			
+			if ( ! colors ) {
+				wattrset(win, A_NORMAL);
+			} else {
+				wattrset(win, COLOR_PAIR(colors));
+			}
+			
 			if ( SHIBUYA_ATTR_HAS_BOLD(attrs) ) {
 				wattron(win, A_BOLD);
 			}
-
-			mvwaddch(win, ( iy + 1 ), ( ix + 1 ),
-				this->chars[offset].ch);
+			
+			if ( SHIBUYA_ATTR_HAS_BLINK(attrs) ) {
+				wattron(win, A_BLINK);
+			}
+			
+			mvwaddch( win, (iy + 1), (ix + 1), this->chars[offset].ch );
 		}
 	}
 	
