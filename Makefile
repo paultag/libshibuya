@@ -6,5 +6,6 @@ $(SUBDIRS):
 	$(MAKE) -C $@
      
 lib: src
+tests: lib
 
 all: subdirs

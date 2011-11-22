@@ -17,6 +17,7 @@ OUTPUT=$(LIB)$(LIBRARY_NAME).so.$(LIBRARY_VERSION_MINOR)
 all: $(TARGETS) link
 
 clean:
-	rm *.o
+	rm -f *.o
+	rm -f $(OUTPUT)
 
 include $(BUILDCHAIN)build.mk

@@ -13,9 +13,12 @@ OUTPUT=$(BIN)shibuya
 
 TARGETS=$(shell ls *.cc | sed s/.cc/.o/g)
 
-all: $(TARGETS) link
+all: $(TARGETS) link run
 clean:
 	rm *.o
+link: $(TARGETS)
+run: link
+	./run.sh
 
 # Basic rules for building cc files & linking.
 include $(BUILDCHAIN)build.mk
