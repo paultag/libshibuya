@@ -136,11 +136,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		case 'm': // XXX: FIXME
 			this->log( "Color command issued" );
-			/* 7     Image: Negative inverse or reverse; swap foreground and
-			 *       background
-			 * 8     Conceal not widely supported
-			 * 9     Crossed-out Characters legible, but marked for deletion.
-			 *       Not widely supported.
+			/*
 			 * 22    Normal color or intensity neither bright, bold nor faint
 			 * 25    Blink: off
 			 * 27    Image: Positive
@@ -178,20 +174,23 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 					case 30: case 31: case 32:
 					case 33: case 34: case 35:
 					case 36: case 37: /* Foreground */
+						cTemp1  = seqs->at(i);
+						cTemp1 -= 30;
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
-						this->cMode +=
-							((seqs->at(i) - 30) << SHIBUYA_ATTR_FG_OFFSET);
+						this->cMode += ( cTemp1 << SHIBUYA_ATTR_FG_OFFSET );
 						this->log("Set the foreground.");
 					break;
 					case 40: case 41: case 42:
 					case 43: case 44: case 45:
 					case 46: case 47: /* Background */
+						cTemp1  = seqs->at(i);
+						cTemp1 -= 40;
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_BG_MASK);
-						this->cMode +=
-							((seqs->at(i) - 40) << SHIBUYA_ATTR_BG_OFFSET);
+						this->cMode += (cTemp1 << SHIBUYA_ATTR_BG_OFFSET);
 						this->log("Set the background.");
 					break;
 					default: /* Unknown m sequence id */
+						this->cMode = 0x70; //XXX: fixme
 						this->log("Unknown color things.");
 						break;
 				}

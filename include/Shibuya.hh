@@ -55,7 +55,7 @@
 #define SHIBUYA_ATTR_HAS_BOLD(x)  (x & SHIBUYA_ATTR_BOLD)
 #define SHIBUYA_ATTR_HAS_BLINK(x) (x & SHIBUYA_ATTR_BLINK)
 
-#define SHIBUYA_GET_COLOR_PAIR(fg, bg) ( ( bg * 8 ) + fg )
+#define SHIBUYA_GET_COLOR_PAIR(fg, bg) ( ( ( bg + 1 ) * 8 ) + fg )
 
 /* OK. Done with the bitwise stuffs */
 

@@ -69,16 +69,16 @@ bool NcursesTerminal::render( WINDOW * win ) {
 			char attrs = this->chars[offset].attr;
 			
 			/* By default, we'll disable everything. */
-			wattroff( win, A_BOLD  );
-			wattroff( win, A_BLINK );
+			wattroff( win, A_BOLD   );
+			wattroff( win, A_BLINK  );
+			//wattrset( win, A_NORMAL );
 			
 			int colors = SHIBUYA_GET_COLOR_PAIR(
 				SHIBUYA_ATTR_GET_FG(attrs), SHIBUYA_ATTR_GET_BG(attrs));
+			SDEBUG << "COLOR: f/b: " << SHIBUYA_ATTR_GET_FG(attrs) << ", " << SHIBUYA_ATTR_GET_BG(attrs)
+				<< std::endl;
 			
-			if ( ! colors )
-				wattrset(win, A_NORMAL);
-			else
-				wattrset(win, COLOR_PAIR(colors));
+			wattrset(win, COLOR_PAIR(colors));
 			
 			if ( SHIBUYA_ATTR_HAS_BOLD(attrs) )
 				wattron(win, A_BOLD);
