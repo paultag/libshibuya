@@ -1,20 +1,23 @@
-all:
+LIBNAME=libshibuya
+LIBMINOR=1.0
+LIBMAJOR=1
+LIB=./lib/
+
+all: build link
+
+build:
 	cd src/ && make
 
 clean:
 	cd src/ && make clean
 	rm -rf bin/*
 
-all-dbg:
-	cd src/ && make DEBUG=YES
+install:
+	@cd src   && make install
 
-test: all-dbg
-	cd tests && ./run.sh
+link:
+	ln -sf $(LIBNAME).so.$(LIBMINOR)  $(LIB)$(LIBNAME).so.$(LIBMAJOR)
+	ln -sf $(LIBNAME).so.$(LIBMINOR)  $(LIB)$(LIBNAME).so
 
-debug: all-dbg
-	gdb ./bin/shibuya
-	./meta/alloc.py < ./shibuya.debug.log
-
-memleak: all-dbg
-	valgrind --tool=memcheck --leak-check=full ./bin/shibuya 2>valgrind.debug.log
-	./meta/alloc.py < ./shibuya.debug.log
+manual-test: all
+	cd tests && make
