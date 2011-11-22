@@ -1,31 +1,20 @@
-CXX=g++
+BUILDCHAIN=../meta/buildchain/
+include $(BUILDCHAIN)/library-info.mk
 
-ifdef DEBUG
-DEBUG_PHRASE=-DSHIBUYA_DEBUG=YES
-OPT_FLAGS=-O0 -g
-else
-OPT_FLAGS=-O2
-endif
-
-CFLAGS=-Wall $(OPT_FLAGS) $(DEBUG_PHRASE)
-LDFLAGS=-L$(LIB) -lncurses -lpanel -lutil -lansiescape -lshibuya
-BIN=./bin/
 INC=../include/
+BIN=./bin/
 LIB=../lib/
 
 TARGETS=$(shell ls *.cc | sed s/.cc/.o/g)
+LIBS=-lncurses -lpanel -lutil -lansiescape -lshibuya
+CXXFLAGS=-Wall -I$(INC)
+LDFLAGS=-L$(LIB) $(LIBS)
 
+OUTPUT=$(BIN)shibuya
 
-all: $(TARGETS) link clean test
-
-test:
-	./run.sh
+all: $(TARGETS) link
 
 clean:
-	rm -f *.o
+	rm *.o
 
-link:
-	$(CXX) $(TARGETS) $(LDFLAGS) -o $(BIN)shibuya
-
-.cc.o:
-	$(CXX) $(CFLAGS) -I$(INC) -c -o $@ $<
+include $(BUILDCHAIN)build.mk

@@ -1,10 +1,10 @@
-BUILDCHAIN=./meta/buildchain/
-SUBDIRS=src
+SUBDIRS=src lib tests
+.PHONY: subdirs $(SUBDIRS)
+     
+subdirs: $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@
+     
+lib: src
 
-build_sub: $(SUBDIRS)
-	make -C $<
-
-all: $(SUBDIRS)
-	@echo "Build complete."
-
-include $(BUILDCHAIN)build.mk
+all: subdirs
