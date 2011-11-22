@@ -16,7 +16,10 @@ LIB=../lib/
 TARGETS=$(shell ls *.cc | sed s/.cc/.o/g)
 
 
-all: $(TARGETS) link clean
+all: $(TARGETS) link clean test
+
+test:
+	./run.sh
 
 clean:
 	rm -f *.o

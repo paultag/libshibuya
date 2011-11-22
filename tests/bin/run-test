@@ -4,7 +4,7 @@ rm -rf ./diffpool/*
 
 for x in `ls tests/*`; do
 	x=`basename $x`
-	echo "./tests/$x" | ../bin/shibuya 2>./diffpool/$x.raw.log
+	echo "./tests/$x" | LD_PRELOAD=../lib/libshibuya.so ./bin/shibuya 2>./diffpool/$x.raw.log
 	if [ -e "./shibuya.debug.log" ]; then
 		mv ./shibuya.debug.log ./diffpool/$x.debug.log
 	fi
