@@ -136,23 +136,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 			break;
 		case 'm': // XXX: FIXME
 			this->log( "Color command issued" );
-			/*
-			 * 22    Normal color or intensity neither bright, bold nor faint
-			 * 25    Blink: off
-			 * 27    Image: Positive
-			 * 28    Reveal conceal off
-			 * 39    Default text color	implementation defined
-			 *       (according to standard)
-			 * 49    Default background color implementation defined
-			 *       (according to standard) */
 			for ( unsigned int i = 0; i < seqs->size(); ++i ) {
 				switch ( seqs->at(i) ) {
-					case 0:
-						/* Reset global attr */
+					case 0: /* Reset global attr */
 						this->cMode = SHIBUYA_DEFAULT_CMODE;
 						break;
-					case 1:
-						/* bold global attr */
+					case 1: /* bold global attr */
 						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) == 0 )
 							this->cMode += SHIBUYA_ATTR_BOLD;
 						break;
@@ -171,6 +160,23 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 							<< SHIBUYA_ATTR_FG_OFFSET;
 						this->cMode += ( cTemp1 + cTemp2 );
 						break;
+					case 22: /* Normal color or intensity neither bright, bold nor faint */
+						if ( SHIBUYA_ATTR_HAS_BOLD(this->cMode) )
+							this->cMode -= SHIBUYA_ATTR_BOLD;
+						break;
+					case 25: /* 25    Blink: off */
+						if ( SHIBUYA_ATTR_HAS_BLINK(this->cMode) )
+							this->cMode -= SHIBUYA_ATTR_BLINK;
+						break;
+					case 27: /* 27    Image: Positive */
+					case 28: /* 28    Reveal conceal off */
+						// XXX: FIXME
+						this->cMode = SHIBUYA_DEFAULT_CMODE; // XXX: FIXME
+						break;
+					case 39: /* Default text color */
+						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
+						this->cMode += (SHIBUYA_DEFAULT_CMODE & SHIBUYA_ATTR_FG_MASK);
+						break;
 					case 30: case 31: case 32:
 					case 33: case 34: case 35:
 					case 36: case 37: /* Foreground */
@@ -179,7 +185,7 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_FG_MASK);
 						this->cMode += ( cTemp1 << SHIBUYA_ATTR_FG_OFFSET );
 						this->log("Set the foreground.");
-					break;
+						break;
 					case 40: case 41: case 42:
 					case 43: case 44: case 45:
 					case 46: case 47: /* Background */
@@ -188,9 +194,12 @@ void ANSITerminal::_handle_escape( ansi_sequence * last ) {
 						this->cMode -= (this->cMode & SHIBUYA_ATTR_BG_MASK);
 						this->cMode += (cTemp1 << SHIBUYA_ATTR_BG_OFFSET);
 						this->log("Set the background.");
-					break;
+						break;
+					case 49: /* Default background */
+						this->cMode -= (this->cMode & SHIBUYA_ATTR_BG_MASK);
+						this->cMode += (SHIBUYA_DEFAULT_CMODE & SHIBUYA_ATTR_BG_MASK);
+						break;
 					default: /* Unknown m sequence id */
-						this->cMode = 0x70; //XXX: fixme
 						this->log("Unknown color things.");
 						break;
 				}
