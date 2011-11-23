@@ -23,6 +23,7 @@
 #include "NcursesTerminal.hh"
 #include "Exceptions.hh"
 #include "Shibuya.hh"
+#include "NcursesInit.hh"
 #include "BGFile.hh"
 
 #include <iostream>

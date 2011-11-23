@@ -20,48 +20,12 @@
  * THE SOFTWARE.
  */
 
-#ifndef _SHIBUYA_HH_
-#define _SHIBUYA_HH_ FOO
+#ifndef _NCURSESINIT_HH_
+#define _NCURSESINIT_HH_ CAN_HAS
 
-/* Attr hooks
-
-  1   2   3   8   16  32  64  128
-  BKG BKG BKG BNK FGD FGD FGD BLD
-   \   \   \   \   \   \   \   \
-    \   \   \   \   \   \   \   +--- Bold
-     \   \   \   \   +---+---+------ Foreground
-      \   \   \   +----------------- Blink
-       +---+---+-------------------- Background
- */
-
-// Single bit defs
-#define SHIBUYA_ATTR_BOLD  128
-#define SHIBUYA_ATTR_BLINK 8
-
-// Bit mask defs
-#define SHIBUYA_ATTR_FG_MASK   0x70
-#define SHIBUYA_ATTR_FG_OFFSET 4
-
-#define SHIBUYA_ATTR_BG_MASK   0x07
-#define SHIBUYA_ATTR_BG_OFFSET 0
-
-// Access macro defs
-#define SHIBUYA_ATTR_GET_FG(x) \
-	((x & SHIBUYA_ATTR_FG_MASK) >> SHIBUYA_ATTR_FG_OFFSET)
-
-#define SHIBUYA_ATTR_GET_BG(x) \
-	((x & SHIBUYA_ATTR_BG_MASK) >> SHIBUYA_ATTR_BG_OFFSET)
-
-#define SHIBUYA_ATTR_HAS_BOLD(x)  (x & SHIBUYA_ATTR_BOLD)
-#define SHIBUYA_ATTR_HAS_BLINK(x) (x & SHIBUYA_ATTR_BLINK)
-
-#define SHIBUYA_GET_COLOR_PAIR(fg, bg) ( ( ( bg + 1 ) * 8 ) + fg )
-
-/* OK. Done with the bitwise stuffs */
-
-#define String std::string
-#define SDEBUG std::clog
-
-#define SHIBUYA_DEFAULT_CMODE 0x70
+void init_screen();
+void uninit_screen();
+void update_screen();
+void set_clog();
 
 #endif
