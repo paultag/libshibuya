@@ -8,7 +8,7 @@ TARGETS=$(shell ls *.cc | sed s/.cc/.o/g)
 CXXFLAGS=-Wall -c -fPIC -I$(INC)
 CXX=g++
 
-LDFLAGS=-lncurses -lpanel -lutil \
+LDFLAGS= \
 	-lansiescape -shared \
 	-Wl,-soname,$(LIBRARY_NAME).so.$(LIBRARY_VERSION_MAJOR)
 
